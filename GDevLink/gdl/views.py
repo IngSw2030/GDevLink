@@ -7,3 +7,6 @@ def index(request):
 
 def login(request):
     return HttpResponse("Login")
+
+def registrar(request):
+    return HttpResponse("Registro")

@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700');
+
+body, html {
+    height: calc(100% - 2em);
+    margin: 0;
+    font-family: 'Montserrat';
+}
+
+body {
+    /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#30c5eb+0,2989d8+50,207cca+51,5300fc+100 */
+/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#30c5eb+0,5300fc+100 */
+background: #30c5eb; /* Old browsers */
+background: -moz-linear-gradient(45deg,  #30c5eb 0%, #5300fc 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(45deg,  #30c5eb 0%,#5300fc 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(45deg,  #30c5eb 0%,#5300fc 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#30c5eb', endColorstr='#5300fc',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+
+background-repeat: no-repeat;
+background-attachment: fixed;
+}
