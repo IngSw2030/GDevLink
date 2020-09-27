@@ -7,8 +7,7 @@ def index(request):
     return HttpResponse("Hello, world!")
 
 def login(request):
-    render(request, "gdl/login.html")
-    if request.method == "POST":
+    if request.method == "POST" and 'login' in request.POST:
             username=request.POST["username"]
             password=request.POST["password"]
             user=authenticate(request,username=username, password=password)
@@ -16,10 +15,12 @@ def login(request):
                 login(request, user)
                 return("index")
             else:
-                return render(request, "gdl/login.html",{
+                return render(request, "gdl/login.html", {
                     "message": "Datos de inicio de sesion incorrectos"
                 })
-    return HttpResponse("Login")
+    if request.method == "POST" and 'registro' in request.POST:
+        return render(request,"gdl/registro.html")
+    return render(request, "gdl/login.html")
 
 def logout(request):
     logout(request)
