@@ -7,7 +7,16 @@ html, body
 	{
 		margin: 0px;
 		padding: 0px;
-		background: #16213E;
+
+
+		/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#083237+2,000000+100 */
+		background: #083237; /* Old browsers */
+		background: -moz-linear-gradient(45deg,  #083237 2%, #000000 100%); /* FF3.6-15 */
+		background: -webkit-linear-gradient(45deg,  #083237 2%,#000000 100%); /* Chrome10-25,Safari5.1-6 */
+		background: linear-gradient(45deg,  #083237 2%,#000000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#083237', endColorstr='#000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+		background-repeat: no-repeat;
+
 		font-family: 'Varela', sans-serif;
 		font-size: 11pt;
 		font-weight: 300;
@@ -201,13 +210,13 @@ html, body
 
 	#header-wrapper
 	{
-		background: #1B262C;
+		/*background: #1B262C;*/
 	}
 
 	#header
 	{
 		position: relative;
-		padding: 3em 0em;
+		padding: 2em 0em;
 	}
 
 /*********************************************************************************/
@@ -275,6 +284,8 @@ html, body
 	{
 		color: #E94560;
 	}
+
+
 	
 	#menu .icon
 	{
@@ -306,6 +317,10 @@ html, body
 /*********************************************************************************/
 /* Content                                                                       */
 /*********************************************************************************/
+	#mainBody
+	{
+		
+	}
 
 	#content
 	{
@@ -325,6 +340,7 @@ html, body
 
 	#footer
 	{
+		background-color: #191F24;
 	}
 
 /*********************************************************************************/
