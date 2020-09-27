@@ -10,3 +10,4 @@ def login(request):
 
 def registrar(request):
     return render(request,"gdl/registro.html")
+

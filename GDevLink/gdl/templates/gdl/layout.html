@@ -3,17 +3,62 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        GDEVLINK
+        
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+       
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <link href="http://fonts.googleapis.com/css?family=Varela" rel="stylesheet" />
+        <link rel="stylesheet" href="{%static 'styles.css'%}">
+        <link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
         <title>{% block title %}Gdevlink{% endblock %}</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link rel="stylesheet" href="{% static 'static/styles.css' %}">
+        
+       
         {% block script %}
         {% endblock %}
+        <div id="header-wrapper">
+            <div id="header" class="container">
+                <div id="logo">
+                    <h1><a href="#">GdevLink </a></h1>
+                </div>
+                <div id="menu">
+                    <ul>
+                        <li class="current_page_item"><a href="#" accesskey="1" title="">Homepage</a></li>
+                
+                        <li><a href="#" accesskey="5" title="">Usuario/logIn</a></li>
+                    </ul>
+                </div>
+            </div>
+            </div>
+
     </head>
     <body>
-        <div class="container">
-            {% block body %}
-            {% endblock %}
+
+        <div id="wrapper">
+            <div class="space">
+                
+            </div>
+
+            
+            <div id="extra" class="tbody">
+                {% block body %}
+                {% endblock %}
+            </div>
+            
         </div>
+        <div id="copyright" class="container">
+            
+        </div>
+      
+   
+
+        <footer id="footer">
+            <div class="inner">
+                <h2>E</h2>
+                
+            </div>
+        </footer>
+
     </body>
+
 </html>
