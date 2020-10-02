@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'main',
-    'gdl',
+    'usuarios',
     'proyectos',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -87,7 +87,7 @@ DATABASES = {
     }
 }
 
-AUTH_USER_MODEL = 'gdl.User'
+AUTH_USER_MODEL = 'usuarios.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators

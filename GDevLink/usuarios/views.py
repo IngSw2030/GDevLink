@@ -11,12 +11,12 @@ def login(request):
                 login(request, user)
                 return("index")
             else:
-                return render(request, "gdl/login.html", {
+                return render(request, "usuarios/login.html", {
                     "message": "Datos de inicio de sesion incorrectos"
                 })
     if request.method == "POST" and 'registro' in request.POST:
-        return render(request,"gdl/registro.html")
-    return render(request, "gdl/login.html")
+        return render(request,"usuarios/registro.html")
+    return render(request, "usuarios/login.html")
 
 def logout(request):
     logout(request)
@@ -26,5 +26,5 @@ def logout(request):
     return HttpResponse("Login")
 
 def registrar(request):
-    return render(request,"gdl/registro.html")
+    return render(request,"usuarios/registro.html")
 
