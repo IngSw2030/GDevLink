@@ -14,8 +14,6 @@ def login(request):
                 return render(request, "usuarios/login.html", {
                     "message": "Datos de inicio de sesion incorrectos"
                 })
-    if request.method == "POST" and 'registro' in request.POST:
-        return render(request,"usuarios/registro.html")
     return render(request, "usuarios/login.html")
 
 def logout(request):

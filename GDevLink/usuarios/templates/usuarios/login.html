@@ -3,7 +3,7 @@
 
 {% block body %}
 
-    <h2>Inicio Sesion</h2>
+    <h2>Inicio de Sesion</h2>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     {% if message %}
         <div><span style="color: red">{{ message }}</span></div>
@@ -17,7 +17,7 @@
             <input class="form-control" type="password" name="password" placeholder="Contraseña">
         </div>
         <input class="btn btn-primary" type="submit" name="login" value="Iniciar Sesion">
-        <input class="btn btn-secondary" type="submit" name="registro" value="Registrarse">
     </form>
+    <p><a href="{%url 'registrar'%}">Registrarse</a></p>
 
 {% endblock %}
