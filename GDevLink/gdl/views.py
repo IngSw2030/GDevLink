@@ -2,10 +2,6 @@ from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render
 from django.http import HttpResponse
 
-# Create your views here.
-def index(request):
-    return HttpResponse("Hello, world!")
-
 def login(request):
     if request.method == "POST" and 'login' in request.POST:
             username=request.POST["username"]
