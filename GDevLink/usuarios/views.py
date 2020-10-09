@@ -26,3 +26,6 @@ def logout(request):
 def registrar(request):
     return render(request,"usuarios/registro.html")
 
+def perfil(request):
+    return render(request,"usuarios/perfil.html")
+
