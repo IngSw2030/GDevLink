@@ -29,9 +29,6 @@ def vista_logout(request):
     })
     return HttpResponse("Login")
 
-#def registrar(request):
-#    return render(request,"usuarios/registro.html")
-
 def registrar(request):
     if request.method == "POST":
         username = request.POST["username"]
@@ -67,7 +64,6 @@ def registrar(request):
         
 
 
-def tasks(request):
-    return render(request, "tasks/index.html", {
-        "tasks": tasks
-    })
+def perfil(request):
+    return render(request,"usuarios/perfil.html")
+

@@ -1,0 +1,43 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    <h2 style="color: white" align="center">Mi Perfil</h2>
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+        {% csrf_token %}
+        <div class="">
+            <center><a href="https://imgbb.com/"><img src="https://i.ibb.co/MNdStBT/foto-perfil.png" alt="foto-perfil" align="center" width="180"></a></center>
+            <br>
+            <span style="color: white"> Nombre Usuario: </span> <br>
+            <span style="color: white"> Descripción: </span>
+        </div>
+        <div>
+            <span style="color: white"> Roles: </span>
+            <ul style="list-style-type: circle">
+                
+            </ul>
+        </div>
+        <div>
+            <span style="color: white"> Generos: </span>
+            <ul style="list-style-type: circle">
+                
+            </ul>
+        </div>
+        <div>
+            <span style="color: white"> FrameWorks: </span>
+            <ul style="list-style-type: circle">
+                
+            </ul>
+        </div>
+        <div>
+            <span style="color: white"> Mis Proyectos: </span>
+            <ul style="list-style-type: circle">
+                
+            </ul>
+        </div>
+
+    
+    
+{% endblock %}
