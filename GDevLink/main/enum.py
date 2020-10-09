@@ -30,3 +30,5 @@ class PosiblesPermisos(models.TextChoices):
         MIEMBRO = 'MI', _('Miembro')
         ADMIN = 'AD', _('Administrador')
         MASTER = 'MA', _('Administrador maestro')
+
+
