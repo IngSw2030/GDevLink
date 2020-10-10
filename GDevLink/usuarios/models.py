@@ -10,5 +10,5 @@ class Usuario(AbstractUser):
     generos = ArrayField(models.CharField(blank=False, choices=PosiblesGeneros.choices, max_length=2),null = True)
     frameworks = ArrayField(models.CharField(blank=False, choices=PosiblesFrameworks.choices, max_length=2),null = True)
     descripcion = models.CharField(max_length=500, blank=True)
-    #imagen
+    imagen = models.ImageField(upload_to='usuarios',blank=True)
  
