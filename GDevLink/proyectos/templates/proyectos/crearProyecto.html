@@ -1,0 +1,65 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    <h2>Crear proyecto</h2>
+     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    
+
+    <form action="{% url 'registrar' %}" method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <input class="form-control" autofocus type="text" name="name" placeholder="Nombre del proyecto">
+        </div>
+        <div>
+            <label class="form-check-label">Generos:</label>
+            <div class="form-check form-check-inline"> 
+                
+                {% for genero in generos %}
+                <input class="form-check-input"  name="generos" type="checkbox" id="inlineCheckbox1" value="{{genero.label}}">
+                <label class="form-check-label" for="inlineCheckbox1">{{genero.label}}</label>
+                {% endfor %}
+            </div>
+        </div>
+        <div>
+            <label class="form-check-label">Fases:</label>
+            <div class="form-check form-check-inline"> 
+                
+                {% for fase in fases %}
+                <input class="form-check-input"  name="generos" type="checkbox" id="inlineCheckbox1" value="{{fase.label}}">
+                <label class="form-check-label" for="inlineCheckbox1">{{fase.label}}</label>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="descripcion" placeholder="Descripción">
+        </div>
+
+        <div>
+            <label class="form-check-label">Frameworks:</label>
+            <div class="form-check form-check-inline"> 
+                
+                {% for framework in frameworks %}
+                <input class="form-check-input" name="frameworks"  type="checkbox" id="inlineCheckbox1" value="{{framework.label}}">
+                <label class="form-check-label" for="inlineCheckbox1">{{framework.label}}</label>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group">
+            <input class="form-control" type="text" name="descripcion" placeholder="Enlace a video del proyecto">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlFile1">Imagenes</label>
+            <input type="file" class="form-control-file" id="exampleFormControlFile1" multiple>
+        </div>
+    
+        <input class="btn btn-primary" type="submit" value="Crear">
+        
+    </form>
+
+{% endblock %}
+
+{% block script %}
+<script src="{% static 'mail/inbox.js' %}"></script>
+{% endblock %}
