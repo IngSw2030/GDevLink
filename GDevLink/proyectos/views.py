@@ -10,5 +10,5 @@ def proyectosUsuario(request):
        #else
     #else
 
-def crearProyecto():
-    pass
+def crearProyecto(request):
+    return render(request,"proyectos/crearProyecto.html")

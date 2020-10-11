@@ -15,7 +15,7 @@ def vista_login(request):
             user=authenticate(request,username=username, password=password)
             if user is not None:
                 login(request, user)
-                return("index")
+                return render(request,"usuarios/perfil.html")
             else:
                 return render(request, "usuarios/login.html", {
                     "message": "Datos de inicio de sesion incorrectos"
