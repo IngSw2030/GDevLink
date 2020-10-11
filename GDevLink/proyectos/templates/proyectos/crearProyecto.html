@@ -7,7 +7,7 @@
      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     
 
-    <form action="{% url 'registrar' %}" method="post">
+    <form action="{% url 'crearProyecto' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
             <input class="form-control" autofocus type="text" name="name" placeholder="Nombre del proyecto">
@@ -15,7 +15,6 @@
         <div>
             <label class="form-check-label">Generos:</label>
             <div class="form-check form-check-inline"> 
-                
                 {% for genero in generos %}
                 <input class="form-check-input"  name="generos" type="checkbox" id="inlineCheckbox1" value="{{genero.label}}">
                 <label class="form-check-label" for="inlineCheckbox1">{{genero.label}}</label>
@@ -27,7 +26,7 @@
             <div class="form-check form-check-inline"> 
                 
                 {% for fase in fases %}
-                <input class="form-check-input"  name="generos" type="checkbox" id="inlineCheckbox1" value="{{fase.label}}">
+                <input class="form-check-input"  name="fase" type="checkbox" id="inlineCheckbox1" value="{{fase.label}}">
                 <label class="form-check-label" for="inlineCheckbox1">{{fase.label}}</label>
                 {% endfor %}
             </div>
@@ -54,7 +53,7 @@
             <input type="file" class="form-control-file" id="exampleFormControlFile1" multiple>
         </div>
     
-        <input class="btn btn-primary" type="submit" value="Crear">
+        <input class="btn btn-primary" type="submit" name="crearProyecto" value="Crear">
         
     </form>
 

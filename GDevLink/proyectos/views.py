@@ -11,4 +11,16 @@ def proyectosUsuario(request):
     #else
 
 def crearProyecto(request):
+    if request.method == "POST" and 'crearProyecto' in request.POST:
+        nombre = request.POST["name"]
+        #generos = request.POST.getlist["generos"]
+        fase = request.POST.getlist('fase')
+        descripcion = request.POST('descripcion')
+        frameworks = request.POST.getlist('frameworks')
+        #imagen = 
+        #galeria = 
+        #enlace_video = 
+        #enlace_video = 
+        #enlace_juego = 
+        #fecha_creacion
     return render(request,"proyectos/crearProyecto.html")
