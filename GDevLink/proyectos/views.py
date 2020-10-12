@@ -11,7 +11,8 @@ def proyectosUsuario(request):
 
        #else
     #else
-
+    
+@login_required
 def crearProyecto(request):
     if request.method == "POST" and 'crearProyecto' in request.POST:
         username=request.POST["username"]
@@ -32,7 +33,7 @@ def crearProyecto(request):
         if(len(frameworks)==0):
             return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,
              "message": "Seleccione al menos un (1) framework"})
-        imagenes = request.POST.getlist('imagenes')        
+        imagenes = UploadImageForm(request.POST, request.FILES)      
         #enlace_juego = 
         try:
             proyecto = Proyecto(nombre=nombre,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,galeria=imagenes,enlace_video=enlace_video)
