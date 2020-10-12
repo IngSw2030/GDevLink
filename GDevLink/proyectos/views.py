@@ -13,7 +13,7 @@ def proyectosUsuario(request):
 def crearProyecto(request):
     if request.method == "POST" and 'crearProyecto' in request.POST:
         nombre = request.POST["name"]
-        #generos = request.POST.getlist["generos"]
+        generos = request.POST.getlist["generos"]
         fase = request.POST.getlist('fase')
         descripcion = request.POST('descripcion')
         frameworks = request.POST.getlist('frameworks')
