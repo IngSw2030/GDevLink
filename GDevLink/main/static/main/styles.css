@@ -15,11 +15,12 @@ html, body
 
 
 		/* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#083237+2,000000+100 */
-		background: #083237; /* Old browsers */
-		background: -moz-linear-gradient(45deg,  #083237 2%, #000000 100%); /* FF3.6-15 */
-		background: -webkit-linear-gradient(45deg,  #083237 2%,#000000 100%); /* Chrome10-25,Safari5.1-6 */
-		background: linear-gradient(45deg,  #083237 2%,#000000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-		filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#083237', endColorstr='#000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+		/*background: #083237; /* Old browsers */
+		/*background: -moz-linear-gradient(45deg,  #083237 2%, #000000 100%); /* FF3.6-15 */
+		/*background: -webkit-linear-gradient(45deg,  #083237 2%,#000000 100%); /* Chrome10-25,Safari5.1-6 */
+		/*background: linear-gradient(45deg,  #083237 2%,#000000 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+		/*filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#083237', endColorstr='#000000',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+		background: #0f221e;
 		background-repeat: no-repeat;
 
 		font: inherit;
@@ -90,7 +91,7 @@ html, body
 	/*background: #1B262C;*/
 	border-collapse: separate;
 	border-radius: 25p;
-	background: white;
+	background: #ebebeb;
     overflow: hidden;
 	margin: 0em auto;
 	width: 1000px;

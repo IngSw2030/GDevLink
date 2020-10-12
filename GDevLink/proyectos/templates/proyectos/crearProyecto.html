@@ -47,6 +47,16 @@
                 {% endfor %}
             </div>
         </div>
+        <div>
+            <label class="form-check-label">Roles que deseas desempeñar:</label>
+            <div class="form-check form-check-inline"> 
+                
+                {% for rol in roles %}
+                <input class="form-check-input" name="frameworks"  type="checkbox" id="inlineCheckbox1" value="{{rol.label}}">
+                <label class="form-check-label" for="inlineCheckbox1">{{rol.label}}</label>
+                {% endfor %}
+            </div>
+        </div>
         <div class="form-group">
             <input class="form-control" type="text" name="enlaceVideo" placeholder="Enlace a video del proyecto">
         </div>
