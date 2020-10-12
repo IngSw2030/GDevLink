@@ -4,13 +4,17 @@
 <html lang="en">
     <head>
         
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+       
        
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <link href="http://fonts.googleapis.com/css?family=Varela" rel="stylesheet" />
-        <link rel="stylesheet" href="{%static 'main/styles.css'%}">
-        <link href="fonts.css" rel="stylesheet" type="text/css" media="all" />
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'main/styles.css' %}">
+        
         <title>{% block title %}Gdevlink{% endblock %}</title>
         
        
@@ -23,9 +27,10 @@
                 </div>
                 <div id="menu">
                     <ul>
-                        <li class="current_page_item"><a href="#" accesskey="1" title="">Homepage</a></li>
-                
-                        <li><a href="#" accesskey="5" title="">Usuario/logIn</a></li>
+                        <li><a href="{% url 'index' %}" accesskey="1" value={{view}} title="">Homepage</a></li>
+                        <li><a href="{% url 'usuarios:login' %}" >log In</a></li>
+                        <li><a href="{% url 'usuarios:logout' %}">log out</a></li>
+                        
                     </ul>
                 </div>
             </div>
@@ -40,22 +45,21 @@
             </div>
 
             
-            <div id="extra" class="tbody">
+            <div  class="tbody">
                 {% block body %}
                 {% endblock %}
             </div>
+           
             
         </div>
-        
-      
-   
-
+              
         <footer id="footer">
             <div class="inner">
                 <h2>E</h2>
                 
             </div>
         </footer>
+
 
     </body>
 

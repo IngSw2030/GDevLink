@@ -1,4 +1,6 @@
 .form-check-label
 {
-    color: white;
+    /*<link rel="stylesheet" href="{%static 'usuarios/styles.css'%}">*/
+   /* <link href="{% static 'main/fonts.css' %}" rel="stylesheet" type="text/css" media="all" />*/
+   /* color: white;*/
 }
