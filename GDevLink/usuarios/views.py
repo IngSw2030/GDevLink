@@ -37,6 +37,9 @@ def registrar(request):
         generos = request.POST.getlist('generos')
         frameworks = request.POST.getlist('frameworks')
 
+        for f in roles:
+            print(f)
+
         # Ensure password matches confirmation
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]

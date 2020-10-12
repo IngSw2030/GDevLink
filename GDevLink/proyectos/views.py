@@ -29,20 +29,30 @@ def crearProyecto(request):
         frameworks = request.POST.getlist('frameworks')
         enlace_video =request.POST["enlaceVideo"]
         roles = request.POST.getlist("roles")
+
+        for f in frameworks:
+            print(len(f))
+        for f in generos:
+            print(len(f))
+        for f in fase:
+            print(len(f))
+        for f in roles:
+            print(len(f))
         
 
         if(nombre == ""):
-            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,
+            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles,
              "message": "Por favor ingresar un nombre"})
-       # if(len(fase)!=1):
-        #    return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,
-         #    "message": "Seleccione una (1) fase"})
-        #if(len(frameworks)==0):
-         #   return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,
-          #   "message": "Seleccione al menos un (1) framework"})
+        if(len(fase)!=1):
+            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,
+             "message": "Seleccione una (1) fase"})
+        if(len(frameworks)==0):
+            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,
+             "message": "Seleccione al menos un (1) framework"})
         #imagenes = UploadImageForm(request.POST, request.FILES)      
         #enlace_juego = 
         try:
+            print(PosiblesPermisos.MASTER)
             proyecto = Proyecto(nombre=nombre,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlace_video)
             proyecto.save()
 
@@ -52,4 +62,4 @@ def crearProyecto(request):
             print(e)
             return render(request, "proyectos/crearProyecto.html", {
                 "message": "Nombre de proyecto ya registrado"})
-    return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros})
+    return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles})
