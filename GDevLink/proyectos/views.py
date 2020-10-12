@@ -5,6 +5,7 @@ from django.shortcuts import render
 def proyectosUsuario(request):
     if request.user.is_authenticated():
        #if not request.user.Participacion
+       if not request.user.Participacion
        return render(request,"proyectos/proyectosUsuario.html",{"proyectos": request.user.Proyecto})
 
        #else
