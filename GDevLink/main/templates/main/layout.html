@@ -12,31 +12,47 @@
         <meta name="keywords" content="" />
         <meta name="description" content="" />
         <link href="http://fonts.googleapis.com/css?family=Varela" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'main/styles.css' %}">
-        
+       
         <title>{% block title %}Gdevlink{% endblock %}</title>
         
-       
-        {% block script %}
-        {% endblock %}
-        <div id="header-wrapper">
-            <div id="header" class="container">
-                <div id="logo">
-                    <h1><a href="#">GdevLink </a></h1>
-                </div>
-                <div id="menu">
-                    <ul>
-                        <li><a href="{% url 'index' %}" accesskey="1" value={{view}} title="">Homepage</a></li>
-                        <li><a href="{% url 'usuarios:login' %}" >log In</a></li>
-                        <li><a href="{% url 'usuarios:logout' %}">log out</a></li>
-                        
-                    </ul>
-                </div>
+        
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">GDevLink</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse mr-auto" id="navbarNavDropdown">
+              <ul class="nav justify-content-end">
+                <li class="nav-item active">
+                  <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                </li>
+
+                {% if autenticado %}
+                    <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{nombre}}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="{% url 'usuarios:perfil' %}">Mi perfil</a>
+                        <a class="dropdown-item" href="{% url 'usuarios:logout' %}">Cerrar sesión</a>
+                    </div>
+                    </li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'usuarios:login' %}" >log In</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'usuarios:registrar' %}">Registrarse</a></li>
+                {% endif %}   
+              </ul>
             </div>
-            </div>
+          </nav>
 
     </head>
+
     <body id="mainBody">
 
         <div id="wrapper">
@@ -64,3 +80,7 @@
     </body>
 
 </html>
+
+{% block script %}
+    <script src="{% static 'main/layout.js' %}"></script>
+{% endblock %}

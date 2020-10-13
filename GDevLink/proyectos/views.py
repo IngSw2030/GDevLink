@@ -7,7 +7,7 @@ from django.db import IntegrityError
 # Create your views here.
 
 def proyectosUsuario(request):
-    if request.user.is_authenticated():
+    if request.user.is_authenticated:
         pass
        #if not request.user.Participacion
        #if not request.user.Participacion
