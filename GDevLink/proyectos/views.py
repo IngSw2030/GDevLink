@@ -8,10 +8,8 @@ from django.db import IntegrityError
 
 def proyectosUsuario(request):
     if request.user.is_authenticated:
-        pass
-       #if not request.user.Participacion
-       #if not request.user.Participacion
-       #return render(request,"proyectos/proyectosUsuario.html",{"proyectos": request.user.Proyecto})
+       if request.user.participaciones:
+            return render(request,"proyectos/proyectosUsuario.html",{"proyectos": request.user.participaciones.proyecto})
 
        #else
     #else

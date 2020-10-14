@@ -33,12 +33,12 @@
                   <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
                 </li>
 
-                {% if autenticado %}
+                {% if user.is_authenticated %}
                     <li class="nav-item">
                     <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {{nombre}}
+                        {{user.username}}
                     </a>
-                    <div class="dropdown-menu dropdown-menu-right text-right" aria-labelledby="navbarDropdownMenuLink">
+                    <div class="dropdown-menu dropdown-menu-right text-left pull-right" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="{% url 'usuarios:perfil' %}">Mi perfil</a>
                         <a class="dropdown-item" href="{% url 'usuarios:logout' %}">Cerrar sesión</a>
                     </div>
@@ -49,7 +49,7 @@
                 {% endif %}   
               </ul>
             </div>
-          </nav>
+        </nav>
 
     </head>
 
