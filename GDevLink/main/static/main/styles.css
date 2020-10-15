@@ -102,7 +102,7 @@ html, body
 	padding: 20px;
 	/*width: 200px; height: 150px;*/
     perspective: 1px;
-	box-shadow: 5px 10px 5px 5px;
+	
 	
 
   }
@@ -201,6 +201,10 @@ html, body
 		border-radius: 20px;
 		text-align: center;
 		color: #272925;
+	}
+
+	.btn{
+		background: #2f002f;
 	}
 	
 /*********************************************************************************/
@@ -532,4 +536,6 @@ html, body
 		font-size: 3em;
 	}
 
-	
+	.tbody{
+		background: white;
+	}

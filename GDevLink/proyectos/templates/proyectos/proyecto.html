@@ -1,0 +1,67 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    <link rel="stylesheet" href="{% static 'proyectos/stylesP.css' %}">
+    
+     
+    {% csrf_token %}
+    <body>
+            <div class="contenido" >
+                <div> 
+                    <span>{{nombre}}</span>
+                </div>
+                <div>
+                    <span>{{descripcion}}</span>
+                </div>
+                <div>
+                    <label for="exampleFormControlInput1">Genero:</label>
+                    {% for genero in generos %}          
+                        <span>{{genero}}</span>             
+                    {% endfor %}
+                </div>  
+                <div>
+                    <label for="exampleFormControlInput1">Frameworks usados:</label>
+                    {% for framework in framework %}          
+                        <span>{{framework}}</span>             
+                    {% endfor %}
+                </div> 
+                <div>
+                    <label for="exampleFormControlInput1">Miembros:</label>
+                    {% for miembro in miembros %}          
+                        <span>{{miembro}}</span>             
+                    {% endfor %}
+                </div> 
+                <div>
+                    <label for="exampleFormControlInput1">Video del proyecto:</label>
+     
+                        <span>{{video}}</span>             
+   
+                </div>
+                <div>
+                    <label for="exampleFormControlInput1">Link de descarga:</label>
+     
+                        <span>{{descarga}}</span>             
+   
+                </div>
+            </div>
+            <div class="cont2">
+            Second DIV
+            </div>
+    </body>
+        
+    
+        
+ 
+     
+
+
+
+    
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
