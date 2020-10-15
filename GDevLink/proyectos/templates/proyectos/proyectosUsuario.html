@@ -5,21 +5,37 @@
 
     <h2>Mis proyectos</h2>
      
-    
-     <div class="thumbnails">
+    <link rel="stylesheet" href="{% static 'proyectos/stylesMisP.css' %}">
+    <body>
+        <div class="thumbnails">
 
-        {% for proyecto in proyectos %}
-        <div class="box">
-            <a href="" class="image fit"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
-            <div class="inner">
-                <h3>{{proyecto.nombre}}</h3>           
-                <a href="" class="button fit" data-poptrox="youtube,800x400">Ver página</a>
+            {% for proyecto in proyectos %}
+            <div class="box">
+                <a href="" class="image fit"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+                <div class="inner">
+                    <h3>{{proyecto.nombre}}</h3>           
+                    <a href="" class="button fit" data-poptrox="youtube,800x400">Ver página</a>
+                </div>
             </div>
+            {% endfor %}
+            <div class="box">
+                <a href="" class="image fit"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+                <div class="inner">
+                    <h3>Prueba</h3>           
+                    <a href="" class="button fit" data-poptrox="youtube,800x400">Ver página</a>
+                </div>
+            </div>
+            <div class="box">
+                <a href="" class="image fit"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+                <div class="inner">
+                    <h3>Prueba</h3>           
+                    <a href="" class="button fit" data-poptrox="youtube,800x400">Ver página</a>
+                </div>
+            </div>
+    
         </div>
-        {% endfor %}
+    </body>
 
-
-    </div>
     
 
 {% endblock %}
