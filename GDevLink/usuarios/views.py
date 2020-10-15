@@ -24,7 +24,7 @@ def vista_login(request):
 
 def vista_logout(request):
     logout(request)
-    return HttpResponseRedirect('/loginpage/')
+    return HttpResponseRedirect(reverse("login"))
 
 def registrar(request):
     if request.method == "POST":
