@@ -3,7 +3,7 @@ from . import views
 from django.conf.urls import include
 
 urlpatterns = [
-    path("layout", views.layout, name="layout"),
+    #path("layout", views.layout, name="layout"),
     path("", views.index, name="index"),
     #path('login', include(('usuarios.urls', 'vista_login'), namespace='usuarios')),
     #path('crearProyecto', include(('proyectos.urls', 'crearProyecto'), namespace='proyectos')),
