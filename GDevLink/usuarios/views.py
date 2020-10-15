@@ -24,10 +24,7 @@ def vista_login(request):
 
 def vista_logout(request):
     logout(request)
-    return render(request,"login",{
-        "message": "Sesion cerrada"
-    })
-    return HttpResponse("Login")
+    return HttpResponseRedirect('/loginpage/')
 
 def registrar(request):
     if request.method == "POST":

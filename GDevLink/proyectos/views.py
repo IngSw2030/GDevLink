@@ -19,8 +19,10 @@ def proyectosUsuario(request):
        #else
     #else
     
-@login_required
+
 def crearProyecto(request):
+    if(not request.user.is_authenticated):
+        return render(request,"usuarios/login.html")
     if request.method == "POST" and 'crearProyecto' in request.POST:
         #username=request.POST["username"]
         #password=request.POST["password"]
