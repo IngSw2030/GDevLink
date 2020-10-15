@@ -66,3 +66,9 @@ def crearProyecto(request):
             return render(request, "proyectos/crearProyecto.html", {
                 "message": "Nombre de proyecto ya registrado"})
     return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles})
+
+@login_required
+def proyecto(request):
+    if request.method == "POST":
+        return render(request,"proyectos/proyecto.html",{})
+    return render(request,"proyectos/proyecto.html",{})

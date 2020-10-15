@@ -1,0 +1,26 @@
+#tbodyID{
+ width: 100%;
+ margin: 0;
+ padding: 0;   
+ background-color: transparent;
+}
+
+.container-name div { 
+    display: inline-block; 
+    width: 500px; 
+    min-height: 50px; 
+    background-color: #eee; 
+    height: auto; 
+  } 
+
+.contenido{
+    width: 400px; float:left; height:1000px; background:white; margin:0px
+}
+
+.cont2{
+    width: 100px; float:center; height:100px; background:yellow; margin:10px
+}
+
+.elemento{
+    padding: 5em;
+}
