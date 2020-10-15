@@ -3,7 +3,8 @@
 
 {% block body %}
 
-    <h2>Crear proyecto</h2>
+    <link rel="stylesheet" href="{% static 'proyectos/styles.css' %}">
+    <h2>Crea tú proyecto!</h2>
      
      {% if message %}
      <div><span style="color: red">{{ message }}</span></div>
@@ -11,62 +12,93 @@
 
     <form action="{% url 'crearProyecto' %}" method="post">
         {% csrf_token %}
-        <div class="form-group">
-            <input class="form-control" autofocus type="text" name="name" placeholder="Nombre del proyecto">
-        </div>
-        <div>
-            <label class="form-check-label">Generos:</label>
-            <div class="form-check form-check-inline"> 
-                {% for genero in generos %}
-                <input class="form-check-input"  name="generos" type="checkbox" id="inlineCheckbox1" value="{{genero}}">
-                <label class="form-check-label" for="inlineCheckbox1">{{genero.label}}</label>
-                {% endfor %}
+        <hr>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Nombre del proyecto</label>
+                <input class="form-control" autofocus type="text" name="name" placeholder="Nombre del proyecto">
             </div>
-        </div>
-        <div>
-            <label class="form-check-label">Fases:</label>
-            <div class="form-check form-check-inline"> 
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Descripción</label>
+                <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <div>
                 
-                {% for fase in fases %}
-                <input class="form-check-input"  name="fase" type="checkbox" id="inlineCheckbox1" value="{{fase}}">
-                <label class="form-check-label" for="inlineCheckbox1">{{fase.label}}</label>
-                {% endfor %}
+                <div class="form-group col-md-6"> 
+                    <label for="exampleFormControlInput1">Que generos tiene tú proyecto: </label>
+                    {% for genero in generos %}
+                    
+                    <label class="checkbox" for="defaultCheck1">
+                        <input class="form-check-input"  name="generos" type="checkbox" id="defaultCheck1" value="{{genero}}">    
+                    {{genero.label}}
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+        <hr>
+        <div>
+            
+            <div class="form-group col-md-6"> 
+                <label class="fexampleFormControlInput1">En que fase de desarrollo se encuentra: </label>
+             
+                    {% for fase in fases %}              
+                    <label class="radio" for="exampleRadios1">
+                        <input class="form-check-input"  name="fase" type="radio" id="exampleRadios1" value="{{fase}}">
+                    {{fase.label}}
+                    </label>
+                    {% endfor %}
+                
             </div>
         </div>
-        <div class="form-group">
-            <input class="form-control" type="text" name="descripcion" placeholder="Descripción">
-        </div>
+        
 
         <div>
-            <label class="form-check-label">Frameworks:</label>
-            <div class="form-check form-check-inline"> 
-                
+            
+            <div class="form-group col-md-6"> 
+                <label class="fexampleFormControlInput1"> Que framework utilizara:</label>
                 {% for framework in frameworks %}
-                <input class="form-check-input" name="frameworks"  type="checkbox" id="inlineCheckbox1" value="{{framework}}">
-                <label class="form-check-label" for="inlineCheckbox1">{{framework.label}}</label>
+                <label class="checkbox" for="defaultCheck3">
+                    <input class="form-check-input" name="frameworks"  type="checkbox" id="defaultCheck3" value="{{framework}}">
+                {{framework.label}}
+                </label>
                 {% endfor %}
             </div>
         </div>
         <div>
-            <label class="form-check-label">Roles que deseas desempeñar:</label>
-            <div class="form-check form-check-inline"> 
-                
+            
+            <div class="form-group col-md-6"> 
+                <label class="fexampleFormControlInput1">Roles que deseas desempeñar:</label>
                 {% for rol in roles %}
-                <input class="form-check-input" name="roles"  type="checkbox" id="inlineCheckbox1" value="{{rol}}">
-                <label class="form-check-label" for="inlineCheckbox1">{{rol.label}}</label>
+                <label class="checkbox" for="checkbox">
+                    <input class="form-check-input" name="roles"  type="checkbox" id="defaultCheck4" value="{{rol}}">     
+                    {{rol.label}}
+                </label>           
                 {% endfor %}
             </div>
         </div>
+        <hr>
         <div class="form-group">
+            <label class="fexampleFormControlInput1">Si tienes un enlace a un video de tú proyecto puedes incluirlo  </label>
             <input class="form-control" type="text" name="enlaceVideo" placeholder="Enlace a video del proyecto">
         </div>
         <div class="form-group">
-            <label for="exampleFormControlFile1">Imagenes</label>
-            <input type="file" class="form-control-file" id="exampleFormControlFile1" multiple>
+            <label for="exampleFormControlFile1" >Imagen o logo que represente el proyecto</label>
+            <input type="file" class="form-control-file" name="imagen" id="exampleFormControlFile1">
+        </div>
+        <div class="form-group">
+            <label for="exampleFormControlFile1">Galería de imagenes del proyecto:</label>
+            <input type="file" class="form-control-file" name="galeria" id="exampleFormControlFile1" multiple>
+        </div>
+        <div class="form-group">
+            <label class="fexampleFormControlInput1">Si tienes un enlace a un video de tú proyecto puedes incluirlo  </label>
+            <input class="form-control" type="text" name="enlaceVideo" placeholder="Enlace a video del proyecto">
+        </div>
+        <div class="form-group">
+            <label class="fexampleFormControlInput1">Si tienes un enlace para descargar tu juego puedes incluirlo  </label>
+            <input class="form-control" type="text" name="enlaceVideo" placeholder="Enlace a video del proyecto">
         </div>
     
         <input class="btn btn-primary" type="submit" name="crearProyecto" value="Crear">
-        
+        <hr>
     </form>
 
 {% endblock %}
