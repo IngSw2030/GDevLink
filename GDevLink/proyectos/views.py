@@ -6,23 +6,9 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 # Create your views here.
 
-def proyectosUsuario(request):
-    if request.user.is_authenticated:
-       if request.user.participaciones:
-           proyectos = {}
-           #for p in request.user.participaciones.proyecto:
-            #   proyectos.append(p)
-           print(request.user.participaciones.participaciones)
-        
-           return render(request,"proyectos/proyectosUsuario.html")
-
-       #else
-    #else
     
-
+@login_required
 def crearProyecto(request):
-    if(not request.user.is_authenticated):
-        return render(request,"usuarios/login.html")
     if request.method == "POST" and 'crearProyecto' in request.POST:
         #username=request.POST["username"]
         #password=request.POST["password"]
@@ -74,3 +60,19 @@ def proyecto(request):
     if request.method == "POST":
         return render(request,"proyectos/proyecto.html",{})
     return render(request,"proyectos/proyecto.html",{})
+
+
+def proyectosUsuario(request):
+    print("Etapa Cero")
+    if request.user.is_authenticated:
+       print("Etapa Uno")
+       if request.user.participaciones:
+           proyectos = {}
+           #for p in request.user.participaciones.proyecto:
+            #   proyectos.append(p)
+           print(request.user.participaciones)
+        
+           return render(request,"proyectos/proyectosUsuario.html")
+    return render(request,"proyectos/proyectosUsuario.html")
+       #else
+    #else
