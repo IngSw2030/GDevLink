@@ -24,10 +24,9 @@ def vista_login(request):
 
 def vista_logout(request):
     logout(request)
-    return render(request,"login",{
+    return render(request,"usuarios/login.html",{
         "message": "Sesion cerrada"
     })
-    return HttpResponse("Login")
 
 def registrar(request):
     if request.method == "POST":
