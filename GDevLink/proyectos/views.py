@@ -10,9 +10,6 @@ from django.db import IntegrityError
 @login_required
 def crearProyecto(request):
     if request.method == "POST" and 'crearProyecto' in request.POST:
-        #username=request.POST["username"]
-        #password=request.POST["password"]
-        #usuario=authenticate(request,username=username, password=password)
         nombre = request.POST["name"]
         generos = request.POST.getlist("generos")
         fase = request.POST.getlist('fase')
@@ -20,16 +17,6 @@ def crearProyecto(request):
         frameworks = request.POST.getlist('frameworks')
         enlace_video =request.POST["enlaceVideo"]
         roles = request.POST.getlist("roles")
-
-        for f in frameworks:
-            print(len(f))
-        for f in generos:
-            print(len(f))
-        for f in fase:
-            print(len(f))
-        for f in roles:
-            print(len(f))
-        
 
         if(nombre == ""):
             return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles,
@@ -40,23 +27,31 @@ def crearProyecto(request):
         if(len(frameworks)==0):
             return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,
              "message": "Seleccione al menos un (1) framework"})
-        #imagenes = UploadImageForm(request.POST, request.FILES)      
-        #enlace_juego = 
+        
+        imagen = request.POST['imagen']
+        galeria = request.POST.getlist('galeria')
+
         try:
             print(PosiblesPermisos.MASTER)
-            proyecto = Proyecto(nombre=nombre,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlace_video)
+            proyecto = Proyecto(nombre=nombre,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlace_video, imagen=imagen, galeria=galeria)
             proyecto.save()
-
+        except IntegrityError as e:
+            print(e)
+            return render(request, "proyectos/crearProyecto.html", {
+                "message": "Nombre de proyecto ya registrado"})
+        try:
             participacion= Participacion(usuario=request.user,proyecto=proyecto,roles=roles,permiso=PosiblesPermisos.MASTER)
             participacion.save()
         except IntegrityError as e:
             print(e)
             return render(request, "proyectos/crearProyecto.html", {
-                "message": "Nombre de proyecto ya registrado"})
+                "message": "Error en la creacion de participacion"})
     return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles})
 
 @login_required
 def proyecto(request):
+    if(not request.user.is_authenticated):
+        return render(request,"usuarios/login.html")
     if request.method == "POST":
         return render(request,"proyectos/proyecto.html",{})
     return render(request,"proyectos/proyecto.html",{})
