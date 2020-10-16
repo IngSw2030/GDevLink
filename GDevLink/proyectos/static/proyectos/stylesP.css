@@ -3,7 +3,9 @@
  margin: 0;
  padding: 0;   
  background-color: transparent;
+ color: #e6e6e6;
 }
+
 
 .container-name div { 
     display: inline-block; 
@@ -14,7 +16,8 @@
   } 
 
 .contenido{
-    width: 100%; height:auto; background:white; margin:0px;
+    width: 100%; height:auto; background: #181818; margin:0px;
+    box-shadow: 20mm;
 
 }
 
@@ -41,8 +44,8 @@
 }
 
 .elemento{
-    padding: 10px;
-    
+    padding: 20px;
+    shadow: 0.16mm;
     
 }
 
@@ -58,6 +61,10 @@
 
 h1, h3{
     text-align: center;
+    color: #e6e6e6;
+    text-transform: uppercase;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 #list-group-item{
@@ -69,11 +76,11 @@ h1, h3{
     padding: 5em;
   }
 
-  .center {
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-    width: 50%;
-    padding-bottom: 20px;
-    
-  }
+.list-group-item{
+  background-color: #3c4042;
+  
+}
+
+#gris{
+  background-color: #1f1f1f;
+}

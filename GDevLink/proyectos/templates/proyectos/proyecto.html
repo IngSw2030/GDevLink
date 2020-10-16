@@ -17,7 +17,7 @@
             {% if not proyecto.imagen %}
             <a href="" class="image fit"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
             {% else %}
-                <img src="{{ proyecto.imagen.url }}" alt="My Image" />
+                <img src="{{ proyecto.imagen.url }}" class="center" alt="My Image" />
             {% endif %}
             
         </div>
@@ -26,7 +26,7 @@
                 <div> 
                     <h1>{{proyecto.nombre}}</h1>
                 </div>
-                <div class="elemento">
+                <div class="elemento" id="gris">
                     <label for="exampleFormControlInput1">Sobre el proyecto</label>
                     <p>{{proyecto.descripcion}}</p>
                 </div>
@@ -36,7 +36,7 @@
                         <span>{{genero.label}}</span>             
                     {% endfor %}
                 </div>  
-                <div class="elemento">
+                <div class="elemento" id="gris">
                     <label for="exampleFormControlInput1">Frameworks usados:</label>
                     {% for framework in frameworks %}          
                         <span>{{framework}}</span>             
@@ -49,7 +49,7 @@
                         <span>{{video}}</span>             
    
                 </div>
-                <div class="elemento">
+                <div class="elemento" id="gris">
                     <label for="exampleFormControlInput1">Link de descarga:</label>
      
                         <span>{{descarga}}</span>             
