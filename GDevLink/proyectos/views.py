@@ -29,14 +29,13 @@ def crearProyecto(request):
         if(len(frameworks)==0):
             return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles,
              "message": "Seleccione al menos un (1) framework"})
-        
+        fase = fase[0]
         imagen = request.POST['imagen']
 
         try:
             print(PosiblesPermisos.MASTER)
             proyecto = Proyecto(nombre=nombre,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlace_video, imagen=imagen)
             proyecto.save()
-            return HttpResponseRedirect(reverse("proyecto", kwargs={"nombre": nombre}))
         except IntegrityError as e:
             print(e)
             return render(request, "proyectos/crearProyecto.html", {
@@ -44,6 +43,7 @@ def crearProyecto(request):
         try:
             participacion= Participacion(usuario=request.user,proyecto=proyecto,roles=roles,permiso=PosiblesPermisos.MASTER)
             participacion.save()
+            return HttpResponseRedirect(reverse("proyecto", kwargs={"nombre": nombre}))
         except IntegrityError as e:
             print(e)
             return render(request, "proyectos/crearProyecto.html", {
@@ -56,6 +56,7 @@ def proyecto(request,nombre):
         generos = []
         frameworks = []
         participaciones = {}
+        fase = PosiblesFases.labels[PosiblesFases.values.index(proyecto.fase)]
         for genero in proyecto.generos:
             generos.append((PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
         for framework in proyecto.frameworks:
@@ -69,7 +70,8 @@ def proyecto(request,nombre):
             "proyecto": proyecto,
             "generos": generos,
             "miembros": participaciones,
-            "frameworks": frameworks
+            "frameworks": frameworks,
+            "fase": fase
         })
     except Proyecto.DoesNotExist:
         return render(request, "main/error.html", {

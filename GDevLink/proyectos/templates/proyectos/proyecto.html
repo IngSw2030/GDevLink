@@ -26,6 +26,13 @@
                 <div> 
                     <h1>{{proyecto.nombre}}</h1>
                 </div>
+
+                <div class="elemento">
+                    <label for="exampleFormControlInput1">Fase de desarrollo</label>
+                    <p>{{fase}}</p>
+                </div>
+
+
                 <div class="elemento" id="gris">
                     <label for="exampleFormControlInput1">Sobre el proyecto</label>
                     <p>{{proyecto.descripcion}}</p>
@@ -33,7 +40,7 @@
                 <div class="elemento">
                     <label for="exampleFormControlInput1">Genero:</label>
                     {% for genero in generos %}          
-                        <span>{{genero.label}}</span>             
+                        <span>{{genero}}</span>             
                     {% endfor %}
                 </div>  
                 <div class="elemento" id="gris">
