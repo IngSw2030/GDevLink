@@ -73,12 +73,12 @@ def proyectosUsuario(request):
     if request.user.is_authenticated:
        print("Etapa Uno")
        if request.user.participaciones:
-           proyectos = {}
-           #for p in request.user.participaciones.proyecto:
-            #   proyectos.append(p)
-           print(request.user.participaciones)
+           proyectos = []
+           for participacion in request.user.participaciones.all():
+               proyectos.append(participacion.proyecto)
+           return render(request,"proyectos/proyectosUsuario.html",{"proyectos": proyectos})
         
-           return render(request,"proyectos/proyectosUsuario.html")
+           
     return render(request,"proyectos/proyectosUsuario.html")
        #else
     #else

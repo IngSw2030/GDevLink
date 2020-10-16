@@ -10,15 +10,16 @@
     <body>
             <div class="contenido" >
                 <div> 
-                    <span>{{nombre}}</span>
+                    <h1>{{nombre}}</h1>
                 </div>
                 <div class="elemento">
-                    <span>{{descripcion}}</span>
+                    <label for="exampleFormControlInput1">Sobre el proyecto</label>
+                    <p>{{descripcion}}</p>
                 </div>
                 <div class="elemento">
                     <label for="exampleFormControlInput1">Genero:</label>
                     {% for genero in generos %}          
-                        <span>{{genero}}</span>             
+                        <span>{{genero.label}}</span>             
                     {% endfor %}
                 </div>  
                 <div class="elemento">
@@ -29,9 +30,13 @@
                 </div> 
                 <div class="elemento">
                     <label for="exampleFormControlInput1">Miembros:</label>
-                    {% for miembro in miembros %}          
-                        <span>{{miembro}}</span>             
-                    {% endfor %}
+                    <div class="list-group">  
+                        {% for miembro in miembros %}          
+                        <a href="#" class="list-group-item list-group-item-action active" id="litem">
+                            {{miembro}}
+                        </a>             
+                        {% endfor %}
+                    </div>
                 </div> 
                 <div class="elemento">
                     <label for="exampleFormControlInput1">Video del proyecto:</label>
@@ -46,8 +51,15 @@
    
                 </div>
             </div>
+            <div class="act">
+                <h3>Actualización 1</h3>
+            </div>
             <div class="cont2">
-            Second DIV
+                <h3>Galería del proyecto</h3>
+                <div class="images-vert">
+                    <a href="" class="image fit"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+                </div>
+                
             </div>
     </body>
         

@@ -14,13 +14,52 @@
   } 
 
 .contenido{
-    width: 400px; float:left; height:1000px; background:white; margin:0px
+    width: 400px; float:left; height:auto; background:white; margin:0px;
+    border-radius: 0px 25px 25px 0px;
+}
+
+.act{
+    border-collapse: separate;
+	border-radius: 25px;
+	background: #ebebeb;
+	margin: 0em auto;
+    width: 600px;
+	/*width: 200px; height: 150px;*/
+    perspective: 1px;
+    
+
 }
 
 .cont2{
-    width: 100px; float:center; height:100px; background:yellow; margin:10px
+    width: 300px; float:right; height:auto; background:white; margin:0px;
+    padding-left: 4px;
+    padding-right: 2px;
+    padding-bottom: 4px;
+    padding-top: 2px;
+    border-radius: 25px 0px 0px 25px;
+
 }
 
 .elemento{
-    padding: 3em;
+    padding: 1em;
+    
+    
+}
+
+.imgLink { border: none; background: none; }
+.imgLink img
+{
+  height: 8rem;
+}
+.imgLink:active img, .imgLink:focus img
+{
+  height: 16rem;
+}
+
+h1, h3{
+    text-align: center;
+}
+
+#list-group-item{
+    background-color: #6b126b;
 }

@@ -36,6 +36,10 @@ html, body
 		color: #656565;
 	}
 	
+	#titulo{
+		font-size: 130pt;
+	}
+	
 	
 	h1, h2, h3
 	{
@@ -94,7 +98,7 @@ html, body
   {
 	/*background: #1B262C;*/
 	border-collapse: separate;
-	border-radius: 25p;
+	border-radius: 25px;
 	background: #ebebeb;
     overflow: hidden;
 	margin: 0em auto;
@@ -180,7 +184,7 @@ html, body
 	{
 		display: inline-block;
 		padding: 0em 3em;
-		background: #009E2D;
+		background: #6b126b;
 		letter-spacing: 0.20em;
 		line-height: 4em;
 		text-decoration: none;
@@ -206,6 +210,13 @@ html, body
 	.btn{
 		background: #2f002f;
 	}
+
+	.topbtn{
+		position: absolute;
+		right: 10px;
+		top: 5px;
+		font-size: 1em;
+	}
 	
 /*********************************************************************************/
 /* Heading Titles                                                                */
@@ -227,7 +238,19 @@ html, body
 		font-size: 1.7em;
 		color: #6F6F6F;
 	}
-		
+	
+	.barra{
+		overflow: auto;
+	}
+
+	#backgroundimage {
+		background-image: url("2738.jpg");
+		width: 100vw;
+		height: 100vh; 
+		background-size: 100% 100%;
+		background-repeat: no-repeat;
+		position: relative;
+	} 
 
 
 /*********************************************************************************/
@@ -260,6 +283,7 @@ html, body
 	
 	#logo h1
 	{
+		
 		color: #FFF;
 	}
 	
@@ -382,7 +406,10 @@ html, body
   /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
   .show {display:block;} 
 
-
+  .litem{
+    background: #6b126b;
+}
+  
 /*********************************************************************************/
 /* Page                                                                          */
 /*********************************************************************************/

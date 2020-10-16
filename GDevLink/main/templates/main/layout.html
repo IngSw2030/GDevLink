@@ -18,11 +18,11 @@
         <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" href="{% static 'main/styles.css' %}">
        
-        <title>{% block title %}Gdevlink{% endblock %}</title>
+        <title>GDevlink</title>
         
         
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" id="barra">
             <a class="navbar-brand" href="{% url 'index' %}">GDevLink</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
@@ -40,8 +40,9 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right text-left pull-right" aria-labelledby="navbarDropdownMenuLink">
                         <a class="dropdown-item" href="{% url 'perfil' %}">Mi perfil</a>
+                        <a class="dropdown-item" href="{% url 'MisProyectos' %}">Mis proyectos</a>
                         <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
-                        <a class="dropdown-item" href="{% url 'crearProyecto' %}">Proyecto</a>
+                        
                     </div>
                     </li>
                     {% else %}
