@@ -10,7 +10,7 @@
      <div><span style="color: red">{{ message }}</span></div>
     {% endif %}
 
-    <form action="{% url 'crearProyecto' %}" method="post">
+    <form action="{% url 'crearProyecto' %}" enctype="multipart/form-data" method="post" action="/foo/">
         {% csrf_token %}
             <div class="form-group">
                 <label for="exampleFormControlInput1">Nombre del proyecto</label>

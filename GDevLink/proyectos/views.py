@@ -30,7 +30,7 @@ def crearProyecto(request):
             return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles,
              "message": "Seleccione al menos un (1) framework"})
         fase = fase[0]
-        imagen = request.POST['imagen']
+        imagen = request.FILES['imagen']
 
         try:
             print(PosiblesPermisos.MASTER)
