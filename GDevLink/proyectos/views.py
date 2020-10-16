@@ -60,7 +60,7 @@ def crearProyecto(request):
             print(e)
             return render(request, "proyectos/crearProyecto.html", {
                 "message": "Error en la creacion de participacion"})
-    return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles})
+    return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles})
 
 @login_required
 def proyecto(request):
