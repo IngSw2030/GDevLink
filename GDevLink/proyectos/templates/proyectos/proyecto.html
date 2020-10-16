@@ -29,8 +29,8 @@
                 </div> 
                 <div class="elemento">
                     <label for="exampleFormControlInput1">Miembros:</label>
-                    {% for miembro in miembros %}          
-                        <span>{{miembro}}</span>             
+                    {% for key,value in miembros.items %}
+                        <span>{{key}} - {{value}}</span>
                     {% endfor %}
                 </div> 
                 <div class="elemento">

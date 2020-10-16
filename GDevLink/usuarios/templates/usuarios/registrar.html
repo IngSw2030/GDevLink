@@ -27,7 +27,7 @@
             <div class="form-check form-check-inline"> 
                 
                 {% for rol in roles %}
-                <input class="form-check-input" name="roles" type="checkbox" id="inlineCheckbox1" value="{{rol.label}}">
+                <input class="form-check-input" name="roles" type="checkbox" id="inlineCheckbox1" value="{{rol}}">
                 <label class="form-check-label" for="inlineCheckbox1">{{rol.label}}</label>
                 {% endfor %}
             </div>
@@ -37,7 +37,7 @@
             <div class="form-check form-check-inline"> 
                 
                 {% for framework in frameworks %}
-                <input class="form-check-input" name="frameworks"  type="checkbox" id="inlineCheckbox1" value="{{framework.label}}">
+                <input class="form-check-input" name="frameworks"  type="checkbox" id="inlineCheckbox1" value="{{framework}}">
                 <label class="form-check-label" for="inlineCheckbox1">{{framework.label}}</label>
                 {% endfor %}
             </div>
@@ -47,7 +47,7 @@
             <div class="form-check form-check-inline"> 
                 
                 {% for genero in generos %}
-                <input class="form-check-input"  name="generos" type="checkbox" id="inlineCheckbox1" value="{{genero.label}}">
+                <input class="form-check-input"  name="generos" type="checkbox" id="inlineCheckbox1" value="{{genero}}">
                 <label class="form-check-label" for="inlineCheckbox1">{{genero.label}}</label>
                 {% endfor %}
             </div>
