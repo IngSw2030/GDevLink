@@ -30,11 +30,9 @@
                 </div> 
                 <div class="elemento">
                     <label for="exampleFormControlInput1">Miembros:</label>
-                    <div class="list-group">  
-                        {% for miembro in miembros %}          
-                        <a href="#" class="list-group-item list-group-item-action active" id="litem">
-                            {{miembro}}
-                        </a>             
+                    <div class="list-group"> 
+                        {% for key,value in miembros.items %}
+                            <span>{{key}} - {{value}}</span>
                         {% endfor %}
                     </div>
                 </div> 

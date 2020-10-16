@@ -51,17 +51,23 @@ def crearProyecto(request):
 def proyecto(request,nombre):
     try:
         proyecto = Proyecto.objects.get(nombre=nombre)
-        miembros = []
+        generos = []
+        frameworks = []
+        participaciones = {}
+        for genero in proyecto.generos:
+            generos.append((PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
+        for framework in proyecto.frameworks:
+            frameworks.append((PosiblesFrameworks.labels[PosiblesFrameworks.values.index(framework)]))
         for participacion in proyecto.participaciones.all():
-            miembros.append(participacion.usuario.username)
+            roles_p = ""
+            for rol in participacion.roles:
+                roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+            participaciones[participacion.usuario.username] = roles_p
         return render(request, "proyectos/proyecto.html", {
-            "nombre": proyecto.nombre,
-            "descripcion": proyecto.descripcion,
-            "generos": proyecto.generos,
-            "frameworks": proyecto.frameworks,
-            "miembros": miembros,
-            "video": proyecto.enlace_video,
-            "descarga": proyecto.enlace_juego
+            "proyecto": proyecto,
+            "generos": generos,
+            "miembros": participaciones,
+            "frameworks": frameworks
         })
     except Proyecto.DoesNotExist:
         return render(request, "main/error.html", {

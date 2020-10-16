@@ -64,6 +64,33 @@ def registrar(request):
         
 
 
-def perfil(request):
-    return render(request,"usuarios/perfil.html")
+def perfil(request,nombre_usuario):
+    try:
+        usuario = Usuario.objects.get(username=nombre_usuario)
+        participaciones = {}
+        roles = []
+        generos = []
+        frameworks = []
+        for rol in usuario.roles:
+            roles.append((PosiblesRoles.labels[PosiblesRoles.values.index(rol)]))
+        for genero in usuario.generos:
+            generos.append((PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
+        for framework in usuario.frameworks:
+            frameworks.append((PosiblesFrameworks.labels[PosiblesFrameworks.values.index(framework)]))
+        for participacion in usuario.participaciones.all():
+            roles_p = ""
+            for rol in participacion.roles:
+                roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+            participaciones[participacion.proyecto.nombre] = roles_p
+        return render(request, "usuarios/perfil.html", {
+            "usuario": usuario,
+            "participaciones": participaciones,
+            "roles": roles,
+            "generos": generos,
+            "frameworks": frameworks
+        })
+    except Usuario.DoesNotExist:
+        return render(request, "main/error.html", {
+            "mensaje": "Usuario no encontrado."
+        })
 
