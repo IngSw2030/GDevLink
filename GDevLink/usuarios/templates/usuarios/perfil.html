@@ -3,14 +3,17 @@
 
 {% block body %}
 
-    <h2  align="center">Mi Perfil</h2>
+    <h2  align="center">{{usuario.username}}</h2>
      
     
         {% csrf_token %}
         <div class="">
-            <center><a href="https://imgbb.com/"><img src="https://i.ibb.co/MNdStBT/foto-perfil.png" alt="foto-perfil" align="center" width="180"></a></center>
+            {% if not proyecto.imagen %}
+                <img src="https://i.ibb.co/MNdStBT/foto-perfil.png" alt="foto-perfil" align="center" width="180">
+            {% else %}
+                <img src="{{ usuario.imagen.url }}" alt="My Image" />
+            {% endif %}
             <br>
-            <span > Nombre Usuario: {{usuario.username}} </span> <br>
             <span> Descripción: {{usuario.descripcion}} </span>
         </div>
         <div>

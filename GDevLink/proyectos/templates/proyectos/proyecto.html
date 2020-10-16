@@ -14,7 +14,11 @@
     <body>
         <div class="header" id="center">
             
-            <img src="{{ proyecto.imagen.url }}" alt="#" class="center" /> 
+            {% if not proyecto.imagen %}
+            <a href="" class="image fit"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+            {% else %}
+                <img src="{{ proyecto.imagen.url }}" alt="My Image" />
+            {% endif %}
             
         </div>
         
@@ -62,7 +66,7 @@
                     <label for="exampleFormControlInput1">Miembros:</label>
                     <div class="list-group"> 
                         {% for key,value in miembros.items %}       
-                                <li class="list-group-item">{{key}} - {{value}}</li>
+                            <li class="list-group-item">{{key}} - {{value}}</li>
                         {% endfor %}
                     </div>
                 </div> 
