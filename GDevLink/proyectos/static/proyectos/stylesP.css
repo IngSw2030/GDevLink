@@ -14,8 +14,8 @@
   } 
 
 .contenido{
-    width: 400px; float:left; height:auto; background:white; margin:0px;
-    border-radius: 0px 25px 25px 0px;
+    width: 100%; height:auto; background:white; margin:0px;
+
 }
 
 .act{
@@ -23,7 +23,7 @@
 	border-radius: 25px;
 	background: #ebebeb;
 	margin: 0em auto;
-    width: 600px;
+    width: 100%;
 	/*width: 200px; height: 150px;*/
     perspective: 1px;
     
@@ -41,7 +41,7 @@
 }
 
 .elemento{
-    padding: 1em;
+    padding: 10px;
     
     
 }
@@ -63,3 +63,17 @@ h1, h3{
 #list-group-item{
     background-color: #6b126b;
 }
+
+.space
+  {
+    padding: 5em;
+  }
+
+  .center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    padding-bottom: 20px;
+    
+  }

@@ -76,10 +76,7 @@
             </div>
         </div>
         <hr>
-        <div class="form-group">
-            <label class="fexampleFormControlInput1">Si tienes un enlace a un video de tú proyecto puedes incluirlo  </label>
-            <input class="form-control" type="text" name="enlaceVideo" placeholder="Enlace a video del proyecto">
-        </div>
+
         <div class="form-group">
             <label for="exampleFormControlFile1" >Imagen o logo que represente el proyecto</label>
             <input type="file" class="form-control-file" name="imagen" id="exampleFormControlFile1">
@@ -94,7 +91,7 @@
         </div>
         <div class="form-group">
             <label class="fexampleFormControlInput1">Si tienes un enlace para descargar tu juego puedes incluirlo  </label>
-            <input class="form-control" type="text" name="enlaceVideo" placeholder="Enlace a video del proyecto">
+            <input class="form-control" type="text" name="enlacedescargar" placeholder="Enlace a descarga">
         </div>
     
         <input class="btn btn-primary" type="submit" name="crearProyecto" value="Crear">
@@ -104,5 +101,5 @@
 {% endblock %}
 
 {% block script %}
-<script src="{% static 'mail/inbox.js' %}"></script>
+
 {% endblock %}

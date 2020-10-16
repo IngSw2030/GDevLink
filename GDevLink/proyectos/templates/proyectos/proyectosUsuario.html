@@ -15,7 +15,7 @@
             <div action="{% url 'MisProyectos' %}" method="post">
                 {% for proyecto in proyectos %}
                 <div class="box">
-                    <a href="" class="image fit"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+                    <a href="" class="image fit"><img src="{{ proyecto.imagen.url }}" alt="My Image" /></a>
                     <div class="inner">
                         <h3>{{proyecto.nombre}}</h3>           
                         <a href="/proyectos/proyecto/{{proyecto.nombre}}" class="button fit" name="{{proyecto.nombre}}" >Ver página</a>

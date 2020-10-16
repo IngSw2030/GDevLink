@@ -75,9 +75,9 @@ def proyecto(request,nombre):
         })
 
 def proyectosUsuario(request):
-    print("Etapa Cero")
+    
     if request.user.is_authenticated:
-       print("Etapa Uno")
+       
        if request.user.participaciones:
            proyectos = []
            for participacion in request.user.participaciones.all():
