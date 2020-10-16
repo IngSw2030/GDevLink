@@ -10,31 +10,41 @@
         <div class="">
             <center><a href="https://imgbb.com/"><img src="https://i.ibb.co/MNdStBT/foto-perfil.png" alt="foto-perfil" align="center" width="180"></a></center>
             <br>
-            <span > Nombre Usuario: </span> <br>
-            <span> Descripción: </span>
+            <span > Nombre Usuario: {{usuario.username}} </span> <br>
+            <span> Descripción: {{usuario.descripcion}} </span>
         </div>
         <div>
             <span > Roles: </span>
             <ul style="list-style-type: circle">
-                
+                {% for rol in roles %}
+                    <li> {{rol}} </li>
+                {% endfor %}
             </ul>
         </div>
         <div>
-            <span > Generos: </span>
+            <span > Géneros de interés: </span>
             <ul style="list-style-type: circle">
-                
+                {% for genero in generos %}
+                    <li> {{genero}} </li>
+                {% endfor %}
             </ul>
         </div>
         <div>
             <span > FrameWorks: </span>
             <ul style="list-style-type: circle">
-                
+                {% for framework in frameworks %}
+                    <li> {{framework}} </li>
+                {% endfor %}
             </ul>
         </div>
         <div>
-            <span > Mis Proyectos: </span>
+            <span > Proyectos: </span>
             <ul style="list-style-type: circle">
-                
+                {% for key,value in participaciones.items %}
+                    <li>
+                        {{key}} - {{value}}
+                    </li>
+                {% endfor %}
             </ul>
         </div>
 
