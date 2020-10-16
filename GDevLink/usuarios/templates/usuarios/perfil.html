@@ -5,13 +5,13 @@
 
     <h2  align="center">{{usuario.username}}</h2>
      
-    
+        <link rel="stylesheet" href="{% static 'usuarios/styles.css' %}">
         {% csrf_token %}
         <div class="">
             {% if not proyecto.imagen %}
-                <img src="https://i.ibb.co/MNdStBT/foto-perfil.png" alt="foto-perfil" align="center" width="180">
+                <img src="https://i.ibb.co/MNdStBT/foto-perfil.png" alt="foto-perfil" class="center" width="180">
             {% else %}
-                <img src="{{ usuario.imagen.url }}" alt="My Image" />
+                <img src="{{ usuario.imagen.url }}" class="center" alt="My Image" />
             {% endif %}
             <br>
             <span> Descripción: {{usuario.descripcion}} </span>

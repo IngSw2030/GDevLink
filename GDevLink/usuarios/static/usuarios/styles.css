@@ -4,3 +4,13 @@
    /* <link href="{% static 'main/fonts.css' %}" rel="stylesheet" type="text/css" media="all" />*/
    /* color: white;*/
 }
+
+.center{
+    width: 20%;
+    padding-bottom: 0px;
+}
+
+span {
+    font-size: 15pt;
+    font-weight: bold;
+}
