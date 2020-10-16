@@ -4,6 +4,7 @@
  padding: 0;   
  background-color: transparent;
  color: #e6e6e6;
+ font-size: 18pt;
 }
 
 
@@ -16,9 +17,9 @@
   } 
 
 .contenido{
-    width: 100%; height:auto; background: #181818; margin:0px;
+    width: 100%; height:auto;  margin:0px;
     box-shadow: 20mm;
-
+    background: #423d46;
 }
 
 .act{
@@ -83,4 +84,10 @@ h1, h3{
 
 #gris{
   background-color: #1f1f1f;
+}
+
+#miembros{
+  width: 60%;
+  margin-left: auto;
+		margin-right: auto;
 }
