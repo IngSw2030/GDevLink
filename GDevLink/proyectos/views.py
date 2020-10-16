@@ -4,6 +4,8 @@ from proyectos.models import Proyecto, Participacion
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
+from django.urls import reverse
+from django.http import HttpResponse, HttpResponseRedirect
 # Create your views here.
 
     
@@ -29,12 +31,12 @@ def crearProyecto(request):
              "message": "Seleccione al menos un (1) framework"})
         
         imagen = request.POST['imagen']
-        galeria = request.POST.getlist('galeria')
 
         try:
             print(PosiblesPermisos.MASTER)
-            proyecto = Proyecto(nombre=nombre,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlace_video, imagen=imagen, galeria=galeria)
+            proyecto = Proyecto(nombre=nombre,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlace_video, imagen=imagen)
             proyecto.save()
+            return HttpResponseRedirect(reverse("proyecto", kwargs={"nombre": nombre}))
         except IntegrityError as e:
             print(e)
             return render(request, "proyectos/crearProyecto.html", {
