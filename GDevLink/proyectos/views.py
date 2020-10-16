@@ -60,12 +60,24 @@ def crearProyecto(request):
             print(e)
             return render(request, "proyectos/crearProyecto.html", {
                 "message": "Error en la creacion de participacion"})
-    return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles})
+    return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles})
 
-@login_required
-def proyecto(request):
-    if(not request.user.is_authenticated):
-        return render(request,"usuarios/login.html")
-    if request.method == "POST":
-        return render(request,"proyectos/proyecto.html",{})
-    return render(request,"proyectos/proyecto.html",{})
+def proyecto(request,nombre):
+    try:
+        proyecto = Proyecto.objects.get(nombre=nombre)
+        miembros = []
+        for participacion in proyecto.participaciones.all():
+            miembros.append(participacion.usuario.username)
+        return render(request, "proyectos/proyecto.html", {
+            "nombre": proyecto.nombre,
+            "descripcion": proyecto.descripcion,
+            "generos": proyecto.generos,
+            "frameworks": proyecto.frameworks,
+            "miembros": miembros,
+            "video": proyecto.enlace_video,
+            "descarga": proyecto.enlace_juego
+        })
+    except Proyecto.DoesNotExist:
+        return render(request, "main/error.html", {
+            "mensaje": "Proyecto no encontrado."
+        })
