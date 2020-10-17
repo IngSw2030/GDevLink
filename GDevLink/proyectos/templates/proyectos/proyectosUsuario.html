@@ -1,36 +1,47 @@
 {% extends "main/layout.html" %}
 {% load static %}
 
+{% block head %}
+<div class="header">
+    
+    <a href="" class="image fit"><img src="{% static 'proyectos/land.png' %}" alt="#" /></a>
+    
+</div>
+{% endblock %}
+
 {% block body %}
 
     <h2>Mis proyectos</h2>
      
     <link rel="stylesheet" href="{% static 'proyectos/stylesMisP.css' %}">
     <body>
-       
-
         
         <p><a class="btn btn-primary topbtn" href="{%url 'crearProyecto'%}">Crear proyecto</a></p>
-        <div class="thumbnails" action="{% url 'registrar' %}" method="post">
-            <div action="{% url 'MisProyectos' %}" method="post">
-                {% for proyecto in proyectos %}
-                <div class="box">
-                    {% if not proyecto.imagen %}
-                    <a href="" class="image fit"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
-                    {% else %}
-                        <img src="{{ proyecto.imagen.url }}" alt="My Image" />
-                    {% endif %}
-                    
-                    <div class="inner">
-                        <h3>{{proyecto.nombre}}</h3>           
-                        <a href="/proyectos/proyecto/{{proyecto.nombre}}" class="btn btn-primary" name="{{proyecto.nombre}}" >Ver página</a>
+        <div class="row">
+            {% for proyecto in proyectos %}
+                <div class="col-sm-6">
+                    <div class="card">
+                        {% if not proyecto.imagen %}
+                        <img class="card-img-top" src="{% static 'proyectos/pic03.jpg' %}" alt="Card image cap">
+                        {% else %}
+                        <img class="card-img-top" src="{{ proyecto.imagen.url }}" alt="Card image cap">
+                        {% endif %}
+                        <div class="card-body">
+                            <h5 class="card-title">{{proyecto.nombre}}</h5>
+                            <p class="card-text">Rol: </p>
+                            <a href="/proyectos/proyecto/{{proyecto.nombre}}" class="btn btn-primary">Ir al proyecto</a>
+                        </div>
                     </div>
                 </div>
-                {% endfor %}
-            </div>
-    
+            {% endfor %}
         </div>
+
+        
+        
+        
     </body>
+
+    
 
     
 
