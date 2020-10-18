@@ -1,0 +1,97 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+    <link rel="stylesheet" href="{% static 'proyectos/styles.css' %}">
+    <h2>Crea tu proyecto!</h2>
+     
+     {% if message %}
+     <div><span style="color: red">{{ message }}</span></div>
+    {% endif %}
+
+    <form action="{% url 'crearProyecto' %}" enctype="multipart/form-data" method="post" action="/foo/">
+        {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Nombre del proyecto</label>
+                <input class="form-control" autofocus type="text" name="name" placeholder="Nombre del proyecto">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Descripción</label>
+                <textarea class="form-control" name="descripcion" id="exampleFormControlTextarea1" rows="3"></textarea>
+            </div>
+            <div>
+                
+                <div class="form-group col-md-6"> 
+                    <label for="exampleFormControlInput1">¿Qué generos tiene tu proyecto? </label>
+                    {% for genero in generos %}
+                    
+                    <label class="checkbox" for="defaultCheck1">
+                        <input class="form-check-input"  name="generos" type="checkbox" id="defaultCheck1" value="{{genero}}">    
+                    {{genero.label}}
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+        <div>
+            
+            <div class="form-group col-md-6"> 
+                <label class="fexampleFormControlInput1">¿En qué fase de desarrollo se encuentra? </label>
+             
+                    {% for fase in fases %}              
+                    <label class="radio" for="exampleRadios1">
+                        <input class="form-check-input"  name="fase" type="radio" id="exampleRadios1" value="{{fase}}">
+                    {{fase.label}}
+                    </label>
+                    {% endfor %}
+                
+            </div>
+        </div>
+        
+
+        <div>
+            
+            <div class="form-group col-md-6"> 
+                <label class="fexampleFormControlInput1"> ¿Qué framework(s) utilizará? </label>
+                {% for framework in frameworks %}
+                <label class="checkbox" for="defaultCheck3">
+                    <input class="form-check-input" name="frameworks"  type="checkbox" id="defaultCheck3" value="{{framework}}">
+                {{framework.label}}
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+        <div>
+            
+            <div class="form-group col-md-6"> 
+                <label class="fexampleFormControlInput1">¿Qué roles desempeñarás en el proyecto?</label>
+                {% for rol in roles %}
+                <label class="checkbox" for="checkbox">
+                    <input class="form-check-input" name="roles"  type="checkbox" id="defaultCheck4" value="{{rol}}">     
+                    {{rol.label}}
+                </label>           
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="exampleFormControlFile1" >Sube una imagen o logo que represente el proyecto</label>
+            <input type="file" class="form-control-file" name="imagen" id="exampleFormControlFile1">
+        </div>
+        <div class="form-group">
+            <label class="fexampleFormControlInput1">Si tienes un enlace a un video de tu proyecto, puedes incluirlo  </label>
+            <input class="form-control" type="text" name="enlaceVideo" placeholder="Enlace a video del proyecto">
+        </div>
+        <div class="form-group">
+            <label class="fexampleFormControlInput1">Si tienes un enlace para descargar el juego, puedes incluirlo  </label>
+            <input class="form-control" type="text" name="enlacedescargar" placeholder="Enlace a descarga">
+        </div>
+    
+        <input class="btn btn-primary" type="submit" name="crearProyecto" value="Crear">
+    </form>
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

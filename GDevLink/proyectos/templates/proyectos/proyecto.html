@@ -1,0 +1,116 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+
+
+{% block body %}
+
+    <link rel="stylesheet" href="{% static 'proyectos/stylesP.css' %}">
+    
+     
+    {% csrf_token %}
+    <body>
+        <div class="header" id="center">
+            
+           
+            
+        </div>
+        
+            <div class="contenido" >
+                <div class="logo">
+                    {% if not proyecto.imagen %}
+                    <a href="" class="image fit" id="limage"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+                    {% else %}
+                    <img src="{{ proyecto.imagen.url }}" class="" id="limage" alt="My Image" />
+                    {% endif %}
+                </div>
+                <div> 
+                    <h1>{{proyecto.nombre}}</h1>
+                </div>
+
+                <div class="elemento">
+                    <label for="exampleFormControlInput1">Fase de desarrollo</label>
+                    <p>{{fase}}</p>
+                </div>
+
+
+                <div class="elemento" id="gris">
+                    <label for="exampleFormControlInput1">Sobre el proyecto</label>
+                    <p>{{proyecto.descripcion}}</p>
+                </div>
+                <div class="elemento">
+                    <label for="exampleFormControlInput1">Genero:</label>
+                    {% for genero in generos %}          
+                        <span>{{genero}}</span>             
+                    {% endfor %}
+                </div>  
+                <div class="elemento" id="gris">
+                    <label for="exampleFormControlInput1">Frameworks usados:</label>
+                    {% for framework in frameworks %}          
+                        <span>{{framework}}</span>             
+                    {% endfor %}
+                </div> 
+                
+                <div class="elemento">
+                    <label for="exampleFormControlInput1">Video del proyecto:</label>
+     
+                        <span>{{video}}</span>             
+   
+                </div>
+                <div class="elemento" id="gris">
+                    <label for="exampleFormControlInput1">Link de descarga:</label>
+     
+                        <span>{{descarga}}</span>             
+   
+                </div>
+            </div>
+            <div class="space">
+                
+                
+            </div>
+            <div class="contenido" id="miembros">
+                <h3>Miembros del proyecto</h3>
+                <div class="elemento">
+                    <label for="exampleFormControlInput1">Miembros:</label>
+                    <div class="list-group"> 
+                        {% for key,value in miembros.items %}       
+                            <li class="list-group-item">{{key}} - {{value}}</li>
+                        {% endfor %}
+                    </div>
+                </div> 
+            </div>
+           
+            <div class="space">
+                
+            </div>
+            <div class="contenido">
+                <h3>Galería del proyecto</h3>
+                <div class="images-vert">
+                    <a href="" class="image fit"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+                </div>
+                
+            </div>
+            <div class="space">
+                
+            </div>
+            <div class="contenido">
+                <h3>Actualizaciones</h3>
+            </div>
+    </body>
+        
+    
+        
+ 
+     
+
+
+
+    
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

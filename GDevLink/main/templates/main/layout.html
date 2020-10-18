@@ -1,0 +1,97 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        
+
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+       
+       
+        <meta name="keywords" content="" />
+        <meta name="description" content="" />
+        <link href="http://fonts.googleapis.com/css?family=Varela" rel="stylesheet" />
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="{% static 'main/styles.css' %}">
+       
+        <title>GDevlink</title>
+        
+        
+
+        <nav class="navbar navbar-expand-lg navbar-light bg-light" id="barra">
+            <a class="navbar-brand" href="{% url 'index' %}">GDevLink</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+              <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse mr-auto" id="navbarNavDropdown">
+              <ul class="nav justify-content-end">
+                <li class="nav-item active">
+                  
+                </li>
+
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {{user.username}}
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right text-left pull-right" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/usuarios/perfil/{{user.username}}">Mi perfil</a>
+                        <a class="dropdown-item" href="{% url 'MisProyectos' %}">Mis proyectos</a>
+                        <a class="dropdown-item" href="{% url 'logout' %}">Cerrar sesión</a>
+                        
+                    </div>
+                    </li>
+                    {% else %}
+                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}" >Iniciar sesión</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'registrar' %}">Registrarse</a></li>
+                {% endif %}   
+              </ul>
+            </div>
+        </nav>
+
+        {% block head %}
+
+        {% endblock %}
+
+    </head>
+
+    <body id="mainBody">
+
+        <div id="wrapper">
+            <div class="space">
+                
+            </div>
+
+            
+            <div  class="tbody" id="tbodyID">
+                {% block body %}
+                {% endblock %}
+            </div>
+
+            <div class="space">
+                
+            </div>
+           
+            
+        </div>
+        
+              
+        <footer id="footer">
+            <div class="inner">
+                <h2>Deltasoft</h2>
+                
+            </div>
+        </footer>
+
+
+    </body>
+
+</html>
+
+{% block script %}
+    <script src="{% static 'main/layout.js' %}"></script>
+{% endblock %}

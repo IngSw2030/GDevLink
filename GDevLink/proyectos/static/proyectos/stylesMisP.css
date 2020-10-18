@@ -1,0 +1,32 @@
+body{
+    
+}
+
+#tbodyID{
+    /*width: 100%;
+    margin: 0;
+    padding: 0;   */
+    background-color: #3c4042;
+    color: #e6e6e6;
+   }
+
+img{
+    width: 80%;
+    height: auto;
+    overflow: auto;
+}
+h2{
+    color: #e6e6e6;   
+}
+
+h3{
+    padding: 10px;
+}
+
+.space{
+    padding: 0em;
+}
+
+.card{
+    background-color: #1f1f1f;
+  }
