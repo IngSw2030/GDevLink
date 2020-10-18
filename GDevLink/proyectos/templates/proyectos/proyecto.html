@@ -14,15 +14,18 @@
     <body>
         <div class="header" id="center">
             
-            {% if not proyecto.imagen %}
-            <a href="" class="image fit"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
-            {% else %}
-                <img src="{{ proyecto.imagen.url }}" class="center" alt="My Image" />
-            {% endif %}
+           
             
         </div>
         
             <div class="contenido" >
+                <div class="logo">
+                    {% if not proyecto.imagen %}
+                    <a href="" class="image fit" id="limage"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+                    {% else %}
+                    <img src="{{ proyecto.imagen.url }}" class="" id="limage" alt="My Image" />
+                    {% endif %}
+                </div>
                 <div> 
                     <h1>{{proyecto.nombre}}</h1>
                 </div>
