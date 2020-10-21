@@ -20,7 +20,8 @@
     <span > Roles: </span>
     <ul style="list-style-type: circle">
         {% for rol in roles %}
-            <li> {{rol}} </li>
+        <li> <label class="form-check-label" for="inlineCheckbox1">{{rol}}</label></li>
+        <li> <input class="form-check-input" name="roles" type="checkbox" id="inlineCheckbox1" value="{{rol}}" checked="true"></li>
         {% endfor %}
     </ul>
 </div>
@@ -28,7 +29,8 @@
     <span > Géneros de interés: </span>
     <ul style="list-style-type: circle">
         {% for genero in generos %}
-            <li> {{genero}} </li>
+        <li> <label class="form-check-label" for="inlineCheckbox1">{{genero}}</label></li>
+        <li> <input class="form-check-input" name="generos" type="checkbox" id="inlineCheckbox1" value="{{genero}}" checked="true"></li>
         {% endfor %}
     </ul>
 </div>
@@ -36,7 +38,8 @@
     <span > FrameWorks: </span>
     <ul style="list-style-type: circle">
         {% for framework in frameworks %}
-            <li> {{framework}} </li>
+        <li> <label class="form-check-label" for="inlineCheckbox1">{{framework}}</label></li>
+        <li> <input class="form-check-input" name="frameworks" type="checkbox" id="inlineCheckbox1" value="{{framework}}" checked="true"></li>
         {% endfor %}
     </ul>
 </div>
