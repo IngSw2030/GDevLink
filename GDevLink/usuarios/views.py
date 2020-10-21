@@ -122,9 +122,8 @@ def editar(request,nombre_usuario):
         except IntegrityError as e:
             print(e)
             return render(request, "usuarios/editar.html", {
-                "message": "Correo o nombre de usuario ya registrado."
+                "message": "Error inesperado"
             })
-        login(request, user)
         return HttpResponseRedirect(reverse("index"))
     else:
         try:

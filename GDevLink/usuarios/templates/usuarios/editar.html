@@ -24,11 +24,11 @@
         <ul style="list-style-type: circle">
             {% for rol in posiblesRoles %}
                 {% if rol.label in roles%}
-                <input class="form-check-input" name="roles" type="checkbox" id="inlineCheckbox1" value="{{rol}}" checked="true">
                 <label class="form-check-label" for="inlineCheckbox1">{{rol.label}}</label>
+                <input class="form-check-input" name="roles" type="checkbox" id="inlineCheckbox1" value="{{rol}}" checked="true">&nbsp&nbsp&nbsp
                 {% else %}
-                <input class="form-check-input" name="roles" type="checkbox" id="inlineCheckbox1" value="{{rol}}">
-                <label class="form-check-label" for="inlineCheckbox1">{{rol.label}}</label>  
+                <label class="form-check-label" for="inlineCheckbox1">{{rol.label}}</label>
+                <input class="form-check-input" name="roles" type="checkbox" id="inlineCheckbox1" value="{{rol}}">&nbsp&nbsp&nbsp
                 {% endif %}              
             {% endfor %}
         </ul>
@@ -38,11 +38,11 @@
         <ul style="list-style-type: circle">
             {% for genero in posiblesGeneros %}
                 {% if genero.label in generos%}
-                <input class="form-check-input" name="generos" type="checkbox" id="inlineCheckbox1" value="{{genero}}" checked="true">
                 <label class="form-check-label" for="inlineCheckbox1">{{genero.label}}</label>
+                <input class="form-check-input" name="generos" type="checkbox" id="inlineCheckbox1" value="{{genero}}" checked="true">&nbsp&nbsp&nbsp
                 {% else %}
-                <input class="form-check-input" name="generos" type="checkbox" id="inlineCheckbox1" value="{{genero}}">
-                <label class="form-check-label" for="inlineCheckbox1">{{genero.label}}</label>  
+                <label class="form-check-label" for="inlineCheckbox1">{{genero.label}}</label>
+                <input class="form-check-input" name="generos" type="checkbox" id="inlineCheckbox1" value="{{genero}}">&nbsp&nbsp&nbsp
                 {% endif %}              
             {% endfor %}
         </ul>
@@ -52,11 +52,11 @@
         <ul style="list-style-type: circle">
             {% for framework in posiblesFrameworks %}
                 {% if framework.label in frameworks%}
-                <input class="form-check-input" name="frameworks" type="checkbox" id="inlineCheckbox1" value="{{framework}}" checked="true">
                 <label class="form-check-label" for="inlineCheckbox1">{{framework.label}}</label>
+                <input class="form-check-input" name="frameworks" type="checkbox" id="inlineCheckbox1" value="{{framework}}" checked="true">&nbsp&nbsp&nbsp
                 {% else %}
-                <input class="form-check-input" name="frameworks" type="checkbox" id="inlineCheckbox1" value="{{framework}}">
-                <label class="form-check-label" for="inlineCheckbox1">{{framework.label}}</label>  
+                <label class="form-check-label" for="inlineCheckbox1">{{framework.label}}</label>
+                <input class="form-check-input" name="frameworks" type="checkbox" id="inlineCheckbox1" value="{{framework}}">&nbsp&nbsp&nbsp
                 {% endif %}              
             {% endfor %}
         </ul>
@@ -71,9 +71,10 @@
             {% endfor %}
         </ul>
     </div>
-
+    <br>
     <input class="btn btn-primary" type="submit" value="Realizar Cambios">
 </form>
+<br/><hr/>
 <a  href="/usuarios/perfil/{{user.username}}">Volver a mi perfil</a>
 
     
