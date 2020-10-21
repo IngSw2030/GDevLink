@@ -1,0 +1,57 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+<h2  align="center">Editar mi perfil: {{usuario.username}}</h2>
+     
+<link rel="stylesheet" href="{% static 'usuarios/styles.css' %}">
+{% csrf_token %}
+<div class="">
+    {% if not proyecto.imagen %}
+        <img src="https://i.ibb.co/MNdStBT/foto-perfil.png" alt="foto-perfil" class="center" width="180">
+    {% else %}
+        <img src="{{ usuario.imagen.url }}" class="center" alt="My Image" />
+    {% endif %}
+    <br>
+    <span> Descripción: {{usuario.descripcion}} </span>
+</div>
+<div>
+    <span > Roles: </span>
+    <ul style="list-style-type: circle">
+        {% for rol in roles %}
+            <li> {{rol}} </li>
+        {% endfor %}
+    </ul>
+</div>
+<div>
+    <span > Géneros de interés: </span>
+    <ul style="list-style-type: circle">
+        {% for genero in generos %}
+            <li> {{genero}} </li>
+        {% endfor %}
+    </ul>
+</div>
+<div>
+    <span > FrameWorks: </span>
+    <ul style="list-style-type: circle">
+        {% for framework in frameworks %}
+            <li> {{framework}} </li>
+        {% endfor %}
+    </ul>
+</div>
+<div>
+    <span > Proyectos: </span>
+    <ul style="list-style-type: circle">
+        {% for key,value in participaciones.items %}
+            <li>
+                {{key}} - {{value}}
+            </li>
+        {% endfor %}
+    </ul>
+</div>
+<a  href="/usuarios/perfil/{{user.username}}">Volver a mi perfil</a>
+
+    
+    
+{% endblock %}
