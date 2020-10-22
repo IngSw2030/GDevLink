@@ -1,0 +1,109 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+<h2  align="center">Editar mi proyecto: {{proyecto.nombre}}</h2>
+
+<link rel="stylesheet" href="{% static 'proyectos/styles.css' %}">
+    <h2>Edita tu proyecto!</h2>
+     
+     {% if message %}
+     <div><span style="color: red">{{ message }}</span></div>
+    {% endif %}
+
+    <form action="{{proyecto.nombre}}"  enctype="multipart/form-data" method="post" action="/foo/">
+        {% csrf_token %}
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Descripción</label>
+                <textarea class="form-control" name="descripcion" id="exampleFormControlTextarea1" rows="3" >{{proyecto.descripcion}}</textarea>
+            </div>
+            <div>             
+                <div class="form-group col-md-6"> 
+                    <label for="exampleFormControlInput1">Generos </label>
+                    {% for genero in posiblesgeneros %}
+                        {% if genero.label in generos %}
+                            <label class="checkbox" for="defaultCheck1">
+                            <input class="form-check-input"  name="generos" type="checkbox" id="defaultCheck1" value="{{genero}}" checked = "true" > 
+                            {{genero.label}}
+                        {% else %}
+                            <label class="checkbox" for="defaultCheck1">
+                            <input class="form-check-input"  name="generos" type="checkbox" id="defaultCheck1" value="{{genero}}" >    
+                            {{genero.label}}
+                        {% endif %}
+                            </label>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="form-group col-md-6"> 
+                <label class="fexampleFormControlInput1">Fase de desarrollo </label>
+                {% for fases in posiblesfases %}
+                    {% if fases.label == fase %}
+                        <label class="radio" for="exampleRadios1">
+                        <input class="form-check-input"  name="fase" type="radio" id="exampleRadios1" value="{{fases}}" checked="true">
+                        {{fases.label}}
+                    {% else %}
+                        <label class="radio" for="exampleRadios1">
+                        <input class="form-check-input"  name="fase" type="radio" id="exampleRadios1" value="{{fases}}">    
+                        {{fases.label}}
+                    {% endif %}
+                    </label>
+                {% endfor %}              
+            </div>
+            <div class="form-group col-md-6"> 
+                <label class="fexampleFormControlInput1"> Frameworks </label>
+                {% for framework in posiblesframeworks %}
+                    {% if framework.label in frameworks %}
+                        <label class="checkbox" for="defaultCheck1">
+                        <input class="form-check-input"  name="frameworks" type="checkbox" id="defaultCheck1" value="{{framework}}" checked = "true" > 
+                        {{framework.label}}
+                    {% else %}
+                        <label class="checkbox" for="defaultCheck1">
+                        <input class="form-check-input"  name="frameworks" type="checkbox" id="defaultCheck1" value="{{framework}}" >    
+                        {{framework.label}}
+                    {% endif %}
+                    </label>
+                {% endfor %}        
+            </div>
+            <!--
+            <div class="form-group col-md-6"> 
+                <label class="fexampleFormControlInput1">Roles</label>
+                {% for rol in posiblesroles %}
+                {% if rol.label in rol %}
+                <label class="checkbox" for="defaultCheck1">
+                <input class="form-check-input"  name="framework" type="checkbox" id="defaultCheck1" value="{{framework}}" checked = "true" > 
+                {{framework.label}}
+                {% else %}
+                <label class="checkbox" for="defaultCheck1">
+                    <input class="form-check-input"  name="fase" type="checkbox" id="defaultCheck1" value="{{framework}}" >    
+                {{framework.label}}
+                {% endif %}
+                </label>
+                {% endfor %}  
+            </div>
+            <-->
+            
+            <div class="form-group col-md-6">   
+            <div class="form-group">
+                <label for="exampleFormControlFile1" >Sube una nueva imagen o logo que represente el proyecto</label>
+                <input type="file" class="form-control-file" name="imagen" id="exampleFormControlFile1">
+            </div>
+            </div>
+            <div class="form-group">
+                <label class="fexampleFormControlInput1">Si tienes un nuevo enlace a un video de tu proyecto, puedes incluirlo  </label> 
+                <input class="form-control" type="text" name="enlaceVideo" placeholder="Enlace a video del proyecto" value="{{proyecto.enlace_video}}">
+               
+            </div>
+            <div class="form-group">
+                <label class="fexampleFormControlInput1">Si tienes un nuevo enlace para descargar el juego, puedes incluirlo  </label>
+                <input class="form-control" type="text" name="enlaceDescargar" placeholder="Enlace a descarga" value="{{proyecto.enlace_juego}}">
+                
+            </div>
+        
+            <input class="btn btn-primary" type="submit" name="Actualizar"value="Actualizar">
+                
+    </form>
+
+    
+    
+{% endblock %}

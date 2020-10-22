@@ -56,15 +56,16 @@
                 <div class="elemento">
                     <label for="exampleFormControlInput1">Video del proyecto:</label>
      
-                        <span>{{video}}</span>             
+                        <span>{{proyecto.enlace_video}}</span>             
    
                 </div>
                 <div class="elemento" id="gris">
                     <label for="exampleFormControlInput1">Link de descarga:</label>
      
-                        <span>{{descarga}}</span>             
+                        <span>{{proyecto.enlace_juego}}</span>             
    
                 </div>
+                <a  href="/proyectos/editarProyecto/{{proyecto.nombre}}">Editar el proyecto</a>
             </div>
             <div class="space">
                 
