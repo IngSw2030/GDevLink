@@ -12,7 +12,7 @@
      <div><span style="color: red">{{ message }}</span></div>
     {% endif %}
 
-    <form action="{{proyecto.nombre}}"  method="post" >
+    <form action="{{proyecto.nombre}}"  enctype="multipart/form-data" method="post" action="/foo/">
         {% csrf_token %}
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Descripción</label>
@@ -92,12 +92,12 @@
             <div class="form-group">
                 <label class="fexampleFormControlInput1">Si tienes un nuevo enlace a un video de tu proyecto, puedes incluirlo  </label> 
                 <input class="form-control" type="text" name="enlaceVideo" placeholder="Enlace a video del proyecto" value="{{proyecto.enlace_video}}">
-                {{proyecto.enlace_video}}
+               
             </div>
             <div class="form-group">
                 <label class="fexampleFormControlInput1">Si tienes un nuevo enlace para descargar el juego, puedes incluirlo  </label>
                 <input class="form-control" type="text" name="enlaceDescargar" placeholder="Enlace a descarga" value="{{proyecto.enlace_juego}}">
-                {{proyecto.enlace_juego}}
+                
             </div>
         
             <input class="btn btn-primary" type="submit" name="Actualizar"value="Actualizar">

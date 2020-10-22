@@ -97,7 +97,7 @@ def editarProyecto(request, nombre):
     if request.method == "POST" and 'Actualizar' in request.POST: 
         generos = request.POST.getlist("generos")
         fase = request.POST.getlist('fase')
-        #descripcion = request.POST['descripcion']
+        descripcion = request.POST['descripcion']
         frameworks = request.POST.getlist('frameworks')
         enlace_video =request.POST["enlaceVideo"]
         enlace_descargar = request.POST["enlaceDescargar"]
@@ -109,18 +109,19 @@ def editarProyecto(request, nombre):
          #   return render(request,f"proyectos/editarProyecto/{nombre}",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles,
           #   "message": "Seleccione al menos un (1) framework"})
         fase = fase[0]
-        #imagen = request.FILES['imagen']
+        imagen = request.FILES['imagen']
+
 
         try:
             print(PosiblesPermisos.MASTER)
             proyecto = Proyecto.objects.get(nombre=nombre)
             proyecto.generos = generos
             proyecto.fase = fase
-            #proyecto.descripcion = descripcion
+            proyecto.descripcion = descripcion
             proyecto.frameworks = frameworks
             proyecto.enlace_video = enlace_video
             proyecto.enlace_juego = enlace_descargar
-            #proyecto.imagen = imagen
+            proyecto.imagen = imagen
             proyecto.save()
         except IntegrityError as e:
             print(e)

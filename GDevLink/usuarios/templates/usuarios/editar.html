@@ -17,7 +17,10 @@
             <img src="{{ usuario.imagen.url }}" class="center" alt="My Image" />
         {% endif %}
         <br>
-        <span> Descripción: {{usuario.descripcion}} </span>
+    </div>
+    <div class="form-group">
+        <label for="exampleFormControlTextarea1">Descripción</label>
+        <textarea class="form-control" name="descripcion" id="exampleFormControlTextarea1" rows="3" >{{usuario.descripcion}}</textarea>
     </div>
     <div>
         <span > Roles: </span>

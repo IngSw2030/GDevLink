@@ -96,6 +96,7 @@ def perfil(request,nombre_usuario):
 
 def editar(request,nombre_usuario):
     if request.method == "POST":
+        descripcion = request.POST['descripcion']
         roles = request.POST.getlist('roles')
         generos = request.POST.getlist('generos')
         frameworks = request.POST.getlist('frameworks')
@@ -118,6 +119,7 @@ def editar(request,nombre_usuario):
             user.roles = roles
             user.generos = generos
             user.frameworks = frameworks
+            user.descripcion = descripcion
             user.save()
         except IntegrityError as e:
             print(e)
