@@ -93,3 +93,68 @@ def proyectosUsuario(request):
        #else
     #else
 
+def editarProyecto(request, nombre):
+    if request.method == "POST" and 'Actualizar' in request.POST: 
+        generos = request.POST.getlist("generos")
+        fase = request.POST.getlist('fase')
+        #descripcion = request.POST['descripcion']
+        frameworks = request.POST.getlist('frameworks')
+        enlace_video =request.POST["enlaceVideo"]
+        enlace_descargar = request.POST["enlaceDescargar"]
+        
+        #if(len(fase)!=1):
+         #   return render(request,f"proyectos/editarProyecto/{nombre}",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles,
+          #   "message": "Seleccione una (1) fase"})
+        #if(len(frameworks)==0):
+         #   return render(request,f"proyectos/editarProyecto/{nombre}",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles,
+          #   "message": "Seleccione al menos un (1) framework"})
+        fase = fase[0]
+        #imagen = request.FILES['imagen']
+
+        try:
+            print(PosiblesPermisos.MASTER)
+            proyecto = Proyecto.objects.get(nombre=nombre)
+            proyecto.generos = generos
+            proyecto.fase = fase
+            #proyecto.descripcion = descripcion
+            proyecto.frameworks = frameworks
+            proyecto.enlace_video = enlace_video
+            proyecto.enlace_juego = enlace_descargar
+            #proyecto.imagen = imagen
+            proyecto.save()
+        except IntegrityError as e:
+            print(e)
+            return render(request, "proyectos/crearProyecto.html", {
+                "message": "Nombre de proyecto ya registrado"})
+        return HttpResponseRedirect(reverse("index"))
+    else:
+        try:
+            proyecto = Proyecto.objects.get(nombre=nombre)
+            generos = []
+            frameworks = []
+            participaciones = {}
+            fase = PosiblesFases.labels[PosiblesFases.values.index(proyecto.fase)]
+            for genero in proyecto.generos:
+                generos.append((PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
+            for framework in proyecto.frameworks:
+                frameworks.append((PosiblesFrameworks.labels[PosiblesFrameworks.values.index(framework)]))
+            for participacion in proyecto.participaciones.all():
+                roles_p = ""
+                for rol in participacion.roles:
+                    roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+                participaciones[participacion.usuario.username] = roles_p
+            return render(request, "proyectos/editarProyecto.html", {
+                        "proyecto": proyecto,
+                        "generos": generos,
+                        "miembros": participaciones,
+                        "frameworks": frameworks,
+                        "fase": fase,
+                        "posiblesgeneros": PosiblesGeneros,
+                        "posiblesfases": PosiblesFases,
+                        "posiblesframeworks" : PosiblesFrameworks,
+                        "posiblesroles": PosiblesRoles
+            })
+        except Proyecto.DoesNotExist:
+            return render(request, "main/error.html", {
+                "mensaje": "Proyecto no encontrado."
+            })
