@@ -22,47 +22,47 @@
                 <div class="form-group col-md-6"> 
                     <label for="exampleFormControlInput1">Generos </label>
                     {% for genero in posiblesgeneros %}
-                    {% if genero.label in generos %}
-                    <label class="checkbox" for="defaultCheck1">
-                    <input class="form-check-input"  name="generos" type="checkbox" id="defaultCheck1" value="{{genero}}" checked = "true" > 
-                    {{genero.label}}
-                    {% else %}
-                    <label class="checkbox" for="defaultCheck1">
-                        <input class="form-check-input"  name="generos" type="checkbox" id="defaultCheck1" value="{{genero}}" >    
-                    {{genero.label}}
-                    {% endif %}
-                    </label>
+                        {% if genero.label in generos %}
+                            <label class="checkbox" for="defaultCheck1">
+                            <input class="form-check-input"  name="generos" type="checkbox" id="defaultCheck1" value="{{genero}}" checked = "true" > 
+                            {{genero.label}}
+                        {% else %}
+                            <label class="checkbox" for="defaultCheck1">
+                            <input class="form-check-input"  name="generos" type="checkbox" id="defaultCheck1" value="{{genero}}" >    
+                            {{genero.label}}
+                        {% endif %}
+                            </label>
                     {% endfor %}
                 </div>
             </div>
             <div class="form-group col-md-6"> 
                 <label class="fexampleFormControlInput1">Fase de desarrollo </label>
                 {% for fases in posiblesfases %}
-                {% if fases.label == fase %}
-                <label class="radio" for="exampleRadios1">
-                <input class="form-check-input"  name="fase" type="radio" id="exampleRadios1" value="{{fases}}" checked="true">
-                {{fases.label}}
-                {% else %}
-                <label class="radio" for="exampleRadios1">
-                <input class="form-check-input"  name="fase" type="radio" id="exampleRadios1" value="{{fases}}">    
-                {{fases.label}}
-                {% endif %}
-                </label>
+                    {% if fases.label == fase %}
+                        <label class="radio" for="exampleRadios1">
+                        <input class="form-check-input"  name="fase" type="radio" id="exampleRadios1" value="{{fases}}" checked="true">
+                        {{fases.label}}
+                    {% else %}
+                        <label class="radio" for="exampleRadios1">
+                        <input class="form-check-input"  name="fase" type="radio" id="exampleRadios1" value="{{fases}}">    
+                        {{fases.label}}
+                    {% endif %}
+                    </label>
                 {% endfor %}              
             </div>
             <div class="form-group col-md-6"> 
                 <label class="fexampleFormControlInput1"> Frameworks </label>
                 {% for framework in posiblesframeworks %}
-                {% if framework.label in frameworks %}
-                <label class="checkbox" for="defaultCheck1">
-                <input class="form-check-input"  name="frameworks" type="checkbox" id="defaultCheck1" value="{{framework}}" checked = "true" > 
-                {{framework.label}}
-                {% else %}
-                <label class="checkbox" for="defaultCheck1">
-                <input class="form-check-input"  name="frameworks" type="checkbox" id="defaultCheck1" value="{{framework}}" >    
-                {{framework.label}}
-                {% endif %}
-                </label>
+                    {% if framework.label in frameworks %}
+                        <label class="checkbox" for="defaultCheck1">
+                        <input class="form-check-input"  name="frameworks" type="checkbox" id="defaultCheck1" value="{{framework}}" checked = "true" > 
+                        {{framework.label}}
+                    {% else %}
+                        <label class="checkbox" for="defaultCheck1">
+                        <input class="form-check-input"  name="frameworks" type="checkbox" id="defaultCheck1" value="{{framework}}" >    
+                        {{framework.label}}
+                    {% endif %}
+                    </label>
                 {% endfor %}        
             </div>
             <!--

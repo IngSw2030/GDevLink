@@ -18,6 +18,7 @@ def crearProyecto(request):
         descripcion = request.POST['descripcion']
         frameworks = request.POST.getlist('frameworks')
         enlace_video =request.POST["enlaceVideo"]
+        enlace_juego = request.POST["enlacedescargar"]
         roles = request.POST.getlist("roles")
 
         if(nombre == ""):
@@ -34,7 +35,7 @@ def crearProyecto(request):
 
         try:
             print(PosiblesPermisos.MASTER)
-            proyecto = Proyecto(nombre=nombre,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlace_video, imagen=imagen)
+            proyecto = Proyecto(nombre=nombre,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlace_video,enlace_juego=enlace_juego,imagen=imagen)
             proyecto.save()
         except IntegrityError as e:
             print(e)
