@@ -1,0 +1,86 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+
+
+{% block body %}
+
+<link rel="stylesheet" href="{% static 'proyectos/stylesP.css' %}">
+
+{% csrf_token %}
+
+<body>
+    <div class="header" id="center">
+
+
+
+    </div>
+
+    <div class="contenido">
+        <div class="logo">
+            {% if not proyecto.imagen %}
+            <a href="" class="image fit" id="limage"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+            {% else %}
+            <img src="{{ proyecto.imagen.url }}" class="" id="limage" alt="My Image" />
+            {% endif %}
+        </div>
+        <div>
+            <h1>{{proyecto.nombre}}</h1>
+        </div>
+    </div>
+    <div class="space">
+
+    </div>
+    <div class="contenido" id="miembros">
+        <h3>Agregar nuevo miembro</h3>
+        <div class="contenedor">
+            <div class="columna">
+                <form method="get">
+                    <div id="salida-consulta">
+                        <div class="input-group col-md-13">
+                            <input type="text" class="form-control" placeholder="Buscar..." name="buscar"
+                                value="{{request.GET.buscar}}">
+                            <span class="input-group-list">
+                                <i class="icon icon-search"></i>
+                                <button type="submit" class="btn btn-primary">Buscar</button>
+                            </span>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+        <div class="elemento">
+            <label for="exampleFormControlInput1">Usuarios:</label>
+            <div class="list-group">
+                {% for usuariosPointer in usuarios %}
+                {%if usuariosPointer not in miembros%}
+                <label class="checkbox" for="defaultCheck1"></label>
+                <li class="list-group-item">{{usuariosPointer.username}} <br>
+                    <label> Roles: </label>
+                    {% for auxRol in posiblesroles %}
+                    <label class="checkbox" for="defaultCheck1">
+                        <input class="form-check-input" name="roles" type="checkbox" id="defaultCheck1"
+                            value="{{auxRol}}">
+                        {{auxRol.label}}                        
+                    </label>
+                    {% endfor %}   
+                    <input class="btn btn-primary" type="submit"  value="Agregar">                     
+                </li>
+                {%endif%}
+                {% endfor %}
+                
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
+    </div>
+    </div>
+</body>
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+
+
+{% block body %}
+
+<link rel="stylesheet" href="{% static 'proyectos/stylesP.css' %}">
+
+{% csrf_token %}
+
+<body>
+    <div class="header" id="center">
+
+
+
+    </div>
+
+    <div class="contenido">
+        <div class="logo">
+            {% if not proyecto.imagen %}
+            <a href="" class="image fit" id="limage"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+            {% else %}
+            <img src="{{ proyecto.imagen.url }}" class="" id="limage" alt="My Image" />
+            {% endif %}
+        </div>
+        <div>
+            <h1>{{proyecto.nombre}}</h1>
+        </div>
+    </div>
+    <div class="space">
+
+    </div>
+    <div class="contenido" id="miembros">
+        <h3>Miembros del proyecto</h3>
+        <div class="elemento">
+            <label for="exampleFormControlInput1">Miembros:</label>
+            <div class="list-group">
+                {% for key,value in miembros.items %}
+                <li class="list-group-item">{{key}} - {{value}}</li>
+                {% endfor %}
+
+            </div>
+            <div>
+                <div>
+                    <a href="/proyectos/agregarMiembros/{{proyecto.nombre}}">Agregar Miembro</a>
+                </div>
+                <div>
+                    <a href="/proyectos/quitarMiembro/{{proyecto.nombre}}">Quitar Miembro</a>
+                </div>
+                <div>
+                    <a href="/proyectos/hacerAdministrador/{{proyecto.nombre}}">Hacer Administrador</a>
+                </div>
+                <div>
+                    <a href="/proyectos/quitarAdministrador/{{proyecto.nombre}}">Quitar Administrador</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

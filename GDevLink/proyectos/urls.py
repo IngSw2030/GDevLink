@@ -5,5 +5,7 @@ urlpatterns = [
     path("crearProyecto", views.crearProyecto,name="crearProyecto"),
     path("MisProyectos",views.proyectosUsuario,name="MisProyectos"),
     path("proyecto/<str:nombre>",views.proyecto,name="proyecto"),
-    path("editarProyecto/<str:nombre>", views.editarProyecto, name="editarProyecto")
+    path("editarProyecto/<str:nombre>", views.editarProyecto, name="editarProyecto"),
+    path("gestionMiembros/<str:nombre>", views.gestionMiembros, name="gestionMiembros"),
+    path("agregarMiembros/<str:nombre>", views.agregarMiembros, name="agregarMiembros")
 ]

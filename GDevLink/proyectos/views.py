@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from main.enum import *
-from proyectos.models import Proyecto, Participacion
+from proyectos.models import Proyecto, Participacion, Usuario
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -163,3 +163,48 @@ def editarProyecto(request, nombre):
             return render(request, "main/error.html", {
                 "mensaje": "Proyecto no encontrado."
             })
+def gestionMiembros (request, nombre):
+    proyecto = Proyecto.objects.get(nombre=nombre)
+    participaciones = {}
+    for participacion in proyecto.participaciones.all():
+                roles_p = ""
+                for rol in participacion.roles:
+                    roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+                participaciones[participacion.usuario.username] = roles_p
+    return render(request,"proyectos/gestionMiembros.html",{
+        "proyecto": proyecto,
+        "miembros": participaciones
+    } )
+def agregarMiembros (request, nombre):
+    
+    proyecto = Proyecto.objects.get(nombre=nombre)
+    for auxPersonas in proyecto.participaciones.all():
+                personas = []
+                personas.append(auxPersonas.usuario)
+    queryset = request.GET.get("buscar")
+    usuarios = Usuario.objects.all()
+    if queryset:
+        usuarios= Usuario.objects.filter(
+            username__icontains=queryset
+        )
+    
+
+    return render(request,"proyectos/agregarMiembros.html",{
+        "miembros": personas,
+        "proyecto": proyecto,
+        "usuarios": usuarios,
+        "posiblesroles": PosiblesRoles
+        
+    } )
+    if request.method == "POST" and 'Agregar' in request.POST: 
+        print("entro")
+        roles = request.POST.getlist("role")
+        nuevo_usuario = Usuario.object.get(username="Agregar") #referencia del que se va agregar
+        try:
+            participacion = Participacion(usuario=nuevo_usuario,proyecto=proyecto,roles=roles,permiso=PosiblesPermisos.MIMEBRO)
+            participacion.save()
+            return render(request,"index") # que vuelva a la misma pagina
+        except IntegrityError as e:
+            print(e)
+            return render(request, "proyectos/crearProyecto.html", {
+                "message": "Error en la actualización de miembro"})    
