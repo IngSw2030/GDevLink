@@ -127,30 +127,7 @@ html, body
 		width: 100%;
 	}
 	
-	.image-full
-	{
-		display: block;
-		width: 100%;
-		margin: 0 0 2em 0;
-	}
-	
-	.image-left
-	{
-		float: left;
-		margin: 0 2em 2em 0;
-	}
-	
-	.image-centered
-	{
-		display: block;
-		margin: 0 0 2em 0;
-	}
-	
-	.image-centered img
-	{
-		margin: 0 auto;
-		width: auto;
-	}
+
 
 /*********************************************************************************/
 /* List Styles                                                                   */
@@ -253,22 +230,6 @@ html, body
 	} 
 
 
-/*********************************************************************************/
-/* Header                                                                        */
-/*********************************************************************************/
-
-	#header-wrapper
-	{
-		/*background: #1B262C;*/
-	}
-
-	#header
-	{
-		/*width: 980px;
-		height: 100px;
-		position: relative;
-		padding: 0em 0em;*/
-	}
 
 /*********************************************************************************/
 /* Logo                                                                          */
@@ -353,57 +314,15 @@ html, body
 		right: auto; 
 	}
 
-	#menu .icon
-	{
-	}
+
 
 	#nav-item{
 		color: black;
 	}
 
-	 /* Dropdown Button */
-.dropbtn {
-	background-color: #3498DB;
-	color: white;
-	padding: 16px;
-	font-size: 16px;
-	border: none;
-	cursor: pointer;
-  }
-  
-  /* Dropdown button on hover & focus */
-  .dropbtn:hover, .dropbtn:focus {
-	background-color: #2980B9;
-  }
-  
-  /* The container <div> - needed to position the dropdown content */
-  .dropdown {
-	position: relative;
-	display: inline-block;
-  }
-  
-  /* Dropdown Content (Hidden by Default) */
-  .dropdown-content {
-	display: none;
-	position: absolute;
-	background-color: #f1f1f1;
-	min-width: 160px;
-	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-	z-index: 1;
-  }
-  
-  /* Links inside the dropdown */
-  .dropdown-content a {
-	color: black;
-	padding: 12px 16px;
-	text-decoration: none;
-	display: block;
-  }
+
   
   
-  
-  /* Show the dropdown menu (use JS to add this class to the .dropdown-content container when the user clicks on the dropdown button) */
-  .show {display:block;} 
 
   .litem{
     background: #6b126b;
@@ -418,38 +337,8 @@ html, body
     padding: 5em;
   }
 
-	#page
-	{
-		padding: 5em 0em;
-		text-align: center;
-	}
 	
-	#page .button
-	{
-		margin-top: 2em;
-		display: inline-block;
-		text-align: center;
-	}
 
-/*********************************************************************************/
-/* Content                                                                       */
-/*********************************************************************************/
-	#mainBody
-	{
-		
-	}
-
-	#content
-	{
-	}
-
-/*********************************************************************************/
-/* Sidebar                                                                       */
-/*********************************************************************************/
-
-	#sidebar
-	{
-	}
 
 /*********************************************************************************/
 /* Footer                                                                        */
@@ -461,106 +350,14 @@ html, body
 		background-color: #191F24;
 	}
 
-/*********************************************************************************/
-/* Copyright                                                                     */
-/*********************************************************************************/
-
-	#copyright
-	{
-		overflow: hidden;
-		padding: 5em 0em;
-		border-top: 1px solid rgba(255,255,255,0.08);
-	}
-	
-	#copyright p
-	{
-		text-align: center;
-		font-size: 1em;
-		color: rgba(255,255,255,0.5);
-	}
-	
-	#copyright a
-	{
-		text-decoration: none;
-		color: rgba(255,255,255,0.8);
-	}
-
-/*********************************************************************************/
-/* Featured                                                                      */
-/*********************************************************************************/
-
-	#featured
-	{
-		overflow: hidden;
-		padding: 5em 0em;
-		background: #009E2D;
-		color: rgba(255,255,255,.8);
-		text-align: center;
-	}
-
-	#featured a
-	{
-		color: rgba(255,255,255,1);
-	}
-	
-	#featured .button
-	{
-		background: #FFF;
-		margin-top: 3em;
-		font-size: 1em;
-		color: #009E2D;
-	}
-
-	#featured .title
-	{
-	}
-
-	#featured .title h2
-	{
-		color: #FFF;
-	}
-
-	#featured .title .byline
-	{
-		color: rgba(255,255,255,.6);
-	}
-
-/*********************************************************************************/
-/* Featured                                                                      */
-/*********************************************************************************/
-
-.box
-{
-	padding: 3em 2em 2em 2em;
-	border: 1px solid rgba(0,0,0,0.1);
-	border-radius: 6px;
-		text-align: center;
-}
 
 
-	#extra
-	{
-		overflow: hidden;
-    padding: 10em 5em;
-	}
-	
-	#extra .title
-	{
-		text-align: center;
-	}
-	
-	#extra .button
-	{
-		margin-top: 5em;
-	}
-	
-	#extra .fa
-	{
-		display: block;
-		margin-bottom: 0.5em;
-		text-align: center;
-		font-size: 3em;
-	}
+
+
+
+
+
+
 
 	.tbody{
 		background: white;
