@@ -57,6 +57,7 @@ def proyecto(request,nombre):
         generos = []
         frameworks = []
         participaciones = {}
+        actualizaciones = {}
         fase = PosiblesFases.labels[PosiblesFases.values.index(proyecto.fase)]
         for genero in proyecto.generos:
             generos.append((PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
@@ -67,12 +68,14 @@ def proyecto(request,nombre):
             for rol in participacion.roles:
                 roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
             participaciones[participacion.usuario.username] = roles_p
+        actualizaciones = proyecto.actualizaciones.all()
         return render(request, "proyectos/proyecto.html", {
             "proyecto": proyecto,
             "generos": generos,
             "miembros": participaciones,
             "frameworks": frameworks,
-            "fase": fase
+            "fase": fase,
+            "actualizaciones": actualizaciones
         })
     except Proyecto.DoesNotExist:
         return render(request, "main/error.html", {

@@ -98,6 +98,22 @@
             </div>
             <div class="contenido">
                 <h3>Actualizaciones</h3>
+                <div class="overflow-auto"> 
+                    {% if not actualizacione %}
+                        <p>No hay Actualizaciones</p>
+                    {% else %}
+                        {% for actualizacion in actualizaciones%}
+                        <div>
+                            {% for image in actualizacion.imagenes %}
+                            <img src="{{ image.imagenes.url }}" class="" id="" alt="My Image" />
+                            {% endfor %}
+                            <p> actualizacion.descripcion </p>
+                        </div>
+                        {% endfor %}
+                    {% endif %}
+ 
+                </div>
+                
             </div>
     </body>
         
