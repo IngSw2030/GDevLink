@@ -176,35 +176,48 @@ def gestionMiembros (request, nombre):
         "miembros": participaciones
     } )
 def agregarMiembros (request, nombre):
-    
-    proyecto = Proyecto.objects.get(nombre=nombre)
-    for auxPersonas in proyecto.participaciones.all():
-                personas = []
-                personas.append(auxPersonas.usuario)
-    queryset = request.GET.get("buscar")
-    usuarios = Usuario.objects.all()
-    if queryset:
-        usuarios= Usuario.objects.filter(
-            username__icontains=queryset
-        )
-    
 
-    return render(request,"proyectos/agregarMiembros.html",{
-        "miembros": personas,
-        "proyecto": proyecto,
-        "usuarios": usuarios,
-        "posiblesroles": PosiblesRoles
-        
-    } )
     if request.method == "POST" and 'Agregar' in request.POST: 
-        print("entro")
-        roles = request.POST.getlist("role")
-        nuevo_usuario = Usuario.object.get(username="Agregar") #referencia del que se va agregar
+        roles = request.POST.getlist("roles")
+        nom_us = request.POST["nuevoMiembro"]
+        nuevo_usuario = Usuario.objects.get(username=nom_us) #referencia del que se va agregar
+
         try:
-            participacion = Participacion(usuario=nuevo_usuario,proyecto=proyecto,roles=roles,permiso=PosiblesPermisos.MIMEBRO)
+            proyecto = Proyecto.objects.get(nombre=nombre)
+            #participacion = Participacion.objects.get(proyecto = proyecto)
+            #participacion.usuario = nuevo_usuario
+            #participacion.permiso = PosiblesPermisos.MIEMBRO
+            #Participacion.roles = roles
+            participacion = Participacion(usuario=nuevo_usuario,proyecto=proyecto,roles=roles,permiso=PosiblesPermisos.MIEMBRO)
             participacion.save()
-            return render(request,"index") # que vuelva a la misma pagina
+            return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
         except IntegrityError as e:
             print(e)
             return render(request, "proyectos/crearProyecto.html", {
-                "message": "Error en la actualización de miembro"})    
+                "message": "Error en la actualización de miembro"}) 
+    else:
+        try:
+            proyecto = Proyecto.objects.get(nombre=nombre)
+            personas = []
+            for auxPersonas in proyecto.participaciones.all():
+                personas.append(auxPersonas.usuario)
+            queryset = request.GET.get("buscar")
+            usuarios = Usuario.objects.all()
+            if queryset:
+                usuarios= Usuario.objects.filter(
+                    username__icontains=queryset
+                )
+            
+
+            return render(request,"proyectos/agregarMiembros.html",{
+                "miembros": personas,
+                "proyecto": proyecto,
+                "usuarios": usuarios,
+                "posiblesroles": PosiblesRoles
+                
+            } )
+        except Proyecto.DoesNotExist:
+            return render(request, "main/error.html", {
+                "mensaje": "Proyecto no encontrado."
+            })
+   

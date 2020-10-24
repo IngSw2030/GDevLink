@@ -52,28 +52,33 @@
 
             </div>
         </div>
+    <form action="/proyectos/agregarMiembros/{{proyecto.nombre}}" method="POST">{% csrf_token %}
         <div class="elemento">
             <label for="exampleFormControlInput1">Usuarios:</label>
             <div class="list-group">
                 {% for usuariosPointer in usuarios %}
                 {%if usuariosPointer not in miembros%}
                 <label class="checkbox" for="defaultCheck1"></label>
-                <li class="list-group-item">{{usuariosPointer.username}} <br>
-                    <label> Roles: </label>
-                    {% for auxRol in posiblesroles %}
-                    <label class="checkbox" for="defaultCheck1">
-                        <input class="form-check-input" name="roles" type="checkbox" id="defaultCheck1"
-                            value="{{auxRol}}">
-                        {{auxRol.label}}                        
-                    </label>
-                    {% endfor %}   
-                    <input class="btn btn-primary" type="submit"  value="Agregar">                     
-                </li>
+                <li class="list-group-item">{{usuariosPointer.username}}</li>
                 {%endif%}
                 {% endfor %}
+                <br>
+                <label> Roles: </label>
+                {% for auxRol in posiblesroles %}
+                <label class="checkbox" for="defaultCheck1">
+                    <input class="form-check-input" name="roles" type="checkbox" id="defaultCheck1"
+                        value="{{auxRol}}">
+                    {{auxRol.label}}                        
+                </label>
+                {% endfor %}
+                Nombre del posible miembro
+                <input class="form-control" autofocus type="text" name="nuevoMiembro" value="{{usuariosPointer.username}}"><br>
+                <input class="btn btn-primary" type="submit"  name="Agregar" value="Agregar">
                 
             </div>
+            <a  href="/proyectos/gestionMiembros/{{proyecto.nombre}}">Volvera gestion de miembros</a>
         </div>
+    </form>
         <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>
     </div>
     </div>
