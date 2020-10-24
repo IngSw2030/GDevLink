@@ -251,4 +251,75 @@ def eliminarMiembros (request, nombre):
             return render(request, "main/error.html", {
                 "mensaje": "Proyecto no encontrado."
             })
+def agregarAdministrador (request, nombre):
+
+    if request.method == "POST" and 'Agregar' in request.POST: 
+        nom_us = request.POST["nuevoAdmin"]
+        nuevo_usuario = Usuario.objects.get(username=nom_us) 
+
+        try:
+            proyecto = Proyecto.objects.get(nombre=nombre)
+            participacion = Participacion.objects.get(usuario=nuevo_usuario)
+            participacion.permiso = PosiblesPermisos.ADMIN
+            participacion.save()
+            return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
+        except IntegrityError as e:
+            print(e)
+            return render(request, "proyectos/crearProyecto.html", {
+                "message": "Error en la actualización de miembro"}) 
+    else:
+        try:
+            proyecto = Proyecto.objects.get(nombre=nombre)
+            personas = []
+            for auxPersonas in proyecto.participaciones.all():
+                if auxPersonas.permiso !=  PosiblesPermisos.MASTER and auxPersonas.permiso !=  PosiblesPermisos.ADMIN:
+                    personas.append(auxPersonas.usuario)
+            usuarios = Usuario.objects.all()
             
+
+            return render(request,"proyectos/agregarAdministrador.html",{
+                "miembros": personas,
+                "proyecto": proyecto,
+                "usuarios": usuarios,
+                "posiblesroles": PosiblesRoles
+                
+            } )
+        except Proyecto.DoesNotExist:
+            return render(request, "main/error.html", {
+                "mensaje": "Proyecto no encontrado."
+            })           
+def eliminarAdministrador (request, nombre):
+
+    if request.method == "POST" and 'Eliminar' in request.POST: 
+        nom_us = request.POST["eliminarAdmin"]
+        nuevo_usuario = Usuario.objects.get(username=nom_us) 
+
+        try:
+            proyecto = Proyecto.objects.get(nombre=nombre)
+            participacion = Participacion.objects.get(usuario=nuevo_usuario)
+            participacion.permiso = PosiblesPermisos.MIEMBRO
+            participacion.save()
+            return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
+        except IntegrityError as e:
+            print(e)
+            return render(request, "proyectos/crearProyecto.html", {
+                "message": "Error en la actualización de miembro"}) 
+    else:
+        try:
+            proyecto = Proyecto.objects.get(nombre=nombre)
+            personas = []
+            for auxPersonas in proyecto.participaciones.all():
+                if auxPersonas.permiso ==  PosiblesPermisos.ADMIN:
+                    personas.append(auxPersonas.usuario)
+            usuarios = Usuario.objects.all()
+            return render(request,"proyectos/eliminarAdministrador.html",{
+                "miembros": personas,
+                "proyecto": proyecto,
+                "usuarios": usuarios,
+                "posiblesroles": PosiblesRoles
+                
+            } )
+        except Proyecto.DoesNotExist:
+            return render(request, "main/error.html", {
+                "mensaje": "Proyecto no encontrado."
+            })             
