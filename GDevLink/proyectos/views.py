@@ -180,14 +180,10 @@ def agregarMiembros (request, nombre):
     if request.method == "POST" and 'Agregar' in request.POST: 
         roles = request.POST.getlist("roles")
         nom_us = request.POST["nuevoMiembro"]
-        nuevo_usuario = Usuario.objects.get(username=nom_us) #referencia del que se va agregar
+        nuevo_usuario = Usuario.objects.get(username=nom_us) 
 
         try:
             proyecto = Proyecto.objects.get(nombre=nombre)
-            #participacion = Participacion.objects.get(proyecto = proyecto)
-            #participacion.usuario = nuevo_usuario
-            #participacion.permiso = PosiblesPermisos.MIEMBRO
-            #Participacion.roles = roles
             participacion = Participacion(usuario=nuevo_usuario,proyecto=proyecto,roles=roles,permiso=PosiblesPermisos.MIEMBRO)
             participacion.save()
             return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
@@ -220,4 +216,39 @@ def agregarMiembros (request, nombre):
             return render(request, "main/error.html", {
                 "mensaje": "Proyecto no encontrado."
             })
-   
+def eliminarMiembros (request, nombre):
+
+    if request.method == "POST" and 'Eliminar' in request.POST: 
+        nom_us = request.POST["eliminarMiembro"]
+        nuevo_usuario = Usuario.objects.get(username=nom_us) 
+
+        try:
+            proyecto = Proyecto.objects.get(nombre=nombre)
+            participacion = Participacion.objects.get(usuario = nuevo_usuario)
+            participacion.delete()
+            return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
+        except IntegrityError as e:
+            print(e)
+            return render(request, "proyectos/crearProyecto.html", {
+                "message": "Error en la actualización de miembro"}) 
+    else:
+        try:
+            proyecto = Proyecto.objects.get(nombre=nombre)
+            personas = []
+            for auxPersonas in proyecto.participaciones.all():
+                if auxPersonas.permiso !=  PosiblesPermisos.MASTER:
+                    personas.append(auxPersonas.usuario)      
+            usuarios = Usuario.objects.all()
+            
+
+            return render(request,"proyectos/eliminarMiembros.html",{
+                "miembros": personas,
+                "proyecto": proyecto,
+                "usuarios": usuarios
+                
+            } )
+        except Proyecto.DoesNotExist:
+            return render(request, "main/error.html", {
+                "mensaje": "Proyecto no encontrado."
+            })
+            
