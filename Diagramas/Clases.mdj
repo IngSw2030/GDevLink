@@ -849,7 +849,7 @@
 											"top": 636,
 											"width": 162.53173828125,
 											"height": 13,
-											"text": "+imagenes: List<image>",
+											"text": "+imagen: image",
 											"horizontalAlignment": 0
 										}
 									],
@@ -9983,8 +9983,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF0vKiTmHTOq6U="
 							},
-							"name": "imagenes",
-							"type": "List<image>"
+							"name": "imagen",
+							"type": "image"
 						}
 					]
 				},
@@ -10417,7 +10417,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACgv6Dpp8F8="
 							},
-							"name": "PROGRAMADOR"
+							"name": "PROGRAMADOR",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -10425,7 +10426,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACgv6Dpp8F8="
 							},
-							"name": "DIRECTOR"
+							"name": "DIRECTOR",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -10433,7 +10435,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACgv6Dpp8F8="
 							},
-							"name": "ARTISTA"
+							"name": "ARTISTA",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -10441,7 +10444,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACgv6Dpp8F8="
 							},
-							"name": "PRODUCTOR"
+							"name": "PRODUCTOR",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -10449,7 +10453,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACgv6Dpp8F8="
 							},
-							"name": "DISENADOR"
+							"name": "DISENADOR",
+							"type": ""
 						}
 					]
 				},
@@ -10477,7 +10482,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACnsT0KiBsc="
 							},
-							"name": "PLATAFORMA"
+							"name": "PLATAFORMA",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -10485,7 +10491,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACnsT0KiBsc="
 							},
-							"name": "PELEA"
+							"name": "PELEA",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -10493,7 +10500,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACnsT0KiBsc="
 							},
-							"name": "SHOOTER"
+							"name": "SHOOTER",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -10501,7 +10509,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACnsT0KiBsc="
 							},
-							"name": "RPG"
+							"name": "RPG",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -10509,7 +10518,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACnsT0KiBsc="
 							},
-							"name": "CARRERAS"
+							"name": "CARRERAS",
+							"type": ""
 						}
 					]
 				},
@@ -10528,7 +10538,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACoxdUZr+cE="
 							},
-							"name": "UNITY"
+							"name": "UNITY",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -10536,7 +10547,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACoxdUZr+cE="
 							},
-							"name": "UNREAL"
+							"name": "UNREAL",
+							"type": ""
 						}
 					]
 				},
@@ -10555,7 +10567,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACp4f0oJJos="
 							},
-							"name": "PLANEACION"
+							"name": "PLANEACION",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -10563,7 +10576,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACp4f0oJJos="
 							},
-							"name": "PREPRODUCCION"
+							"name": "PREPRODUCCION",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -10571,7 +10585,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACp4f0oJJos="
 							},
-							"name": "PRODUCCION"
+							"name": "PRODUCCION",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -10579,7 +10594,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACp4f0oJJos="
 							},
-							"name": "PRUEBAS"
+							"name": "PRUEBAS",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -10587,7 +10603,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACp4f0oJJos="
 							},
-							"name": "POSTPRODUCCION"
+							"name": "POSTPRODUCCION",
+							"type": ""
 						}
 					]
 				},
@@ -10606,7 +10623,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACrQOU0ofC4="
 							},
-							"name": "MIEMBRO"
+							"name": "MIEMBRO",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -10614,7 +10632,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACrQOU0ofC4="
 							},
-							"name": "ADMIN"
+							"name": "ADMIN",
+							"type": ""
 						},
 						{
 							"_type": "UMLAttribute",
@@ -10622,7 +10641,8 @@
 							"_parent": {
 								"$ref": "AAAAAAF1ACrQOU0ofC4="
 							},
-							"name": "MASTER"
+							"name": "MASTER",
+							"type": ""
 						}
 					]
 				}

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from main.enum import *
-from proyectos.models import Proyecto, Participacion, Usuario
+from proyectos.models import Proyecto, Participacion, Usuario, Actualizacion
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
@@ -31,14 +31,14 @@ def crearProyecto(request):
             return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles,
              "message": "Seleccione al menos un (1) framework"})
         fase = fase[0]
-        imagen = request.FILES['imagen']
-
+        if 'imagen' in request.FILES:
+            imagen = request.FILES['imagen']
+        else:
+            imagen=None
         try:
-            print(PosiblesPermisos.MASTER)
             proyecto = Proyecto(nombre=nombre,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlace_video,enlace_juego=enlace_juego,imagen=imagen)
             proyecto.save()
         except IntegrityError as e:
-            print(e)
             return render(request, "proyectos/crearProyecto.html", {
                 "message": "Nombre de proyecto ya registrado"})
         try:
@@ -46,7 +46,6 @@ def crearProyecto(request):
             participacion.save()
             return HttpResponseRedirect(reverse("proyecto", kwargs={"nombre": nombre}))
         except IntegrityError as e:
-            print(e)
             return render(request, "proyectos/crearProyecto.html", {
                 "message": "Error en la creacion de participacion"})
     return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles})
@@ -163,6 +162,7 @@ def editarProyecto(request, nombre):
             return render(request, "main/error.html", {
                 "mensaje": "Proyecto no encontrado."
             })
+            
 def gestionMiembros (request, nombre):
     proyecto = Proyecto.objects.get(nombre=nombre)
     participaciones = {}
@@ -175,8 +175,8 @@ def gestionMiembros (request, nombre):
         "proyecto": proyecto,
         "miembros": participaciones
     } )
-def agregarMiembros (request, nombre):
 
+def agregarMiembros (request, nombre):
     if request.method == "POST" and 'Agregar' in request.POST: 
         roles = request.POST.getlist("roles")
         nom_us = request.POST["nuevoMiembro"]
@@ -216,8 +216,8 @@ def agregarMiembros (request, nombre):
             return render(request, "main/error.html", {
                 "mensaje": "Proyecto no encontrado."
             })
+            
 def eliminarMiembros (request, nombre):
-
     if request.method == "POST" and 'Eliminar' in request.POST: 
         nom_us = request.POST["eliminarMiembro"]
         nuevo_usuario = Usuario.objects.get(username=nom_us) 
@@ -251,8 +251,8 @@ def eliminarMiembros (request, nombre):
             return render(request, "main/error.html", {
                 "mensaje": "Proyecto no encontrado."
             })
-def agregarAdministrador (request, nombre):
 
+def agregarAdministrador (request, nombre):
     if request.method == "POST" and 'Agregar' in request.POST: 
         nom_us = request.POST["nuevoAdmin"]
         nuevo_usuario = Usuario.objects.get(username=nom_us) 
@@ -287,9 +287,9 @@ def agregarAdministrador (request, nombre):
         except Proyecto.DoesNotExist:
             return render(request, "main/error.html", {
                 "mensaje": "Proyecto no encontrado."
-            })           
-def eliminarAdministrador (request, nombre):
+            })       
 
+def eliminarAdministrador (request, nombre):
     if request.method == "POST" and 'Eliminar' in request.POST: 
         nom_us = request.POST["eliminarAdmin"]
         nuevo_usuario = Usuario.objects.get(username=nom_us) 
@@ -322,4 +322,20 @@ def eliminarAdministrador (request, nombre):
         except Proyecto.DoesNotExist:
             return render(request, "main/error.html", {
                 "mensaje": "Proyecto no encontrado."
-            })             
+            })
+
+
+def nuevaActualizacion(request,nombre):
+    if request.method == "POST":
+        proyecto = Proyecto.objects.get(nombre=nombre)
+        if 'imagenNueva' in request.FILES:
+            imagen = request.FILES['imagenNueva']
+        else:
+            imagen=None
+        descripcion = request.POST['descripcionActualizacion']
+    try:
+        actualizacion = Actualizacion(proyecto=proyecto,descripcion=descripcion,imagen=imagen)
+        actualizacion.save()
+    except IntegrityError as e:
+            return HttpResponseRedirect(reverse("proyecto",kwargs={"nombre": nombre}))
+    return HttpResponseRedirect(reverse("proyecto",kwargs={"nombre": nombre}))

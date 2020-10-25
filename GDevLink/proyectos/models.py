@@ -25,4 +25,4 @@ class Actualizacion(models.Model):
     proyecto = models.ForeignKey('Proyecto',on_delete=models.CASCADE,related_name='actualizaciones',blank=False,null=False)
     fecha = models.DateTimeField(auto_now_add=True)
     descripcion = models.CharField(max_length=500, blank=False,null=False)
-    imagenes = ArrayField(models.ImageField(upload_to='actualizaciones'),blank=True,null=True)
+    imagen = models.ImageField(upload_to='actualizaciones',blank=True,null=True)

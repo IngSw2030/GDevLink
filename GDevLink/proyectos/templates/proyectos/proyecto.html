@@ -7,9 +7,7 @@
 
 {% block body %}
 
-    <link rel="stylesheet" href="{% static 'proyectos/stylesP.css' %}">
-    
-     
+    <link rel="stylesheet" href="{% static 'proyectos/stylesP.css' %}">     
     {% csrf_token %}
     <body>
         <div class="header" id="center">
@@ -98,7 +96,62 @@
                 
             </div>
             <div class="contenido">
-                <h3>Actualizaciones</h3>
+                <input type="button" id="nuevaActualizacion" style="background-color:#008CBA; margin: 5px;" value="Nueva Actualizacion"></button>
+                <input type="button" id="cancelarActualizacion" style="background-color:red; margin: 5px; display: none;" value="Cancelar"></button>
+                <br>
+                <h3 style="text-align: center;">Actualizaciones</h3>
+                <form id="actualizacion" action="/proyectos/nuevaActualizacion/{{proyecto.nombre}}" enctype="multipart/form-data" method="post" action="/foo/">
+                    {% csrf_token %}
+                    <div class="overflow-auto" id="agregarActualizacion" style="display:none; margin-left: 10px; border-collapse: separate; border-spacing: 5 5px;">
+                        <table width="95%" cellpadding="0" cellspacing="0" style="border: 0px;">
+                            <tr style="padding-bottom: 1em;">
+                                <td style="width: 30%;"><input type="file" class="form-control-file" name="imagenNueva" id="imagenNueva"></td>
+                                <td style="width: 70%;"><textarea class="form-control" name="descripcionActualizacion" id="descripcionActualizacion" rows="3"></textarea></td>
+                                
+                            </tr>
+                            <tr>
+                                <td></td>
+                                <td style="text-align: right;">
+                                    <input class="btn btn-primary" type="submit" id="publicar" name="publicar" value="Publicar"></button></td>
+                            </tr>
+                        </table>
+                    </div>
+                </form>
+                <script type="text/javascript">
+                    var x=document.getElementById("nuevaActualizacion")
+                    x.addEventListener("click",
+                    cambiarActualizacion)
+                    var y=document.getElementById("cancelarActualizacion")
+                    y.addEventListener("click",cambiarActualizacion)
+                    var z=document.getElementById("publicar")
+                    z.addEventListener("click",validar)
+
+                    function validar(button){
+                        event.preventDefault()
+                        var texto=document.getElementById("descripcionActualizacion").value
+                        var imagen=document.getElementById("imagenNueva").value
+                        if(texto=="" && imagen ==""){
+                            alert("Datos de actualizacion incompletos")
+                            return
+                        }
+                        document.getElementById("actualizacion").submit()
+                    }
+
+                    function cambiarActualizacion(button){
+                        var y=document.getElementById("cancelarActualizacion")
+                        var x=document.getElementById("nuevaActualizacion")
+                        if(x.style.display!="none"){
+                            document.getElementById("agregarActualizacion").style.display="grid"
+                            document.getElementById("cancelarActualizacion").style.display="inline"
+                            x.style.display="none"
+                        }else if(y.style.display!="none"){
+                            document.getElementById("agregarActualizacion").style.display="none"
+                            document.getElementById("nuevaActualizacion").style.display="inline"
+                            y.style.display="none"
+                        }  
+                    }
+                </script>
+                <hr>
                 <div class="overflow-auto"> 
                     {% if not actualizacione %}
                         <p>No hay Actualizaciones</p>
@@ -110,15 +163,16 @@
                             {% endfor %}
                             <p> actualizacion.descripcion </p>
                         </div>
+                        <hr>
                         {% endfor %}
                     {% endif %}
  
                 </div>
-                
             </div>
     </body>
         
     
+
         
  
      
