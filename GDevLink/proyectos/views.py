@@ -68,6 +68,8 @@ def proyecto(request,nombre):
                 roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
             participaciones[participacion.usuario.username] = roles_p
         actualizaciones = proyecto.actualizaciones.all()
+        for act in actualizaciones:
+            print(act.descripcion)
         return render(request, "proyectos/proyecto.html", {
             "proyecto": proyecto,
             "generos": generos,
