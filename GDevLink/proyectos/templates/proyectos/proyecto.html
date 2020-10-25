@@ -158,9 +158,10 @@
                     {% else %}
                         {% for actualizacion in actualizaciones %}
                         <div>
-                            
+                            {% if actualizacion.imagen %}
                             <img src="{{ actualizacion.imagen.url }}" class="" id="" alt="My Image" />
                             
+                            {% endif %}
                             <p>{{ actualizacion.descripcion }}</p>
                         </div>
                         <hr>
