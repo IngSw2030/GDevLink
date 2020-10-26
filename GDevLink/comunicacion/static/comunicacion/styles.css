@@ -1,0 +1,31 @@
+.tbody{
+    width: 1200px;
+    height: 500px;
+    background: black;
+}
+
+.usuarios {
+	  top: 0;
+	  width: 25rem;
+	  height: 100vh;
+    }
+    
+.conversacion{
+    background: #202124;
+    height: 460px;
+    padding-left: 35rem;
+}
+
+.actual{
+    background-color: #02d9c5;
+    position: absolute;
+  font-size: 18px;
+    width: 100%;
+    margin:0px;
+    height:auto;
+    padding-left: 35rem;
+}
+
+.form-inline .form-control{
+    width: 100%;
+}

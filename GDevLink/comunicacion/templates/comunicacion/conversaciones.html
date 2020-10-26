@@ -1,0 +1,39 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+{% block bodyhead %}
+
+{% endblock %}
+{% block body %}
+    <link rel="stylesheet" href="{% static 'comunicacion/styles.css' %}">  
+    <h1 class="actual">El nombre</h1>
+    <div class="usuarios navbarp">
+        <div class="busqueda">
+            <form class="form-inline my-2 my-lg-0">
+                <input class="form-control mr-sm-2" type="search" placeholder="Buscar usuario" aria-label="Search">
+            </form>
+        </div>
+        <div class="overflow-auto"> 
+            <div class="iniciadas">
+
+            </div>
+        </div>  
+    </div>
+    
+        <div class="conversacion contenidoPrincipal">
+            <div>
+                
+            </div>
+            <div class="overflow-auto"> 
+            
+            </div> 
+        </div>
+    
+    
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
