@@ -58,6 +58,7 @@
     </form>
 
     ¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí.</a>
+    <a href="{% provider_login_url 'google' %}">Login with Google</a>
 {% endblock %}
 
 {% block script %}
