@@ -8,14 +8,17 @@
         <link rel="stylesheet" href="{% static 'usuarios/styles.css' %}">
         {% csrf_token %}
         <div class="">
-            {% if not proyecto.imagen %}
+            {% if not usuario.imagen %}
                 <img src="https://i.ibb.co/MNdStBT/foto-perfil.png" alt="foto-perfil" class="center" width="180">
             {% else %}
                 <img src="{{ usuario.imagen.url }}" class="center" alt="My Image" />
             {% endif %}
             <br>
-            <span> Descripción: {{usuario.descripcion}} </span>
         </div>
+        <div>
+            <span> Descripción: </span>{{usuario.descripcion}} 
+        </div>
+        <br>
         <div>
             <span > Roles: </span>
             <ul style="list-style-type: circle">

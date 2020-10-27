@@ -101,6 +101,13 @@ def editar(request,nombre_usuario):
         generos = request.POST.getlist('generos')
         frameworks = request.POST.getlist('frameworks')
 
+        user = Usuario.objects.get(username=nombre_usuario)
+
+        if 'imagen' in request.FILES:
+            imagen = request.FILES['imagen']
+        else:
+            imagen=user.imagen
+
 
         for f in roles:
             print(f)
@@ -115,11 +122,12 @@ def editar(request,nombre_usuario):
 
         # Attempt to create new user
         try:
-            user = Usuario.objects.get(username=nombre_usuario)
+            
             user.roles = roles
             user.generos = generos
             user.frameworks = frameworks
             user.descripcion = descripcion
+            user.imagen = imagen
             user.save()
         except IntegrityError as e:
             print(e)
