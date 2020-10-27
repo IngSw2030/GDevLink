@@ -5,19 +5,25 @@
 
 <h2  align="center">Editar mi perfil: {{usuario.username}}</h2>
 
-<form action="/usuarios/editar/{{user.username}}" method="POST">
+<form action="/usuarios/editar/{{user.username}}" enctype="multipart/form-data" method="post" action="/foo/">
     
      
     <link rel="stylesheet" href="{% static 'usuarios/styles.css' %}">
     {% csrf_token %}
     <div class="">
-        {% if not proyecto.imagen %}
+        {% if not usuario.imagen %}
             <img src="https://i.ibb.co/MNdStBT/foto-perfil.png" alt="foto-perfil" class="center" width="180">
         {% else %}
             <img src="{{ usuario.imagen.url }}" class="center" alt="My Image" />
         {% endif %}
         <br>
+
     </div>
+    <div class="form-group">
+        <label for="exampleFormControlFile1" >Cambiar Imagen</label>
+        <input type="file" class="form-control-file" name="imagen" id="exampleFormControlFile1">
+    </div>
+    <th>
     <div class="form-group">
         <label for="exampleFormControlTextarea1">Descripción</label>
         <textarea class="form-control" name="descripcion" id="exampleFormControlTextarea1" rows="3" >{{usuario.descripcion}}</textarea>
@@ -75,10 +81,10 @@
         </ul>
     </div>
     <br>
-    <input class="btn btn-primary" type="submit" value="Realizar Cambios">
+    <input class="btn btn-primary" type="submit" value="Guardar">
 </form>
 <br/><hr/>
-<a  href="/usuarios/perfil/{{user.username}}">Volver a mi perfil</a>
+<a  href="/usuarios/perfil/{{user.username}}">Cancelar</a>
 
     
     
