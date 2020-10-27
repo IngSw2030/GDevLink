@@ -332,6 +332,7 @@ def nuevaActualizacion(request,nombre):
         proyecto = Proyecto.objects.get(nombre=nombre)
         if 'imagenNueva' in request.FILES:
             imagen = request.FILES['imagenNueva']
+            proyecto.galeria.update(galeria = ArrayPrepend(imagen))
         else:
             imagen=None
         descripcion = request.POST['descripcionActualizacion']
