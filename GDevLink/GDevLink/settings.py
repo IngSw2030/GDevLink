@@ -47,7 +47,8 @@ INSTALLED_APPS = [
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
-    'allauth.socialaccount.providers.google'
+    'allauth.socialaccount.providers.google',
+    'channels'
 ]
 
 SITE_ID = 1
@@ -147,3 +148,14 @@ STATIC_URL = '/static/'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+ASGI_APPLICATION = "GDevLink.routing.application"
+CHANNEL_LAYERS = {
+  'default': {
+      'BACKEND': 'channels_redis.core.RedisChannelLayer',
+      'CONFIG': {
+          "hosts": [os.environ.get('REDIS_URL', 'redis://localhost:6379')],
+          "symmetric_encryption_keys": [SECRET_KEY],
+      },
+  },
+}

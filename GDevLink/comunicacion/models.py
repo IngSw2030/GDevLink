@@ -4,7 +4,7 @@ from usuarios.models import Usuario
 
 # Create your models here.
 class Conversacion(models.Model):
-    participantes = models.ManyToManyField('usuarios.Usuario',related_name='conversaciones',blank=False,null=False)
+    participantes = models.ManyToManyField('usuarios.Usuario',related_name='conversaciones',blank=False)
     
 
 class Mensaje(models.Model):
