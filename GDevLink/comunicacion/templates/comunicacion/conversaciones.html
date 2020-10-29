@@ -9,31 +9,11 @@
 {% block body %}
     <link rel="stylesheet" href="{% static 'comunicacion/styles.css' %}">  
     <h1 class="actual">El nombre</h1>
-    <div class="usuarios navbarp">
-        <div class="busqueda">
-            <form class="form-inline my-2 my-lg-0">
-                <input class="form-control mr-sm-2" type="search" placeholder="Buscar usuario" aria-label="Search">
-            </form>
-        </div>
-        <div class="overflow-auto"> 
-            <div class="iniciadas">
-
-            </div>
-        </div>  
-    </div>
     
-        <div class="conversacion contenidoPrincipal">
-            <div>
-                
-            </div>
-            <div class="overflow-auto"> 
-              <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-            </div> 
-            <input id="chat-message-input" type="text" size="100"><br>
-            <input id="chat-message-submit" type="button" value="Send">
-        </div>
 
-    
+        <textarea id="chat-log" cols="100" rows="20"></textarea><br>
+        <input id="chat-message-input" type="text" size="100"><br>
+        <input id="chat-message-submit" type="button" value="Send">
    
     {{ room_name|json_script:"room-name" }}
     <script>
