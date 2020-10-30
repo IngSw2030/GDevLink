@@ -7,17 +7,25 @@
 
 {% endblock %}
 {% block body %}
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
     <link rel="stylesheet" href="{% static 'comunicacion/styles.css' %}">  
-    <h1 class="actual">El nombre</h1>
+    
     
 
         <textarea id="chat-log" cols="100" rows="20"></textarea><br>
         <input id="chat-message-input" type="text" size="100"><br>
         <input id="chat-message-submit" type="button" value="Send">
    
+    {{ request.user.username|json_script:"user_username" }}
     {{ room_name|json_script:"room-name" }}
     <script>
         const roomName = "conversaciones"
+        const user_username = JSON.parse(document.getElementById('user_username').textContent);
 
         const chatSocket = new WebSocket(
             'ws://'
@@ -30,7 +38,8 @@
 
         chatSocket.onmessage = function(e) {
             const data = JSON.parse(e.data);
-            document.querySelector('#chat-log').value += (data.message + '\n');
+            
+            document.querySelector('#chat-log').value += (data.message + '\n')
         };
 
         chatSocket.onclose = function(e) {
