@@ -25,7 +25,15 @@
                     {% endif %}
                 </div>
                 <div> 
-                    <h1>{{proyecto.nombre}}</h1>
+                    <h1 id="nombre-proyecto">{{proyecto.nombre}}</h1>
+                    <p id="seguidores" data-contador="{{seguidores}}">{{seguidores}}</p>
+                    <button class="btn btn-primary" id="seguir" data-siguiendo="{{siguiendo}}">
+                        {% if siguiendo %}
+                            Siguiendo
+                        {% else %}
+                            Seguir
+                        {% endif %}
+                    </button>
                 </div>
 
                 <div class="elemento">
@@ -118,13 +126,64 @@
                     </div>
                 </form>
                 <script type="text/javascript">
-                    var x=document.getElementById("nuevaActualizacion")
-                    x.addEventListener("click",
-                    cambiarActualizacion)
-                    var y=document.getElementById("cancelarActualizacion")
-                    y.addEventListener("click",cambiarActualizacion)
-                    var z=document.getElementById("publicar")
-                    z.addEventListener("click",validar)
+                    
+
+                    document.addEventListener('DOMContentLoaded', function () {
+                        var x=document.getElementById("nuevaActualizacion")
+                        x.addEventListener("click",
+                        cambiarActualizacion)
+                        var y=document.getElementById("cancelarActualizacion")
+                        y.addEventListener("click",cambiarActualizacion)
+                        var z=document.getElementById("publicar")
+                        z.addEventListener("click",validar)
+
+                        const proyecto = document.querySelector('#nombre-proyecto').innerHTML;
+                        const botonSeguir = document.querySelector('#seguir');
+                        botonSeguir.addEventListener('click', () => {
+                            seguir(proyecto);
+                        });
+                    });
+
+                    function seguir(proyecto) {
+                        let seguidores = document.querySelector("#seguidores");
+                        //Restar cuando se deja de seguir
+                        const botonSeguir = document.querySelector('#seguir');
+                        if(botonSeguir.dataset.siguiendo == "False"){
+                            seguidores.dataset.contador++;
+                            seguidores.innerHTML = seguidores.dataset.contador;
+                            botonSeguir.dataset.siguiendo = "True";
+                            botonSeguir.innerHTML = "Siguiendo";
+                        }
+                        else {
+                            seguidores.dataset.contador--;
+                            seguidores.innerHTML = seguidores.dataset.contador;
+                            botonSeguir.dataset.siguiendo = "False";
+                            botonSeguir.innerHTML = "Seguir";
+                        }
+                        let csrftoken = getCookie('csrftoken');
+                        fetch(`/proyectos/seguir/${proyecto}`, {
+                            method: 'PUT',
+                            headers: { "X-CSRFToken": csrftoken }
+                        });
+                    }
+
+                    // The following function was copied from the Django documentation at https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
+                    // It's used for getting the csrf token that is needed in order to send the PUT request
+                    function getCookie(name) {
+                        var cookieValue = null;
+                        if (document.cookie && document.cookie !== '') {
+                            var cookies = document.cookie.split(';');
+                            for (var i = 0; i < cookies.length; i++) {
+                                var cookie = cookies[i].trim();
+                                // Does this cookie string begin with the name we want?
+                                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                    break;
+                                }
+                            }
+                        }
+                        return cookieValue;
+                    }
 
                     function validar(button){
                         event.preventDefault()

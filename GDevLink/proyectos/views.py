@@ -70,13 +70,21 @@ def proyecto(request,nombre):
         actualizaciones = proyecto.actualizaciones.all()
         for act in actualizaciones:
             print(act.descripcion)
+        #Revisar si el usuario sigue el proyecto
+        usuario = Usuario.objects.get(username=request.user.get_username())
+        if usuario.proyectos_seguidos.filter(nombre = nombre):
+            siguiendo = True
+        else:
+            siguiendo = False
         return render(request, "proyectos/proyecto.html", {
             "proyecto": proyecto,
             "generos": generos,
             "miembros": participaciones,
             "frameworks": frameworks,
             "fase": fase,
-            "actualizaciones": actualizaciones
+            "actualizaciones": actualizaciones,
+            "seguidores": proyecto.numero_seguidores(),
+            "siguiendo": siguiendo
         })
     except Proyecto.DoesNotExist:
         return render(request, "main/error.html", {
@@ -341,3 +349,14 @@ def nuevaActualizacion(request,nombre):
     except IntegrityError as e:
             return HttpResponseRedirect(reverse("proyecto",kwargs={"nombre": nombre}))
     return HttpResponseRedirect(reverse("proyecto",kwargs={"nombre": nombre}))
+
+def seguir(request,nombre):
+    if request.method == 'PUT':
+        proyecto = Proyecto.objects.get(nombre=nombre)
+        usuario = Usuario.objects.get(username=request.user.get_username())
+        if usuario in proyecto.seguidores.all():
+            proyecto.seguidores.remove(usuario)
+        else:
+            proyecto.seguidores.add(usuario)
+        proyecto.save()
+        return HttpResponse(status=200)
