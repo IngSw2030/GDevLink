@@ -33,10 +33,13 @@ def crearProyecto(request):
         fase = fase[0]
         if 'imagen' in request.FILES:
             imagen = request.FILES['imagen']
+            galeria=[]
+            galeria.append(imagen)
         else:
             imagen=None
+            galeria=[]
         try:
-            proyecto = Proyecto(nombre=nombre,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlace_video,enlace_juego=enlace_juego,imagen=imagen)
+            proyecto = Proyecto(nombre=nombre,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlace_video,enlace_juego=enlace_juego,imagen=imagen, galeria=galeria)
             proyecto.save()
         except IntegrityError as e:
             return render(request, "proyectos/crearProyecto.html", {
@@ -340,6 +343,8 @@ def nuevaActualizacion(request,nombre):
         proyecto = Proyecto.objects.get(nombre=nombre)
         if 'imagenNueva' in request.FILES:
             imagen = request.FILES['imagenNueva']
+            proyecto.galeria.append(imagen)
+            proyecto.save()
         else:
             imagen=None
         descripcion = request.POST['descripcionActualizacion']
