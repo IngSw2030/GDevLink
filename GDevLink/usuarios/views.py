@@ -57,7 +57,7 @@ def registrar(request):
             return render(request, "usuarios/registrar.html", {
                 "message": "Correo o nombre de usuario ya registrado."
             })
-        login(request, user)
+        login(request, user,backend='django.contrib.auth.backends.ModelBackend')
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "usuarios/registrar.html",{"roles": PosiblesRoles, "generos": PosiblesGeneros, "frameworks": PosiblesFrameworks})
