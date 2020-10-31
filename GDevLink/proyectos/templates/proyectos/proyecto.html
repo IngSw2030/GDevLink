@@ -95,16 +95,25 @@
             </div>
             <div class="contenido">
                 <h3>Galería del proyecto</h3>
-                <div style ="margin:5; padding: 5;display: flex;flex-direction: row; border:1px solid black; overflow-x:auto">
-                    {% if proyecto.galeria %}
-                        {% for img in proyecto.galeria %}
-                            <div style="flex: 0 0 auto; height: 300px;">
-                                <img src="{{ img.url }}" class="" id="" alt="My Image" style="border:1px solid black;" />
-                            </div>
-                        {% endfor %}
-                    {% endif %}
+                <hr>
+                <div style ="margin:5; padding:5; white-space: nowrap; overflow-x: auto">
+                    <div >
+                        {% if proyecto.imagen %}
+                            <li style="display: inline-block; width: 200px ">
+                                <img src="{{ proyecto.imagen.url }}"class="" id="" alt="My Image" style="width: 200px;"/>
+                            </li>
+                        {% endif %}
+                        {% if actualizaciones %}
+                            {% for actualizacion in actualizaciones %}
+                                {% if actualizacion.imagen %}
+                                    <li style="display: inline-block; width: 200px ">
+                                        <img src="{{ actualizacion.imagen.url }}" class="" id="" alt="My Image" style="width: 200px;" />
+                                    </li>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    </div>
                 </div>
-                
             </div>
             <div class="space">
                 

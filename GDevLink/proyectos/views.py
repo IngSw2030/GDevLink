@@ -22,27 +22,25 @@ def crearProyecto(request):
         roles = request.POST.getlist("roles")
 
         if(nombre == ""):
-            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles,
+            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
              "message": "Por favor ingresar un nombre"})
         if(len(fase)!=1):
-            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles,
+            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
              "message": "Seleccione una (1) fase"})
         if(len(frameworks)==0):
-            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles,
+            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
              "message": "Seleccione al menos un (1) framework"})
         fase = fase[0]
         if 'imagen' in request.FILES:
             imagen = request.FILES['imagen']
-            galeria=[]
-            galeria.append(imagen)
         else:
             imagen=None
-            galeria=[]
         try:
-            proyecto = Proyecto(nombre=nombre,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlace_video,enlace_juego=enlace_juego,imagen=imagen, galeria=galeria)
+            proyecto = Proyecto(nombre=nombre,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlace_video,enlace_juego=enlace_juego,imagen=imagen)
             proyecto.save()
         except IntegrityError as e:
-            return render(request, "proyectos/crearProyecto.html", {
+            print(e)
+            return render(request, "proyectos/crearProyecto.html", {"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
                 "message": "Nombre de proyecto ya registrado"})
         try:
             participacion= Participacion(usuario=request.user,proyecto=proyecto,roles=roles,permiso=PosiblesPermisos.MASTER)
@@ -343,8 +341,6 @@ def nuevaActualizacion(request,nombre):
         proyecto = Proyecto.objects.get(nombre=nombre)
         if 'imagenNueva' in request.FILES:
             imagen = request.FILES['imagenNueva']
-            proyecto.galeria.append(imagen)
-            proyecto.save()
         else:
             imagen=None
         descripcion = request.POST['descripcionActualizacion']
