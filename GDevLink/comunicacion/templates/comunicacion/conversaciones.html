@@ -14,54 +14,109 @@
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="{% static 'comunicacion/styles.css' %}">  
-    
-    
 
-        <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-        <input id="chat-message-input" type="text" size="100"><br>
-        <input id="chat-message-submit" type="button" value="Send">
+    <form action="{% url 'conversaciones' %}" method="post">
+        {% csrf_token %}
+        <nav class="navbarp busqueda">
+            <div class="usuarios">
+                
+                    
+                    <div id="searchWrapper">
+                        <input
+                            type="text"
+                            name="searchBar"
+                            id="searchBar"
+                            placeholder="Busca un usuario"
+                        />
+                        <input class="btn btn-primary" type="submit" value="crear">
+                        <ul id="usuarios"></ul>
+                    </div>
+
+                
+            </div>
+        </nav>
+            <div class="con contenidoPrincipal">
+                {% for conversacion in conversaciones %}
+                    {% for participacion in conversacion.participantes.all %}
+
+                        {% if participacion.username != request.user.username %}
+                            <div class="list-group">
+                                <a href="/comunicacion/chat/{{conversacion.codigo}}" class="list-group-item list-group-item-action active">
+                                {{participacion.username}}
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            
+
+            {{ users | json_script:"users" }}
+            <script id="users" type="text/javascript" >
+                const userList = document.getElementById('usuarios');
+                const searchBar = document.getElementById('searchBar');
+                let characters = [];
+
+
+                searchBar.addEventListener('keyup', (e) => {
+                    const searchString = e.target.value.toLowerCase();
+
+                    const filteredCharacters = characters.filter((character) => {
+                        return (
+                            character.username.toLowerCase().includes(searchString)
+                            
+                        );
+                    });
+                    displayCharacters(filteredCharacters);
+                });
+
+                const loadCharacters = async () => {
+                    try {
+                    // const value = JSON.parse(document.getElementById('users').textContent);
+                    //const res = await fetch('https://hp-api.herokuapp.com/api/characters');
+                    const res = {{ users | safe }};
+                    
+                    characters = res;
+                    for(var x in res){ 
+                        console.log(x); 
+                        } 
+                        console.log(res);
+                    // displayCharacters(characters);
+                    
+                    } catch (err) {
+                        console.error(err);
+                    }
+                };
+
+                const displayCharacters = (characters) => {
+                    const htmlString = characters
+                        .map((character) => {
+                            return `
+                            <li class="character">
+                                <input class="form-check-input" type="radio" name="usuarioB" id="exampleRadios1" value="${character.username}" checked>
+                                <label class="form-check-label" for="exampleRadios1">
+                                    ${character.username}
+                                </label>
+                            </li>
+
+                        `;
+                        })
+                        .join('');
+                    userList.innerHTML = htmlString;
+                };
+
+
+                loadCharacters();   
+            </script>
+            
+
+
+                
+        
+    </form>
    
-    {{ request.user.username|json_script:"user_username" }}
-    {{ room_name|json_script:"room-name" }}
-    <script>
-        const roomName = "conversaciones"
-        const user_username = JSON.parse(document.getElementById('user_username').textContent);
-
-        const chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/comunicacion/'
-            + roomName
-            
-
-        );
-
-        chatSocket.onmessage = function(e) {
-            const data = JSON.parse(e.data);
-            
-            document.querySelector('#chat-log').value += (data.message + '\n')
-        };
-
-        chatSocket.onclose = function(e) {
-            console.error('Chat socket closed unexpectedly');
-        };
-
-        document.querySelector('#chat-message-input').focus();
-        document.querySelector('#chat-message-input').onkeyup = function(e) {
-            if (e.keyCode === 13) {  // enter, return
-                document.querySelector('#chat-message-submit').click();
-            }
-        };
-
-        document.querySelector('#chat-message-submit').onclick = function(e) {
-            const messageInputDom = document.querySelector('#chat-message-input');
-            const message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'message': message
-            }));
-            messageInputDom.value = '';
-          };
-    </script>
+    
+      
     
     
 {% endblock %}

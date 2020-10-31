@@ -5,6 +5,7 @@ from usuarios.models import Usuario
 # Create your models here.
 class Conversacion(models.Model):
     participantes = models.ManyToManyField('usuarios.Usuario',related_name='conversaciones',blank=False)
+    codigo = models.CharField(max_length=10, blank=False, null=False)
     
 
 class Mensaje(models.Model):

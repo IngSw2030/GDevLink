@@ -8,6 +8,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django import forms
 
+
 def vista_login(request):
     if request.method == "POST" and 'login' in request.POST:
             username=request.POST["username"]

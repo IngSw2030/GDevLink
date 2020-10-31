@@ -4,16 +4,17 @@
     background: black;
 }
 
-.usuarios {
-	  top: 0;
-	  width: 25rem;
-	  height: 100vh;
+.busqueda {
+	  
+    width: 20rem;
+	  
     }
     
-.conversacion{
+.con{
     background: #202124;
     height: 460px;
-    padding-left: 35rem;
+    margin-left: 20rem;
+    
 }
 
 .actual{
@@ -23,7 +24,7 @@
     width: 100%;
     margin:0px;
     height:auto;
-    padding-left: 35rem;
+    
 }
 
 .form-inline .form-control{
