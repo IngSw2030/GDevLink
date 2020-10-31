@@ -71,6 +71,11 @@ def perfil(request,nombre_usuario):
         roles = []
         generos = []
         frameworks = []
+        if(usuario.roles is None or usuario.generos is None or usuario.frameworks is None):
+            usuario.roles=roles
+            usuario.generos=generos
+            usuario.frameworks=frameworks
+            usuario.save()
         for rol in usuario.roles:
             roles.append((PosiblesRoles.labels[PosiblesRoles.values.index(rol)]))
         for genero in usuario.generos:
