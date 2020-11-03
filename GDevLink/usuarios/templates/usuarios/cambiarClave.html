@@ -4,10 +4,29 @@
 {% block body %}
 
 <h2 align="center">Cambio de contraseña </h2>
-
+<br><hr>
+<div >
+<h3 >¡Advertencias!</h3>
+<ul style="list-style-type: circle">
+    <li >La nueva contrasena NO debe ser similar a la antigua</li>
+    <li>La nueva contrasena NO debe ser similar a tus datos personales</li>
+    <li>La nueva contrasena debe ser contener al menos 8 caracteres</li>
+    <li>La nueva contrasena debe ser tener numeros y letras</li>
+    <li>La nueva contrasena NO debe ser comunmente usada</li>
+</ul>
+</div>
 <form action="/usuarios/cambiarClave"  method="post" >
     {% csrf_token %}
-    {{ form.as_p }}
+
+    <div class="form-group">
+        <input class="form-control" autofocus type="password" name="old_password" placeholder="Antigua contraseña">
+    </div>
+    <div class="form-group">
+        <input class="form-control" autofocus type="password" name="new_password1" placeholder="Nueva contraeña">
+    </div>
+    <div class="form-group">
+        <input class="form-control" autofocus type="password" name="new_password2" placeholder="Confirma contraseña">
+    </div>
     <button  type="submit">Guardar Contraseña</button>
 </form>
 <br />

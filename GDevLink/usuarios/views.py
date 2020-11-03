@@ -222,7 +222,9 @@ def cambiarClave(request):
             #return redirect(reverse('usuarios:perfil'))
         else:
             print("no valid")
-            return HttpResponseRedirect(reverse("index"))
+            return render(request, "main/error.html", {
+                "mensaje": "Se produjo un error en el cambio de clave. Lea las advertencias en cambiar contraseña"
+            })
         
         return HttpResponseRedirect(reverse("index"))
         
