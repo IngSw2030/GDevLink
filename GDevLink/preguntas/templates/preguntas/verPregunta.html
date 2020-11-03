@@ -1,0 +1,65 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+
+
+{% block body %}
+    <link rel="stylesheet" href="{% static 'preguntas/styles.css' %}">     
+    {% csrf_token %}
+    <body>
+        <div class="header" id="center"><h1>{{pregunta.titulo}}</h1></div>
+    </body>
+    {% if message %}
+        <div><span style="color: red">{{ message }}</span></div>
+    {% endif %}
+    <div>
+        <p>{{pregunta.texto}}</p>
+    </div>
+    <input class="btn btn-primary" type="submit" id="responder" value="Responder"></button>
+    <hr>
+    <input class="btn btn-primary  topbtn" type="submit" id="cancelar" style="background-color:red; display: none;" value="Cancelar"></button>
+    <label for="exampleFormControlInput1">Respuestas</label>
+    <textarea class="form-control" name="texto" id="exampleFormControlTextarea1" rows="3" style="display: none;"></textarea>
+    <script type="text/javascript">
+                
+        document.addEventListener('DOMContentLoaded', function () {
+            var x=document.getElementById("responder");
+            x.addEventListener("click",
+            cambiarRespuesta);
+            var y=document.getElementById("cancelar");
+            y.addEventListener("click",cambiarRespuesta);
+            var z=document.getElementById("publicar");
+            z.addEventListener("click",validar);
+        });
+
+        function validar(button){
+            event.preventDefault();
+            var texto=document.getElementById("texto").value;
+            if(texto=="" && imagen ==""){
+                alert("Datos de respuesta incompletos");
+                return;
+            }
+            document.getElementById("actualizacion").submit();
+        }
+
+        function cambiarRespuesta(button){
+            var y=document.getElementById("cancelar");
+            var x=document.getElementById("responder");
+            if(x.style.display!="none"){
+                document.getElementById("texto").style.display="block";
+                document.getElementById("cancelar").style.display="inline";
+                x.style.display="none";
+            }else if(y.style.display!="none"){
+                document.getElementById("texto").style.display="none";
+                document.getElementById("responder").style.display="inline";
+                y.style.display="none";
+            }  
+        }
+    </script>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

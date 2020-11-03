@@ -35,3 +35,13 @@ def crearPregunta(request):
             return render(request,"preguntas/crearPregunta.html",{"preguntas":preguntas,
              "message": "Titulo de la pregunta ya existe"})
     return render(request, "preguntas/crearPregunta.html",{"preguntas":preguntas})
+
+def verPregunta(request,ids):
+    preguntas=Pregunta.objects.all()
+    try:
+        pregunta=Pregunta.objects.get(id=ids)
+        respuestas=pregunta.respuestas
+        return render(request,"preguntas/verPregunta.html",{"pregunta":pregunta, "respuestas":respuestas})
+    except Pregunta.DoesNotExist:
+        return HttpResponseRedirect(reverse("preguntas"))
+    return HttpResponseRedirect(reverse("preguntas"))

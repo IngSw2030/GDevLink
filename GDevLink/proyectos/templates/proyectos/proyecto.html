@@ -138,11 +138,11 @@
                 document.addEventListener('DOMContentLoaded', function () {
                     var x=document.getElementById("nuevaActualizacion")
                     x.addEventListener("click",
-                    cambiarActualizacion)
-                    var y=document.getElementById("cancelarActualizacion")
-                    y.addEventListener("click",cambiarActualizacion)
-                    var z=document.getElementById("publicar")
-                    z.addEventListener("click",validar)
+                    cambiarActualizacion);
+                    var y=document.getElementById("cancelarActualizacion");
+                    y.addEventListener("click",cambiarActualizacion);
+                    var z=document.getElementById("publicar");
+                    z.addEventListener("click",validar);
 
                     const proyecto = document.querySelector('#nombre-proyecto').innerHTML;
                     const botonSeguir = document.querySelector('#seguir');
@@ -193,27 +193,27 @@
                 }
 
                 function validar(button){
-                    event.preventDefault()
-                    var texto=document.getElementById("descripcionActualizacion").value
-                    var imagen=document.getElementById("imagenNueva").value
+                    event.preventDefault();
+                    var texto=document.getElementById("descripcionActualizacion").value;
+                    var imagen=document.getElementById("imagenNueva").value;
                     if(texto=="" && imagen ==""){
-                        alert("Datos de actualizacion incompletos")
-                        return
+                        alert("Datos de actualizacion incompletos");
+                        return;
                     }
-                    document.getElementById("actualizacion").submit()
+                    document.getElementById("actualizacion").submit();
                 }
 
                 function cambiarActualizacion(button){
-                    var y=document.getElementById("cancelarActualizacion")
-                    var x=document.getElementById("nuevaActualizacion")
+                    var y=document.getElementById("cancelarActualizacion");
+                    var x=document.getElementById("nuevaActualizacion");
                     if(x.style.display!="none"){
-                        document.getElementById("agregarActualizacion").style.display="grid"
-                        document.getElementById("cancelarActualizacion").style.display="inline"
-                        x.style.display="none"
+                        document.getElementById("agregarActualizacion").style.display="grid";
+                        document.getElementById("cancelarActualizacion").style.display="inline";
+                        x.style.display="none";
                     }else if(y.style.display!="none"){
-                        document.getElementById("agregarActualizacion").style.display="none"
-                        document.getElementById("nuevaActualizacion").style.display="inline"
-                        y.style.display="none"
+                        document.getElementById("agregarActualizacion").style.display="none";
+                        document.getElementById("nuevaActualizacion").style.display="inline";
+                        y.style.display="none";
                     }  
                 }
             </script>
