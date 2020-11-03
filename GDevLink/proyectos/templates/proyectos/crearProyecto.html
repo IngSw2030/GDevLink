@@ -6,8 +6,8 @@
     <link rel="stylesheet" href="{% static 'proyectos/styles.css' %}">
     <h2>Crea tu proyecto!</h2>
      
-     {% if message %}
-     <div><span style="color: red">{{ message }}</span></div>
+    {% if message %}
+        <div><span style="color: red">{{ message }}</span></div>
     {% endif %}
 
     <form action="{% url 'crearProyecto' %}" enctype="multipart/form-data" method="post" action="/foo/">

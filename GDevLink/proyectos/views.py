@@ -35,13 +35,17 @@ def crearProyecto(request):
             imagen = request.FILES['imagen']
         else:
             imagen=None
+        result=Proyecto.objects.filter(nombre=nombre).count()
+        if result > 0:
+            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
+             "message": "Nombre de proyecto ya registrado"})
         try:
             proyecto = Proyecto(nombre=nombre,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlace_video,enlace_juego=enlace_juego,imagen=imagen)
             proyecto.save()
         except IntegrityError as e:
             print(e)
             return render(request, "proyectos/crearProyecto.html", {"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
-                "message": "Nombre de proyecto ya registrado"})
+                "message": "Error al crear el proyecto"})
         try:
             participacion= Participacion(usuario=request.user,proyecto=proyecto,roles=roles,permiso=PosiblesPermisos.MASTER)
             participacion.save()
@@ -93,16 +97,12 @@ def proyecto(request,nombre):
         })
 
 def proyectosUsuario(request):
-    
     if request.user.is_authenticated:
-       
        if request.user.participaciones:
            proyectos = []
            for participacion in request.user.participaciones.all():
                proyectos.append(participacion.proyecto)
-           return render(request,"proyectos/proyectosUsuario.html",{"proyectos": proyectos})
-        
-           
+           return render(request,"proyectos/proyectosUsuario.html",{"proyectos": proyectos})    
     return render(request,"proyectos/proyectosUsuario.html")
        #else
     #else

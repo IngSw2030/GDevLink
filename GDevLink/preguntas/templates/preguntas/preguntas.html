@@ -9,20 +9,19 @@
     <link rel="stylesheet" href="{% static 'preguntas/styles.css' %}">     
     {% csrf_token %}
     <body>
-        <div class="header" id="center">
-            
-           
-            
-        </div>
-        <div>
-            <h1 id="nombre-proyecto">Preguntas</h1>
-        </div>
+        <div class="header" id="center"><h1>Preguntas</h1></div>
+        <p><a class="btn btn-primary topbtn" href="{%url 'crearPregunta'%}">Crear Pregunta</a></p>
+
         <div class="space"></div>
-        <div class="contenido" id="preguntas">
+        <div>
             {% if not preguntas %}
                 <h2>No hay preguntas disponibles</h2>
             {% else %}
-
+                <hr>
+                {% for pregunta in preguntas %}
+                
+                <hr>
+                {% endfor %}
             {% endif %}
         </div>
     </body>

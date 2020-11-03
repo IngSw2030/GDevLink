@@ -1,16 +1,3 @@
-.contenido{
-    width: 100%; height:auto;  margin:0px;
-    box-shadow: 20mm;
-    background: #423d46;
-}
-
-#preguntas{
-    width: 60%;
-    margin-left: auto;
-    margin-right: auto;
-    border-radius: 25px;
-}
-
 .space
   {
     padding: 5em;

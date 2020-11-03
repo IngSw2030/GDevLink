@@ -12,13 +12,13 @@
     <body>
             <div class="header" id="center"></div>
             <div class="contenido" >
-            <div class="logo">
-                {% if not proyecto.imagen %}
-                <a href="" class="image fit" id="limage"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
-                {% else %}
-                <img src="{{ proyecto.imagen.url }}" class="" id="limage" alt="My Image" />
-                {% endif %}
-            </div>
+                <div class="logo">
+                    {% if not proyecto.imagen %}
+                    <a href="" class="image fit" id="limage"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+                    {% else %}
+                    <img src="{{ proyecto.imagen.url }}" class="" id="limage" alt="My Image" />
+                    {% endif %}
+                </div>
             <div> 
                 <h1 id="nombre-proyecto">{{proyecto.nombre}}</h1>
                 <p id="seguidores" data-contador="{{seguidores}}">{{seguidores}}</p>
@@ -37,7 +37,7 @@
             </div>
 
 
-            <div                class="elemento" id="gris">
+            <div class="elemento" id="gris">
                 <label for="exampleFormControlInput1">Sobre el proyecto</label>
                 <p>{{proyecto.descripcion}}</p>
             </div>
@@ -84,10 +84,7 @@
                 <a  href="/proyectos/gestionMiembros/{{proyecto.nombre}}">Editar miembros</a>
             </div> 
         </div>
-        
-        <div class="space">
-            
-        </div>
+        <div class="space"></div>
         <div class="contenido">
             <h3>Galería del proyecto</h3>
             <hr>
