@@ -1,0 +1,19 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+<h2 align="center">Cambio de contraseña </h2>
+
+<form action="/usuarios/cambiarClave"  method="post" >
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button  type="submit">Guardar Contraseña</button>
+</form>
+<br />
+<hr />
+<a href="/usuarios/perfil/{{user.username}}">Cancelar</a>
+
+
+
+{% endblock %}
