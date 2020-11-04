@@ -11,7 +11,7 @@
     {% csrf_token %}
     <body>
             <div class="header" id="center"></div>
-            <div class="contenido" >
+        <div class="contenido" >
                 <div class="logop">
                     {% if not proyecto.imagen %}
                     <a href="" class="image fit" id="limage"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
