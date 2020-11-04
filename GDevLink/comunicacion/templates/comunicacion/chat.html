@@ -14,7 +14,7 @@
         integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
     </script>
     <link rel="stylesheet" href="{% static 'comunicacion/styles.css' %}">  
-
+    
     
          
    
@@ -24,13 +24,28 @@
                 
             </div>
             <div> 
-                <textarea id="chat-log" cols="100" rows="20"></textarea><br>
+                <div class="con">
+                
+                <!--
+
+                   
+                    
+                -->
+                
+                 <div class="yours messages">
+
+                 </div>   
+                    
+  
+                </div>
+                
             </div> 
-                <input id="chat-message-input" type="text" size="100"><br>
+            
+                <input id="chat-message-input" type="text" name="msg" size="100"><br>
                 <input id="chat-message-submit" type="button" value="Send">
             
         </div>
-
+        
 
         
         
@@ -40,14 +55,15 @@
     <script>
         var creada = 0;
       
-            const roomName = "conversaciones/"
+            const roomName = JSON.parse(document.getElementById('room-name').textContent);
             const user_username = JSON.parse(document.getElementById('user_username').textContent);
 
             const chatSocket = new WebSocket(
                 'ws://'
                 + window.location.host
-                + '/ws/comunicacion/'
+                + '/ws/comunicacion/chat/'
                 + roomName
+                + '/'
                 
             );
             creada = 1;
@@ -57,8 +73,8 @@
         if(creada == 1){
                 chatSocket.onmessage = function(e) {
                 const data = JSON.parse(e.data);
-                
-                document.querySelector('#chat-log').value += (data.message + '\n')
+                $('.con').append('<div class="yours messages">' + data.message + '</div>')
+                //document.querySelector('#chat-log').value += (data.message + '\n')
             };
 
             chatSocket.onclose = function(e) {
@@ -76,15 +92,31 @@
                 const messageInputDom = document.querySelector('#chat-message-input');
                 const message = messageInputDom.value;
                 chatSocket.send(JSON.stringify({
-                    'message': message
+                    'message': message,
+                    'autor': user_username
                 }));
+                setTimeout(() => console.log("Third"), 3000)
                 messageInputDom.value = '';
             };
         }
+       
         
+
+
+        /*$(function () {
+        $('#chat__form').on('submit', function(e) {
+            e.preventDefault();
+            var message = $('#text-message').val();
+            $('#text-message').val('');
+            var date = new Date().toJSON().slice(0,10).replace(/-/g,'/');
+            $('.con').append('<div class="yours messages">' + message + '</div>')
+        })
+        });*/
 
         
     </script>
+
+
     
     
 {% endblock %}

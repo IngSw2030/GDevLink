@@ -34,6 +34,7 @@
 
                 
             </div>
+    </form>
         </nav>
             <div class="con contenidoPrincipal">
                 {% for conversacion in conversaciones %}
@@ -41,7 +42,7 @@
 
                         {% if participacion.username != request.user.username %}
                             <div class="list-group">
-                                <a href="/comunicacion/chat/{{conversacion.codigo}}" class="list-group-item list-group-item-action active">
+                                <a href="/comunicacion/chat/{{conversacion.id}}/" class="list-group-item list-group-item-action active">
                                 {{participacion.username}}
                                 </a>
                             </div>
@@ -113,7 +114,7 @@
 
                 
         
-    </form>
+    
    
     
       

@@ -5,5 +5,5 @@ from django.conf.urls import url
 
 
 websockets = URLRouter([
-  url(r'^ws/comunicacion/(?P<room_name>[^/]+)', ChatConsumer, name="chat")
+  url(r'^ws/comunicacion/chat/(?P<room_name>[^/]+)', ChatConsumer, name="chat")
 ])
