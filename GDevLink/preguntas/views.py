@@ -26,7 +26,7 @@ def crearPregunta(request):
             return render(request,"preguntas/crearPregunta.html",{"preguntas":preguntas,
              "message": "Titulo de la pregunta ya existe"})
         try:
-            pregunta=Pregunta(titulo=titulo,texto=texto,autor=request.user,puntosPositivos=0,puntosNegativos=0)
+            pregunta=Pregunta(titulo=titulo,texto=texto,autor=request.user)
             pregunta.save()
             preguntas=Pregunta.objects.all().order_by('-puntosPositivos')
             respuestas=pregunta.respuestas.all()
@@ -42,10 +42,10 @@ def verPregunta(request,ids):
     try:
         pregunta=Pregunta.objects.get(id=ids)
         respuestas=pregunta.respuestas.all()
-        if(respuestas is not None):
-            return render(request,"preguntas/verPregunta.html",{"pregunta":pregunta, "respuestas":respuestas})
-        else:
-            return render(request,"preguntas/verPregunta.html",{"pregunta":pregunta})
+        len(pregunta.puntosPositivos.all())
+        return render(request,"preguntas/verPregunta.html",{
+            "pregunta":pregunta, "respuestas":respuestas, 
+            "pPuntosPositivos":len(pregunta.puntosPositivos)})
     except Pregunta.DoesNotExist:
         return HttpResponseRedirect(reverse("preguntas"))
     return HttpResponseRedirect(reverse("preguntas"))
@@ -56,7 +56,7 @@ def crearRespuesta(request,ids):
         pregunta=Pregunta.objects.get(id=ids)
         texto = request.POST['texto']
     try:
-        respuesta = Respuesta(texto=texto,pregunta=pregunta,autor=request.user,puntosPositivos=0,puntosNegativos=0)
+        respuesta = Respuesta(texto=texto,pregunta=pregunta,autor=request.user)
         respuesta.save()
         pregunta=Pregunta.objects.get(id=ids)
         respuestas=pregunta.respuestas.all()

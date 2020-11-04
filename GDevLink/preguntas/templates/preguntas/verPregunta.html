@@ -10,7 +10,7 @@
     {% csrf_token %}
     <body>
         <div class="header" id="center">
-            <h1 style="display: inline-block; color: #8B8B8B;">{{pregunta.puntosPositivos}}</h1>
+            <h1 style="display: inline-block; color: #8B8B8B;">{{pPuntosPositivos}}</h1>
             <a class="addbutton" id="pPuntosPositivos"></a>
             <a class="minbutton"></a>
             <h1 style="display: inline-block; margin-left: 15px;">{{pregunta.titulo}}</h1>
@@ -29,6 +29,8 @@
     <br>
     {% if user.is_authenticated %}
         <input class="btn btn-primary" type="submit" id="responder" name="responder" value="Responder"></button>
+    {% else %}
+        Para responder <a href="{% url 'login' %}">Inicia sesión aquí.</a>
     {% endif %}
     <form id="respuesta" action="/preguntas/crearRespuesta/{{pregunta.id}}" enctype="multipart/form-data" method="post" action="/foo/">
         {% csrf_token %}
@@ -49,7 +51,7 @@
             y.addEventListener("click",cambiarRespuesta);
             var z=document.getElementById("crearRespuesta");
             z.addEventListener("click",validar);
-            var pp=document.getElementById("pPuntosPositivos");
+            var boton=document.getElementById("pPuntosPositivos");
             pp.addEventListener("click",agregarPuntoPositivoPregunta)
         });
 
@@ -79,6 +81,24 @@
                 document.getElementById("responder").style.display="inline";
                 y.style.display="none";
             }  
+        }
+
+        // The following function was copied from the Django documentation at https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
+        // It's used for getting the csrf token that is needed in order to send the PUT request
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
         }
     </script>
     <br>
