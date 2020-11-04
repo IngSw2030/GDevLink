@@ -6,12 +6,12 @@ from django.http import HttpResponse, HttpResponseRedirect
 from preguntas.models import Usuario, Pregunta, Respuesta
 
 def preguntas(request):
-    preguntas=Pregunta.objects.all()
+    preguntas=Pregunta.objects.all().order_by('-puntosPositivos')
     return render(request,"preguntas/preguntas.html",{"preguntas":preguntas})
 
 @login_required(login_url='/usuarios/login')
 def crearPregunta(request):
-    preguntas=Pregunta.objects.all()
+    preguntas=Pregunta.objects.all().order_by('-puntosPositivos')
     if request.method == "POST":
         titulo = request.POST["titulo"]
         texto = request.POST["texto"]
@@ -26,18 +26,19 @@ def crearPregunta(request):
             return render(request,"preguntas/crearPregunta.html",{"preguntas":preguntas,
              "message": "Titulo de la pregunta ya existe"})
         try:
-            pregunta=Pregunta(titulo=titulo,texto=texto,autor=request.user)
+            pregunta=Pregunta(titulo=titulo,texto=texto,autor=request.user,puntosPositivos=0,puntosNegativos=0)
             pregunta.save()
-            preguntas=Pregunta.objects.all()
-            return render(request, "preguntas/crearPregunta.html",{"preguntas":preguntas})
+            preguntas=Pregunta.objects.all().order_by('-puntosPositivos')
+            respuestas=pregunta.respuestas.all()
+            return render(request, "preguntas/verPregunta.html",{"pregunta":pregunta,"respuestas":respuestas})
         except IntegrityError as e:
             print(e)
             return render(request,"preguntas/crearPregunta.html",{"preguntas":preguntas,
-             "message": "Titulo de la pregunta ya existe"})
+             "message": "Error al crear la pregunta"})
     return render(request, "preguntas/crearPregunta.html",{"preguntas":preguntas})
 
 def verPregunta(request,ids):
-    preguntas=Pregunta.objects.all()
+    preguntas=Pregunta.objects.all().order_by('-puntosPositivos')
     try:
         pregunta=Pregunta.objects.get(id=ids)
         respuestas=pregunta.respuestas.all()
