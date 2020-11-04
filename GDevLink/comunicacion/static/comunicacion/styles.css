@@ -17,6 +17,10 @@
     
 }
 
+.conversaciones{
+  padding-left: 20em;
+}
+
 .actual{
     background-color: #02d9c5;
     position: absolute;

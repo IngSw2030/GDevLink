@@ -34,14 +34,15 @@
 
                 
             </div>
-    </form>
+    
         </nav>
-            <div class="con contenidoPrincipal">
+    </form>
+            <div class="conversaciones contenidoPrincipal">
                 {% for conversacion in conversaciones %}
                     {% for participacion in conversacion.participantes.all %}
 
                         {% if participacion.username != request.user.username %}
-                            <div class="list-group">
+                            <div class="list-group overflow-auto">
                                 <a href="/comunicacion/chat/{{conversacion.id}}/" class="list-group-item list-group-item-action active">
                                 {{participacion.username}}
                                 </a>

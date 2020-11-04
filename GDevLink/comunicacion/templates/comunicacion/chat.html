@@ -24,7 +24,7 @@
                 
             </div>
             <div> 
-                <div class="con">
+                <div class="con overflow-auto">
                 
                 <!--
 
@@ -73,8 +73,15 @@
         if(creada == 1){
                 chatSocket.onmessage = function(e) {
                 const data = JSON.parse(e.data);
-                $('.con').append('<div class="yours messages"><div class="message">'+ data.message + '</div></div>')
+                console.log(data);
+                if(data.autor == user_username){
+                    $('.con').append('<div class="mine messages"><div class="message">'+ data.message + '</div></div>')
+                }
+                else{
+                    $('.con').append('<div class="yours messages"><div class="message">'+ data.message + '</div></div>')
                 //document.querySelector('#chat-log').value += (data.message + '\n')
+                }
+                
             };
 
             chatSocket.onclose = function(e) {
