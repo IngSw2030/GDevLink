@@ -118,6 +118,10 @@ def editar(request, nombre_usuario):
         generos = request.POST.getlist('generos')
         frameworks = request.POST.getlist('frameworks')
 
+        if(len(roles)==0):
+            return render(request, "main/error.html", {
+            "mensaje": "Debe seleccionar al menos (1) rol."
+        })
 
         user = Usuario.objects.get(username=nombre_usuario)
 
@@ -232,6 +236,3 @@ def cambiarClave(request):
         form = PasswordChangeForm(user=request.user)
         args = {'form': form}
         return render(request, 'usuarios/cambiarClave.html', args)
-
-    
-    
