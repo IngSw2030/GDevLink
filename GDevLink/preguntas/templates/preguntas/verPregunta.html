@@ -1,0 +1,125 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+
+
+{% block body %}
+    <link rel="stylesheet" href="{% static 'preguntas/styles.css' %}">     
+    {% csrf_token %}
+    <body>
+        <div class="header" id="center">
+            <h1 style="display: inline-block; color: #8B8B8B;">{{pPuntosPositivos}}</h1>
+            <a class="addbutton" id="pPuntosPositivos"></a>
+            <a class="minbutton"></a>
+            <h1 style="display: inline-block; margin-left: 15px;">{{pregunta.titulo}}</h1>
+        </div>
+    </body>
+    {% if message %}
+        <div><span style="color: red">{{ message }}</span></div>
+    {% endif %}
+    <div>
+        <p>{{pregunta.texto}}</p>
+    </div>
+    <hr>
+    <label for="exampleFormControlInput1">Respuestas</label>
+    <div class="arrow up"></div>
+    <div class="arrow down"></div>
+    <br>
+    {% if user.is_authenticated %}
+        <input class="btn btn-primary" type="submit" id="responder" name="responder" value="Responder"></button>
+    {% else %}
+        Para responder <a href="{% url 'login' %}">Inicia sesión aquí.</a>
+    {% endif %}
+    <form id="respuesta" action="/preguntas/crearRespuesta/{{pregunta.id}}" enctype="multipart/form-data" method="post" action="/foo/">
+        {% csrf_token %}
+        <div class="overflow-auto" id="agregarRespuesta" style="display:none;">
+            <textarea class="form-control" name="texto" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <input class="btn btn-primary" type="submit" id="crearRespuesta" name="crearRespuesta" value="Responder"></button></td>
+        </div>
+    </form>
+    <input class="btn btn-primary" type="submit" id="cancelar" style="background-color:red; display: none;" value="Cancelar"></button>
+    
+    <script type="text/javascript">
+                
+        document.addEventListener('DOMContentLoaded', function () {
+            var x=document.getElementById("responder");
+            x.addEventListener("click",
+            cambiarRespuesta);
+            var y=document.getElementById("cancelar");
+            y.addEventListener("click",cambiarRespuesta);
+            var z=document.getElementById("crearRespuesta");
+            z.addEventListener("click",validar);
+            var boton=document.getElementById("pPuntosPositivos");
+            pp.addEventListener("click",agregarPuntoPositivoPregunta)
+        });
+
+        function agregarPuntoPositivoPregunta(){
+            alert("works")
+        };
+
+        function validar(button){
+            event.preventDefault();
+            var texto=document.getElementsByName("texto")[0].value;
+            if(texto==""){
+                alert("Datos de respuesta incompletos");
+                return;
+            }
+            document.getElementById("respuesta").submit();
+        }
+
+        function cambiarRespuesta(button){
+            var y=document.getElementById("cancelar");
+            var x=document.getElementById("responder");
+            if(x.style.display!="none"){
+                document.getElementById("agregarRespuesta").style.display="block";
+                document.getElementById("cancelar").style.display="inline";
+                x.style.display="none";
+            }else if(y.style.display!="none"){
+                document.getElementById("agregarRespuesta").style.display="none";
+                document.getElementById("responder").style.display="inline";
+                y.style.display="none";
+            }  
+        }
+
+        // The following function was copied from the Django documentation at https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
+        // It's used for getting the csrf token that is needed in order to send the PUT request
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = cookies[i].trim();
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    </script>
+    <br>
+    {% if respuestas %}
+        {% for respuesta in respuestas %}
+            <div>
+                <p style="color:#8B8B8B; display: inline-block;">{{respuesta.puntosPositivos}} </p>
+                <div class="addbuttonRes"></div>
+                <div class="minbuttonRes"></div>
+                <p style="display: inline-block; margin-left: 10px;">{{respuesta.texto}}</p>
+                <hr>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No hay respuestas</p>
+    {% endif %}
+    <p><a class="btn btn-primary topbtn" href="{%url 'preguntas'%}">Volver</a></p>
+
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

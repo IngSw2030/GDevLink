@@ -36,6 +36,7 @@ INSTALLED_APPS = [
     'usuarios',
     'proyectos',
     'comunicacion',
+    'preguntas',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',

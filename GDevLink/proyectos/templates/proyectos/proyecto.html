@@ -10,13 +10,7 @@
     <link rel="stylesheet" href="{% static 'proyectos/stylesP.css' %}">     
     {% csrf_token %}
     <body>
-
-        <div class="header" id="center">
-            
-           
-            
-        </div>
-        
+            <div class="header" id="center"></div>
             <div class="contenido" >
                 <div class="logop">
                     {% if not proyecto.imagen %}
@@ -25,163 +19,228 @@
                     <img src="{{ proyecto.imagen.url }}" class="" id="limage" alt="My Image" />
                     {% endif %}
                 </div>
-                <div> 
-                    <h1>{{proyecto.nombre}}</h1>
-                </div>
-
-                <div class="elemento">
-                    <label for="exampleFormControlInput1">Fase de desarrollo</label>
-                    <p>{{fase}}</p>
-                </div>
-
-
-                <div class="elemento" id="gris">
-                    <label for="exampleFormControlInput1">Sobre el proyecto</label>
-                    <p>{{proyecto.descripcion}}</p>
-                </div>
-                <div class="elemento">
-                    <label for="exampleFormControlInput1">Genero:</label>
-                    {% for genero in generos %}          
-                        <span>{{genero}}</span>             
-                    {% endfor %}
-                </div>  
-                <div class="elemento" id="gris">
-                    <label for="exampleFormControlInput1">Frameworks usados:</label>
-                    {% for framework in frameworks %}          
-                        <span>{{framework}}</span>             
-                    {% endfor %}
-                </div> 
-                
-                <div class="elemento">
-                    <label for="exampleFormControlInput1">Video del proyecto:</label>
-     
-                        <span>{{proyecto.enlace_video}}</span>             
-   
-                </div>
-                <div class="elemento" id="gris">
-                    <label for="exampleFormControlInput1">Link de descarga:</label>
-     
-                        <span>{{proyecto.enlace_juego}}</span>             
-   
-                </div>
-                <a  href="/proyectos/editarProyecto/{{proyecto.nombre}}">Editar el proyecto</a>
-            </div>
-            <div class="space">
-                
-                
-            </div>
-            <div class="contenido" id="miembros">
-                <h3>Miembros del proyecto</h3>
-                <div class="elemento">
-                    <label for="exampleFormControlInput1">Miembros:</label>
-                    <div class="list-group"> 
-                        {% for key,value in miembros.items %}       
-                        <li><a href="/usuarios/visitarPerfil/{{key}}">{{key}} - {{value}}</a></li>
-                        {% endfor %}
-                    </div>
-                    <a  href="/proyectos/gestionMiembros/{{proyecto.nombre}}">Editar miembros</a>
-                </div> 
-            </div>
-           
-            <div class="space">
-                
-            </div>
-            <div class="contenido">
-                <h3>Galería del proyecto</h3>
-                <div class="images-vert">
-                    <a href="" class="image fit"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
-                </div>
-                
-            </div>
-            <div class="space">
-                
-            </div>
-            <div class="contenido">
-                <input type="button" id="nuevaActualizacion" style="background-color:#008CBA; margin: 5px;" value="Nueva Actualizacion"></button>
-                <input type="button" id="cancelarActualizacion" style="background-color:red; margin: 5px; display: none;" value="Cancelar"></button>
-                <br>
-                <h3 style="text-align: center;">Actualizaciones</h3>
-                <form id="actualizacion" action="/proyectos/nuevaActualizacion/{{proyecto.nombre}}" enctype="multipart/form-data" method="post" action="/foo/">
-                    {% csrf_token %}
-                    <div class="overflow-auto" id="agregarActualizacion" style="display:none; margin-left: 10px; border-collapse: separate; border-spacing: 5 5px;">
-                        <table width="95%" cellpadding="0" cellspacing="0" style="border: 0px;">
-                            <tr style="padding-bottom: 1em;">
-                                <td style="width: 30%;"><input type="file" class="form-control-file" name="imagenNueva" id="imagenNueva"></td>
-                                <td style="width: 70%;"><textarea class="form-control" name="descripcionActualizacion" id="descripcionActualizacion" rows="3"></textarea></td>
-                                
-                            </tr>
-                            <tr>
-                                <td></td>
-                                <td style="text-align: right;">
-                                    <input class="btn btn-primary" type="submit" id="publicar" name="publicar" value="Publicar"></button></td>
-                            </tr>
-                        </table>
-                    </div>
-                </form>
-                <script type="text/javascript">
-                    var x=document.getElementById("nuevaActualizacion")
-                    x.addEventListener("click",
-                    cambiarActualizacion)
-                    var y=document.getElementById("cancelarActualizacion")
-                    y.addEventListener("click",cambiarActualizacion)
-                    var z=document.getElementById("publicar")
-                    z.addEventListener("click",validar)
-
-                    function validar(button){
-                        event.preventDefault()
-                        var texto=document.getElementById("descripcionActualizacion").value
-                        var imagen=document.getElementById("imagenNueva").value
-                        if(texto=="" && imagen ==""){
-                            alert("Datos de actualizacion incompletos")
-                            return
-                        }
-                        document.getElementById("actualizacion").submit()
-                    }
-
-                    function cambiarActualizacion(button){
-                        var y=document.getElementById("cancelarActualizacion")
-                        var x=document.getElementById("nuevaActualizacion")
-                        if(x.style.display!="none"){
-                            document.getElementById("agregarActualizacion").style.display="grid"
-                            document.getElementById("cancelarActualizacion").style.display="inline"
-                            x.style.display="none"
-                        }else if(y.style.display!="none"){
-                            document.getElementById("agregarActualizacion").style.display="none"
-                            document.getElementById("nuevaActualizacion").style.display="inline"
-                            y.style.display="none"
-                        }  
-                    }
-                </script>
-                <hr>
-                <div class="overflow-auto"> 
-                    {% if not actualizaciones %}
-                        <p>No hay Actualizaciones</p>
+            <div> 
+                <h1 id="nombre-proyecto">{{proyecto.nombre}}</h1>
+                <p id="seguidores" data-contador="{{seguidores}}">{{seguidores}}</p>
+                <button class="btn btn-primary" id="seguir" data-siguiendo="{{siguiendo}}">
+                    {% if siguiendo %}
+                        Siguiendo
                     {% else %}
+                        Seguir
+                    {% endif %}
+                </button>
+            </div>
+
+            <div class="elemento">
+                <label for="exampleFormControlInput1">Fase de desarrollo</label>
+                <p>{{fase}}</p>
+            </div>
+
+
+            <div class="elemento" id="gris">
+                <label for="exampleFormControlInput1">Sobre el proyecto</label>
+                <p>{{proyecto.descripcion}}</p>
+            </div>
+            <div class="elemento">
+                <label for="exampleFormControlInput1">Genero:</label>
+                {% for genero in generos %}          
+                    <span>{{genero}}</span>             
+                {% endfor %}
+            </div>  
+            <div class="elemento" id="gris">
+                <label for="exampleFormControlInput1">Frameworks usados:</label>
+                {% for framework in frameworks %}          
+                    <span>{{framework}}</span>             
+                {% endfor %}
+            </div> 
+            
+            <div class="elemento">
+                <label for="exampleFormControlInput1">Video del proyecto:</label>
+
+                    <span>{{proyecto.enlace_video}}</span>             
+
+            </div>
+            <div class="elemento" id="gris">
+                <label for="exampleFormControlInput1">Link de descarga:</label>
+
+                    <span>{{proyecto.enlace_juego}}</span>             
+
+            </div>
+            {% if administrador %}
+            <a  href="/proyectos/editarProyecto/{{proyecto.nombre}}">Editar el proyecto</a>
+            {% endif %}
+        </div>
+        <div class="space">
+            
+            
+        </div>
+        <div class="contenido" id="miembros">
+            <h3>Miembros del proyecto</h3>
+            <div class="elemento">
+                <label for="exampleFormControlInput1">Miembros:</label>
+                <div class="list-group"> 
+                    {% for key,value in miembros.items %}       
+                    <li><a href="/usuarios/visitarPerfil/{{key}}">{{key}} - {{value}}</a></li>
+                    {% endfor %}
+                </div>
+                {% if administrador %}
+                <a  href="/proyectos/gestionMiembros/{{proyecto.nombre}}">Editar miembros</a>
+                {% endif %}
+            </div> 
+        </div>
+        <div class="space"></div>
+        <div class="contenido">
+            <h3>Galería del proyecto</h3>
+            <hr>
+            <div style ="margin:5; padding:5; white-space: nowrap; overflow-x: auto">
+                <div >
+                    {% if proyecto.imagen %}
+                        <li style="display: inline-block; width: 200px ">
+                            <img src="{{ proyecto.imagen.url }}"class="" id="" alt="My Image" style="width: 200px;"/>
+                        </li>
+                    {% endif %}
+                    {% if actualizaciones %}
                         {% for actualizacion in actualizaciones %}
-                        <div>
                             {% if actualizacion.imagen %}
-                            <img src="{{ actualizacion.imagen.url }}" class="" id="" alt="My Image" />
-                            
+                                <li style="display: inline-block; width: 200px ">
+                                    <img src="{{ actualizacion.imagen.url }}" class="" id="" alt="My Image" style="width: 200px;" />
+                                </li>
                             {% endif %}
-                            <p>{{ actualizacion.descripcion }}</p>
-                        </div>
-                        <hr>
                         {% endfor %}
                     {% endif %}
- 
                 </div>
             </div>
+        </div>
+        <div class="space">
+            
+        </div>
+        <div class="contenido">
+            <input type="button" id="nuevaActualizacion" style="background-color:#008CBA; margin: 5px;" value="Nueva Actualizacion"></button>
+            <input type="button" id="cancelarActualizacion" style="background-color:red; margin: 5px; display: none;" value="Cancelar"></button>
+            <br>
+            <h3 style="text-align: center;">Actualizaciones</h3>
+            <form id="actualizacion" action="/proyectos/nuevaActualizacion/{{proyecto.nombre}}" enctype="multipart/form-data" method="post" action="/foo/">
+                {% csrf_token %}
+                <div class="overflow-auto" id="agregarActualizacion" style="display:none; margin-left: 10px; border-collapse: separate; border-spacing: 5 5px;">
+                    <table width="95%" cellpadding="0" cellspacing="0" style="border: 0px;">
+                        <tr style="padding-bottom: 1em;">
+                            <td style="width: 30%;"><input type="file" class="form-control-file" name="imagenNueva" id="imagenNueva"></td>
+                            <td style="width: 70%;"><textarea class="form-control" name="descripcionActualizacion" id="descripcionActualizacion" rows="3"></textarea></td>
+                            
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td style="text-align: right;">
+                                <input class="btn btn-primary" type="submit" id="publicar" name="publicar" value="Publicar"></button></td>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+            <script type="text/javascript">
+                
+
+                document.addEventListener('DOMContentLoaded', function () {
+                    var x=document.getElementById("nuevaActualizacion")
+                    x.addEventListener("click",
+                    cambiarActualizacion);
+                    var y=document.getElementById("cancelarActualizacion");
+                    y.addEventListener("click",cambiarActualizacion);
+                    var z=document.getElementById("publicar");
+                    z.addEventListener("click",validar);
+
+                    const proyecto = document.querySelector('#nombre-proyecto').innerHTML;
+                    const botonSeguir = document.querySelector('#seguir');
+                    botonSeguir.addEventListener('click', () => {
+                        seguir(proyecto);
+                    });
+                });
+
+                function seguir(proyecto) {
+                    let seguidores = document.querySelector("#seguidores");
+                    //Restar cuando se deja de seguir
+                    const botonSeguir = document.querySelector('#seguir');
+                    if(botonSeguir.dataset.siguiendo == "False"){
+                        seguidores.dataset.contador++;
+                        seguidores.innerHTML = seguidores.dataset.contador;
+                        botonSeguir.dataset.siguiendo = "True";
+                        botonSeguir.innerHTML = "Siguiendo";
+                    }
+                    else {
+                        seguidores.dataset.contador--;
+                        seguidores.innerHTML = seguidores.dataset.contador;
+                        botonSeguir.dataset.siguiendo = "False";
+                        botonSeguir.innerHTML = "Seguir";
+                    }
+                    let csrftoken = getCookie('csrftoken');
+                    fetch(`/proyectos/seguir/${proyecto}`, {
+                        method: 'PUT',
+                        headers: { "X-CSRFToken": csrftoken }
+                    });
+                }
+
+                // The following function was copied from the Django documentation at https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
+                // It's used for getting the csrf token that is needed in order to send the PUT request
+                function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = cookies[i].trim();
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                }
+
+                function validar(button){
+                    event.preventDefault();
+                    var texto=document.getElementById("descripcionActualizacion").value;
+                    var imagen=document.getElementById("imagenNueva").value;
+                    if(texto=="" && imagen ==""){
+                        alert("Datos de actualizacion incompletos");
+                        return;
+                    }
+                    document.getElementById("actualizacion").submit();
+                }
+
+                function cambiarActualizacion(button){
+                    var y=document.getElementById("cancelarActualizacion");
+                    var x=document.getElementById("nuevaActualizacion");
+                    if(x.style.display!="none"){
+                        document.getElementById("agregarActualizacion").style.display="grid";
+                        document.getElementById("cancelarActualizacion").style.display="inline";
+                        x.style.display="none";
+                    }else if(y.style.display!="none"){
+                        document.getElementById("agregarActualizacion").style.display="none";
+                        document.getElementById("nuevaActualizacion").style.display="inline";
+                        y.style.display="none";
+                    }  
+                }
+            </script>
+            <hr>
+            <div class="overflow-auto"> 
+                {% if not actualizaciones %}
+                    <p>No hay Actualizaciones</p>
+                {% else %}
+                    {% for actualizacion in actualizaciones %}
+                    <div>
+                        {% if actualizacion.imagen %}
+                        <img src="{{ actualizacion.imagen.url }}" class="" id="" alt="My Image" />
+                        
+                        {% endif %}
+                        <p>{{ actualizacion.descripcion }}</p>
+                    </div>
+                    <hr>
+                    {% endfor %}
+                {% endif %}
+
+            </div>
+        </div>
     </body>
-        
-    
-
-        
- 
-     
-
-
-
-    
 
 {% endblock %}
 

@@ -3,83 +3,99 @@
 
 {% block body %}
 
-<h2  align="center">Editar mi perfil: {{usuario.username}}</h2>
+<h2 align="center">Editar mi perfil: {{usuario.username}}</h2>
 
-<form action="/usuarios/editar/{{user.username}}" method="POST">
-    
-     
+<form action="/usuarios/editar/{{user.username}}" enctype="multipart/form-data" method="post" action="/foo/">
+
+
     <link rel="stylesheet" href="{% static 'usuarios/styles.css' %}">
     {% csrf_token %}
     <div class="">
-        {% if not proyecto.imagen %}
-            <img src="https://i.ibb.co/MNdStBT/foto-perfil.png" alt="foto-perfil" class="center" width="180">
+        {% if not usuario.imagen %}
+        <img src="https://i.ibb.co/MNdStBT/foto-perfil.png" alt="foto-perfil" class="center" width="180">
         {% else %}
-            <img src="{{ usuario.imagen.url }}" class="center" alt="My Image" />
+        <img src="{{ usuario.imagen.url }}" class="center" alt="My Image" />
         {% endif %}
         <br>
+
     </div>
     <div class="form-group">
-        <label for="exampleFormControlTextarea1">Descripción</label>
-        <textarea class="form-control" name="descripcion" id="exampleFormControlTextarea1" rows="3" >{{usuario.descripcion}}</textarea>
+        <label for="exampleFormControlFile1">Cambiar Imagen</label>
+        <input type="file" class="form-control-file" name="imagen" id="exampleFormControlFile1">
     </div>
-    <div>
-        <span > Roles: </span>
-        <ul style="list-style-type: circle">
-            {% for rol in posiblesRoles %}
+    <th>
+        <div class="form-group">
+            <label for="exampleFormControlTextarea1">Descripción</label>
+            <textarea class="form-control" name="descripcion" id="exampleFormControlTextarea1"
+                rows="3">{{usuario.descripcion}}</textarea>
+        </div>
+        <div>
+            <span> Roles: </span>
+            <ul style="list-style-type: circle">
+                {% for rol in posiblesRoles %}
                 {% if rol.label in roles%}
                 <label class="form-check-label" for="inlineCheckbox1">{{rol.label}}</label>
-                <input class="form-check-input" name="roles" type="checkbox" id="inlineCheckbox1" value="{{rol}}" checked="true">&nbsp&nbsp&nbsp
+                <input class="form-check-input" name="roles" type="checkbox" id="inlineCheckbox1" value="{{rol}}"
+                    checked="true">&nbsp&nbsp&nbsp
                 {% else %}
                 <label class="form-check-label" for="inlineCheckbox1">{{rol.label}}</label>
-                <input class="form-check-input" name="roles" type="checkbox" id="inlineCheckbox1" value="{{rol}}">&nbsp&nbsp&nbsp
-                {% endif %}              
-            {% endfor %}
-        </ul>
-    </div>
-    <div>
-        <span > Géneros de interés: </span>
-        <ul style="list-style-type: circle">
-            {% for genero in posiblesGeneros %}
+                <input class="form-check-input" name="roles" type="checkbox" id="inlineCheckbox1"
+                    value="{{rol}}">&nbsp&nbsp&nbsp
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <span> Géneros de interés: </span>
+            <ul style="list-style-type: circle">
+                {% for genero in posiblesGeneros %}
                 {% if genero.label in generos%}
                 <label class="form-check-label" for="inlineCheckbox1">{{genero.label}}</label>
-                <input class="form-check-input" name="generos" type="checkbox" id="inlineCheckbox1" value="{{genero}}" checked="true">&nbsp&nbsp&nbsp
+                <input class="form-check-input" name="generos" type="checkbox" id="inlineCheckbox1" value="{{genero}}"
+                    checked="true">&nbsp&nbsp&nbsp
                 {% else %}
                 <label class="form-check-label" for="inlineCheckbox1">{{genero.label}}</label>
-                <input class="form-check-input" name="generos" type="checkbox" id="inlineCheckbox1" value="{{genero}}">&nbsp&nbsp&nbsp
-                {% endif %}              
-            {% endfor %}
-        </ul>
-    </div>
-    <div>
-        <span > FrameWorks: </span>
-        <ul style="list-style-type: circle">
-            {% for framework in posiblesFrameworks %}
+                <input class="form-check-input" name="generos" type="checkbox" id="inlineCheckbox1"
+                    value="{{genero}}">&nbsp&nbsp&nbsp
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <span> FrameWorks: </span>
+            <ul style="list-style-type: circle">
+                {% for framework in posiblesFrameworks %}
                 {% if framework.label in frameworks%}
                 <label class="form-check-label" for="inlineCheckbox1">{{framework.label}}</label>
-                <input class="form-check-input" name="frameworks" type="checkbox" id="inlineCheckbox1" value="{{framework}}" checked="true">&nbsp&nbsp&nbsp
+                <input class="form-check-input" name="frameworks" type="checkbox" id="inlineCheckbox1"
+                    value="{{framework}}" checked="true">&nbsp&nbsp&nbsp
                 {% else %}
                 <label class="form-check-label" for="inlineCheckbox1">{{framework.label}}</label>
-                <input class="form-check-input" name="frameworks" type="checkbox" id="inlineCheckbox1" value="{{framework}}">&nbsp&nbsp&nbsp
-                {% endif %}              
-            {% endfor %}
-        </ul>
-    </div>
-    <div>
-        <span > Proyectos: </span>
-        <ul style="list-style-type: circle">
-            {% for key,value in participaciones.items %}
+                <input class="form-check-input" name="frameworks" type="checkbox" id="inlineCheckbox1"
+                    value="{{framework}}">&nbsp&nbsp&nbsp
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </div>
+        <div>
+            <span> Proyectos: </span>
+            <ul style="list-style-type: circle">
+                {% for key,value in participaciones.items %}
                 <li>
                     {{key}} - {{value}}
                 </li>
-            {% endfor %}
-        </ul>
-    </div>
-    <br>
-    <input class="btn btn-primary" type="submit" value="Realizar Cambios">
+                {% endfor %}
+            </ul>
+        </div>   
+        <br>
+        <a href="/usuarios/cambiarClave">Cambiar Contraseña</a>
+        <br><br>
+        <input class="btn btn-primary" type="submit" value="Guardar">
 </form>
-<br/><hr/>
-<a  href="/usuarios/perfil/{{user.username}}">Volver a mi perfil</a>
+<br />
+<hr />
+<a href="/usuarios/perfil/{{user.username}}">Cancelar</a>
 
-    
-    
+
+
 {% endblock %}

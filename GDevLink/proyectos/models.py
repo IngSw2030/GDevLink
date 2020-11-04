@@ -10,10 +10,12 @@ class Proyecto(models.Model):
     descripcion = models.CharField(max_length=500, blank=True,null=True)
     frameworks = ArrayField(models.CharField(choices=PosiblesFrameworks.choices, max_length=10),blank=False,null=False)
     imagen = models.ImageField(upload_to='proyectos',blank=True,null=True)
-    galeria = ArrayField(models.ImageField(upload_to='galeria'),blank=True,null=True)
     enlace_video = models.CharField(max_length=500, blank=True, null=True)
     enlace_juego = models.CharField(max_length=500, blank=True, null=True)
     fecha_creacion = models.DateTimeField(auto_now_add=True)
+    seguidores = models.ManyToManyField('usuarios.Usuario', blank=True, related_name="proyectos_seguidos")
+    def numero_seguidores(self):
+        return self.seguidores.all().count()
 
 class Participacion(models.Model):
     usuario = models.ForeignKey('usuarios.Usuario',on_delete=models.CASCADE,related_name='participaciones',blank=False,null=False)

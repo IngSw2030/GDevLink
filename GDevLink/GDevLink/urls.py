@@ -26,6 +26,7 @@ urlpatterns = [
     path('proyectos/', include('proyectos.urls')),
     path('comunicacion/', include('comunicacion.urls')),
     path('accounts/', include('allauth.urls')),
+    path('preguntas/', include('preguntas.urls')),
 ]
 
 if settings.DEBUG:

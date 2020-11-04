@@ -11,9 +11,17 @@
 </div>
 {% endblock %}
 {% block body %}
-
-    <h2>Destacados</h2>
-    
+    {% if user.is_authenticated %}
+        <h2>Actualizaciones Recientes</h2>
+        {% for actualizacion in actualizaciones%}
+            <h4> {{actualizacion.proyecto.nombre}} </h4>
+            <p> {{actualizacion.descripcion}} </p>
+        {% empty %}
+            <p> En este momento no hay actualizaciones. </p>
+        {% endfor %}
+    {% else %}
+        <h2>Destacados</h2>
+    {% endif %}
 {% endblock %}
 
 {% block script %}
