@@ -2,3 +2,23 @@
   {
     padding: 5em;
   }
+
+  .addbutton {
+    width: 0px; 
+    height: 0px; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 10px solid #8B8B8B;
+    display: inline-block;
+    position: absolute;
+    font-size: 16px;
+  }
+  
+  .minbutton {
+    width: 0; 
+    height: 0; 
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 10px solid #8B8B8B;
+    display: inline-block;
+  }

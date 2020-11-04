@@ -9,7 +9,14 @@
     <link rel="stylesheet" href="{% static 'preguntas/styles.css' %}">     
     {% csrf_token %}
     <body>
-        <div class="header" id="center"><h1>{{pregunta.titulo}}</h1></div>
+        <div class="header" id="center">
+            
+            <h1 style="display: inline-block;">{{pregunta.titulo}}</h1>
+            <h1 style="display: inline-block; color: #8B8B8B;">{{pregunta.puntosPositivos}}</h1>
+            <div class="addbutton"></div>
+            <div class="minbutton"></div>
+            
+        </div>
     </body>
     {% if message %}
         <div><span style="color: red">{{ message }}</span></div>
@@ -19,6 +26,8 @@
     </div>
     <hr>
     <label for="exampleFormControlInput1">Respuestas</label>
+    <div class="arrow up"></div>
+    <div class="arrow down"></div>
     <br>
     <input class="btn btn-primary" type="submit" id="responder" name="responder" value="Responder"></button>
     <form id="respuesta" action="/preguntas/crearRespuesta/{{pregunta.id}}" enctype="multipart/form-data" method="post" action="/foo/">
