@@ -126,14 +126,26 @@ def editarProyecto(request, nombre):
         enlace_video =request.POST["enlaceVideo"]
         enlace_descargar = request.POST["enlaceDescargar"]
         
-        #if(len(fase)!=1):
-         #   return render(request,f"proyectos/editarProyecto/{nombre}",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles,
-          #   "message": "Seleccione una (1) fase"})
-        #if(len(frameworks)==0):
-         #   return render(request,f"proyectos/editarProyecto/{nombre}",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles,
-          #   "message": "Seleccione al menos un (1) framework"})
+        if(len(fase)!=1):
+            return render(request, "main/error.html", {
+                "mensaje": " Debe seleccionar (1) fase."
+            })
+        if(len(frameworks)==0):
+            return render(request, "main/error.html", {
+                "mensaje": "Debe seleccionar al menos (1) framework."
+            })
+        if(len(generos)==0):
+            return render(request, "main/error.html", {
+                "mensaje": "Debe seleccionar al menos (1) genero."
+            })
         fase = fase[0]
-        imagen = request.FILES['imagen']
+
+        user = Usuario.objects.get(username=request.user)
+
+        if 'imagen' in request.FILES:
+            imagen = request.FILES['imagen']
+        else:
+            imagen=user.imagen
 
 
         try:
