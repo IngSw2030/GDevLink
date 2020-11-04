@@ -76,6 +76,14 @@ def proyecto(request,nombre):
         actualizaciones = proyecto.actualizaciones.all()
         for act in actualizaciones:
             print(act.descripcion)
+
+        participacion = Participacion.objects.get(usuario=request.user)
+        if participacion.permiso == PosiblesPermisos.MASTER or participacion.permiso == PosiblesPermisos.ADMIN:
+            admin = True
+        else:
+            admin = False
+
+
         #Revisar si el usuario sigue el proyecto
         usuario = Usuario.objects.get(username=request.user.get_username())
         if usuario.proyectos_seguidos.filter(nombre = nombre):
@@ -90,7 +98,8 @@ def proyecto(request,nombre):
             "fase": fase,
             "actualizaciones": actualizaciones,
             "seguidores": proyecto.numero_seguidores(),
-            "siguiendo": siguiendo
+            "siguiendo": siguiendo,
+            "administrador":admin
         })
     except Proyecto.DoesNotExist:
         return render(request, "main/error.html", {
@@ -117,14 +126,26 @@ def editarProyecto(request, nombre):
         enlace_video =request.POST["enlaceVideo"]
         enlace_descargar = request.POST["enlaceDescargar"]
         
-        #if(len(fase)!=1):
-         #   return render(request,f"proyectos/editarProyecto/{nombre}",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles,
-          #   "message": "Seleccione una (1) fase"})
-        #if(len(frameworks)==0):
-         #   return render(request,f"proyectos/editarProyecto/{nombre}",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesGeneros,"roles":PosiblesRoles,
-          #   "message": "Seleccione al menos un (1) framework"})
+        if(len(fase)!=1):
+            return render(request, "main/error.html", {
+                "mensaje": " Debe seleccionar (1) fase."
+            })
+        if(len(frameworks)==0):
+            return render(request, "main/error.html", {
+                "mensaje": "Debe seleccionar al menos (1) framework."
+            })
+        if(len(generos)==0):
+            return render(request, "main/error.html", {
+                "mensaje": "Debe seleccionar al menos (1) genero."
+            })
         fase = fase[0]
-        imagen = request.FILES['imagen']
+
+        user = Usuario.objects.get(username=request.user)
+
+        if 'imagen' in request.FILES:
+            imagen = request.FILES['imagen']
+        else:
+            imagen=user.imagen
 
 
         try:
@@ -245,6 +266,10 @@ def eliminarMiembros (request, nombre):
             participacion = Participacion.objects.get(usuario = nuevo_usuario)
             participacion.delete()
             return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
+        except Participacion.DoesNotExist:
+            return render(request, "main/error.html", {
+            "mensaje": "El Usuario no participa en el proyecto."
+        })
         except Usuario.DoesNotExist:
             return render(request, "main/error.html", {
             "mensaje": "Usuario no encontrado."
@@ -287,6 +312,10 @@ def agregarAdministrador (request, nombre):
             participacion.permiso = PosiblesPermisos.ADMIN
             participacion.save()
             return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
+        except Participacion.DoesNotExist:
+            return render(request, "main/error.html", {
+            "mensaje": "El Usuario no participa en el proyecto."
+        })
         except Usuario.DoesNotExist:
             return render(request, "main/error.html", {
             "mensaje": "Usuario no encontrado."
@@ -295,7 +324,7 @@ def agregarAdministrador (request, nombre):
             print(e)
             return render(request, "main/error.html", {
                 "mensaje": "Se produjo un error al agregar un administrador"
-            }) 
+        }) 
     else:
         try:
             proyecto = Proyecto.objects.get(nombre=nombre)
@@ -329,6 +358,10 @@ def eliminarAdministrador (request, nombre):
             participacion.permiso = PosiblesPermisos.MIEMBRO
             participacion.save()
             return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
+        except Participacion.DoesNotExist:
+            return render(request, "main/error.html", {
+            "mensaje": "El Usuario no participa en el proyecto."
+        })
         except Usuario.DoesNotExist:
             return render(request, "main/error.html", {
             "mensaje": "Usuario no encontrado."

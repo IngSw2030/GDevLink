@@ -66,7 +66,9 @@
                     <span>{{proyecto.enlace_juego}}</span>             
 
             </div>
+            {% if administrador %}
             <a  href="/proyectos/editarProyecto/{{proyecto.nombre}}">Editar el proyecto</a>
+            {% endif %}
         </div>
         <div class="space">
             
@@ -81,7 +83,9 @@
                     <li><a href="/usuarios/visitarPerfil/{{key}}">{{key}} - {{value}}</a></li>
                     {% endfor %}
                 </div>
+                {% if administrador %}
                 <a  href="/proyectos/gestionMiembros/{{proyecto.nombre}}">Editar miembros</a>
+                {% endif %}
             </div> 
         </div>
         <div class="space"></div>
