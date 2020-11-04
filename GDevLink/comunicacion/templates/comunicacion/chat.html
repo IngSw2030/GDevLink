@@ -73,7 +73,7 @@
         if(creada == 1){
                 chatSocket.onmessage = function(e) {
                 const data = JSON.parse(e.data);
-                $('.con').append('<div class="yours messages">' + data.message + '</div>')
+                $('.con').append('<div class="yours messages"><div class="message">'+ data.message + '</div></div>')
                 //document.querySelector('#chat-log').value += (data.message + '\n')
             };
 
