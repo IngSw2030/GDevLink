@@ -17,11 +17,19 @@
     <div>
         <p>{{pregunta.texto}}</p>
     </div>
-    <input class="btn btn-primary" type="submit" id="responder" value="Responder"></button>
     <hr>
-    <input class="btn btn-primary  topbtn" type="submit" id="cancelar" style="background-color:red; display: none;" value="Cancelar"></button>
     <label for="exampleFormControlInput1">Respuestas</label>
-    <textarea class="form-control" name="texto" id="exampleFormControlTextarea1" rows="3" style="display: none;"></textarea>
+    <br>
+    <input class="btn btn-primary" type="submit" id="responder" name="responder" value="Responder"></button>
+    <form id="respuesta" action="/preguntas/crearRespuesta/{{pregunta.id}}" enctype="multipart/form-data" method="post" action="/foo/">
+        {% csrf_token %}
+        <div class="overflow-auto" id="agregarRespuesta" style="display:none;">
+            <textarea class="form-control" name="texto" id="exampleFormControlTextarea1" rows="3"></textarea>
+            <input class="btn btn-primary" type="submit" id="crearRespuesta" name="crearRespuesta" value="Responder"></button></td>
+        </div>
+    </form>
+    <input class="btn btn-primary" type="submit" id="cancelar" style="background-color:red; display: none;" value="Cancelar"></button>
+    
     <script type="text/javascript">
                 
         document.addEventListener('DOMContentLoaded', function () {
@@ -30,34 +38,48 @@
             cambiarRespuesta);
             var y=document.getElementById("cancelar");
             y.addEventListener("click",cambiarRespuesta);
-            var z=document.getElementById("publicar");
+            var z=document.getElementById("crearRespuesta");
             z.addEventListener("click",validar);
         });
 
         function validar(button){
             event.preventDefault();
-            var texto=document.getElementById("texto").value;
-            if(texto=="" && imagen ==""){
+            var texto=document.getElementsByName("texto")[0].value;
+            if(texto==""){
                 alert("Datos de respuesta incompletos");
                 return;
             }
-            document.getElementById("actualizacion").submit();
+            document.getElementById("respuesta").submit();
         }
 
         function cambiarRespuesta(button){
             var y=document.getElementById("cancelar");
             var x=document.getElementById("responder");
             if(x.style.display!="none"){
-                document.getElementById("texto").style.display="block";
+                document.getElementById("agregarRespuesta").style.display="block";
                 document.getElementById("cancelar").style.display="inline";
                 x.style.display="none";
             }else if(y.style.display!="none"){
-                document.getElementById("texto").style.display="none";
+                document.getElementById("agregarRespuesta").style.display="none";
                 document.getElementById("responder").style.display="inline";
                 y.style.display="none";
             }  
         }
     </script>
+    <br>
+    {% if respuestas %}
+        {% for respuesta in respuestas %}
+            <div>
+                <p>{{respuesta.texto}}</p>
+                <hr>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>No hay respuestas</p>
+    {% endif %}
+    <p><a class="btn btn-primary topbtn" href="{%url 'preguntas'%}">Volver</a></p>
+
+
 {% endblock %}
 
 {% block script %}
