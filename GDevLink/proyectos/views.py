@@ -77,7 +77,7 @@ def proyecto(request,nombre):
         for act in actualizaciones:
             print(act.descripcion)
 
-        participacion = Participacion.objects.get(usuario=request.user)
+        participacion = Participacion.objects.get(usuario=request.user, proyecto=proyecto)
         if participacion.permiso == PosiblesPermisos.MASTER or participacion.permiso == PosiblesPermisos.ADMIN:
             admin = True
         else:
