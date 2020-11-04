@@ -56,7 +56,7 @@ def crearRespuesta(request,ids):
         pregunta=Pregunta.objects.get(id=ids)
         texto = request.POST['texto']
     try:
-        respuesta = Respuesta(texto=texto,pregunta=pregunta,autor=request.user)
+        respuesta = Respuesta(texto=texto,pregunta=pregunta,autor=request.user,puntosPositivos=0,puntosNegativos=0)
         respuesta.save()
         pregunta=Pregunta.objects.get(id=ids)
         respuestas=pregunta.respuestas.all()

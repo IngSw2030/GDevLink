@@ -22,3 +22,22 @@
     border-top: 10px solid #8B8B8B;
     display: inline-block;
   }
+
+  .addbuttonRes {
+    width: 0px; 
+    height: 0px; 
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-bottom: 5px solid #8B8B8B;
+    display: inline-block;
+    position: absolute;
+  }
+  
+  .minbuttonRes {
+    width: 0; 
+    height: 0; 
+    border-left: 5px solid transparent;
+    border-right: 5px solid transparent;
+    border-top: 5px solid #8B8B8B;
+    display: inline-block;
+  }
