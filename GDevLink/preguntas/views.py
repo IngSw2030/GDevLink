@@ -42,10 +42,9 @@ def verPregunta(request,ids):
     try:
         pregunta=Pregunta.objects.get(id=ids)
         respuestas=pregunta.respuestas.all()
-        len(pregunta.puntosPositivos.all())
         return render(request,"preguntas/verPregunta.html",{
             "pregunta":pregunta, "respuestas":respuestas, 
-            "pPuntosPositivos":len(pregunta.puntosPositivos)})
+            "pPuntosPositivos":pregunta.puntos_positivos()})
     except Pregunta.DoesNotExist:
         return HttpResponseRedirect(reverse("preguntas"))
     return HttpResponseRedirect(reverse("preguntas"))

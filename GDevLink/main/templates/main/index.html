@@ -11,16 +11,52 @@
 </div>
 {% endblock %}
 {% block body %}
+<link rel="stylesheet" href="{% static 'main/indexStyles.css' %}">
     {% if user.is_authenticated %}
-        <h2>Actualizaciones Recientes</h2>
+        
         {% for actualizacion in actualizaciones%}
-            <h4> {{actualizacion.proyecto.nombre}} </h4>
-            <p> {{actualizacion.descripcion}} </p>
+            <div class="contenido">
+                <h4> {{actualizacion.proyecto.nombre}} </h4>
+                <div class="logop">
+                    {% if not actualizacion.imagen %}
+                    <a href="" class="image fit" id="limage"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+                    {% else %}
+                    <img src="{{ actualizacion.imagen.url }}" class="" id="limage" alt="My Image" />
+                    {% endif %}
+                </div>
+                <h2>{{pop.nombre}}</h2>
+                <div>
+                    <p> {{actualizacion.descripcion}} </p>   
+                </div> 
+            </div>
+            <div class="space"></div>
+            
+            
         {% empty %}
             <p> En este momento no hay actualizaciones. </p>
         {% endfor %}
     {% else %}
-        <h2>Destacados</h2>
+
+    {% for pop in populares %}
+    <div class="contenido">
+        <div class="logop">
+            {% if not pop.imagen %}
+            <a href="" class="image fit" id="limage"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+            {% else %}
+            <img src="{{ pop.imagen.url }}" class="" id="limage" alt="My Image" />
+            {% endif %}
+        </div>
+        <h2>{{pop.nombre}}</h2>
+        <div>
+            <p>{{pop.descripcion}}</p>    
+        </div> 
+    </div>
+    <div class="space"></div>
+    {% endfor %}
+    
+    
+
+     
     {% endif %}
 {% endblock %}
 

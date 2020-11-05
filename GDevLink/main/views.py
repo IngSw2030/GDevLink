@@ -16,4 +16,13 @@ def index(request):
                "actualizaciones": actualizaciones
           })
      else:
-          return render(request),"main/index.html"
+          todos = Proyecto.objects.all().order_by('seguidores')
+          populares = [None] * 4
+          i=0
+          for pop in todos:
+               populares[i] = pop
+               if i == 3:
+                    break
+               i = i+1
+                
+          return render(request,"main/index.html",{"populares": populares})

@@ -51,11 +51,15 @@
             y.addEventListener("click",cambiarRespuesta);
             var z=document.getElementById("crearRespuesta");
             z.addEventListener("click",validar);
-            var boton=document.getElementById("pPuntosPositivos");
-            pp.addEventListener("click",agregarPuntoPositivoPregunta)
+
+            const pregunta=document.querySelector('#pregunta').innerHTML;
+            const botonPPuntosPositivos=document.getElementById("pPuntosPositivos");
+            botonPPuntosPositivos.addEventListener('click', () => {
+                agregarPuntoPositivoPregunta(pregunta);
+            });
         });
 
-        function agregarPuntoPositivoPregunta(){
+        function agregarPuntoPositivoPregunta(pregunta){
             alert("works")
         };
 

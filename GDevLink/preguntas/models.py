@@ -20,7 +20,7 @@ class Respuesta(models.Model):
     texto =  models.CharField(max_length=1000, blank=True,null=True)
     autor = models.ForeignKey('usuarios.Usuario',on_delete=models.CASCADE,related_name='respuestas',blank=False,null=False)
     puntosPositivos =models.ManyToManyField('usuarios.Usuario', blank=True, related_name="respuestasPuntosPositivos")
-    puntosNegativos =models.ManyToManyField('usuarios.Usuario', blank=True, related_name="resouestasPuntosNegativos")
+    puntosNegativos =models.ManyToManyField('usuarios.Usuario', blank=True, related_name="respuestasPuntosNegativos")
     def puntos_positivos(self):
         return self.puntosPositivos.all().count()
     def puntos_negativos(self):
