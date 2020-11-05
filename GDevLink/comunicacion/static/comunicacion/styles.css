@@ -12,7 +12,7 @@
     
 .con{
     background: #202124;
-    height: 300px;
+    height: 400px;
     
     
 }
@@ -44,7 +44,7 @@
   }
   
   .messages {
-    margin-top: 30px;
+    margin-top: 5px;
     display: flex;
     flex-direction: column;
   }
@@ -52,9 +52,12 @@
   .message {
     border-radius: 20px;
     padding: 8px 15px;
-    margin-top: 5px;
-    margin-bottom: 5px;
+    margin-top: 4px;
+    margin-bottom: 4px;
     display: inline-block;
+    bottom: 0;
+    background: linear-gradient(to bottom, #02d9c5 0%, #02d9c5 100%);
+    font-weight: bold;
   }
   
   .yours {
@@ -63,7 +66,7 @@
   
   .yours .message {
     margin-right: 25%;
-    background-color: #eee;
+    
     position: relative;
   }
   
@@ -75,34 +78,13 @@
   .mine .message {
     color: white;
     margin-left: 25%;
-    background: linear-gradient(to bottom, #00D0EA 0%, #0085D1 100%);
+    
     background-attachment: fixed;
     position: relative;
   }
 
-  /*
   
-   {% if conversacion.mensajes %}
-                    {% for mensaje in conversacion.mensajes.all %}
 
-                    {% if mensaje.autor == request.user %}
+ 
 
-                    <div class="mine messages">
-                        <div class="message">
-                        {{mensaje.texto}}
-                        </div>
-                    </div>
-                    {% else %}
-
-                    <div class="yours messages">
-                        <div class="message">
-                            {{mensaje.texto}}
-                        </div>
-                    
-                    </div>
-
-                    {% endif %}
-
-                    {% endfor %}
-                {% endif %}
-  <textarea id="chat-log" cols="100" rows="20"></textarea><br>*/
+  

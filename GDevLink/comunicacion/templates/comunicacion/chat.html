@@ -19,30 +19,52 @@
          
    
     
-        <div class="conversacion contenidoPrincipal">
-            <div>
-                
-            </div>
+        <div class="conversacion">
+            
             <div> 
                 <div class="con overflow-auto">
                 
-                <!--
+                {% if conversacion.mensajes %}
+                    {% for mensaje in conversacion.mensajes.all %}
 
-                   
-                    
-                -->
-                
-                 <div class="yours messages">
+                        {% if mensaje.autor == request.user %}
 
-                 </div>   
-                    
-  
+                        <div class="mine messages">
+                            <div class="message">
+                            {{mensaje.texto}}
+                            </div>
+                        </div>
+                        {% else %}
+
+                        <div class="yours messages">
+                            <div class="message">
+                                {{mensaje.texto}}
+                            </div>
+                        
+                        </div>
+
+                        {% endif %}
+
+                    {% endfor %}
+                {% endif %}
+
+                <div class="yours messages" id="currentYours">
+
+                </div>  
+
+                 <div class="mine messages" id="currentMine">
+
+                </div>  
+                                                                        
                 </div>
                 
             </div> 
             
-                <input id="chat-message-input" type="text" name="msg" size="100"><br>
-                <input id="chat-message-submit" type="button" value="Send">
+            <div id="chat__form">
+                <input id="chat-message-input" type="text" placeholder="Escribe un mensaje" size="130">
+                <button id="chat-message-submit" type="button" >Send</button>
+            </div>
+            
             
         </div>
         
@@ -54,6 +76,10 @@
     {{ room_name|json_script:"room-name" }}
     <script>
         var creada = 0;
+        var makescrollbottom = function(){
+            $("div.con").scrollTop($("div.con").prop("scrollHeight"));
+        }
+        makescrollbottom();
       
             const roomName = JSON.parse(document.getElementById('room-name').textContent);
             const user_username = JSON.parse(document.getElementById('user_username').textContent);
@@ -75,12 +101,13 @@
                 const data = JSON.parse(e.data);
                 console.log(data);
                 if(data.autor == user_username){
-                    $('.con').append('<div class="mine messages"><div class="message">'+ data.message + '</div></div>')
+                    $('#currentMine').append('<div class="message">'+ data.message + '</div>')
                 }
                 else{
-                    $('.con').append('<div class="yours messages"><div class="message">'+ data.message + '</div></div>')
+                    $('#currentYours').append('<div class="message">'+ data.message + '</div>')
                 //document.querySelector('#chat-log').value += (data.message + '\n')
                 }
+                makescrollbottom();
                 
             };
 
@@ -102,7 +129,7 @@
                     'message': message,
                     'autor': user_username
                 }));
-                setTimeout(() => console.log("Third"), 3000)
+                
                 messageInputDom.value = '';
             };
         }
