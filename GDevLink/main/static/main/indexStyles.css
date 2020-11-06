@@ -1,26 +1,33 @@
 #tbodyID{
-background-color: transparent;
+  background-color: transparent;
 }
 
 .contenido{
     width: 100%; height:auto;  margin:0px;
     box-shadow: 20mm;
     background: #ebebeb;
+    border-radius: 8px;
+    padding: 10px;
 }
 
 #limage{
-    margin-bottom: -300px;
-    margin-top: -300px;
-    width: 100%;
-  }
+  margin-bottom: -300px;
+  margin-top: -300px;
+  width: 100%;
+}
   
-  .logop{
-    height: 300px;
-    overflow: hidden;
-   
-    width: 100%;
-    
-    
-  }
+.logop{
+  height: 300px;
+  overflow: hidden;
+  width: 100%;
+}
 
-  
+.timestamp{
+  color: gray;
+  font-size: small;
+}
+
+.titulo{
+  color: white;
+  margin: 20px;
+}
