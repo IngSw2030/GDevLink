@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from main.enum import *
-from main.enum import PosiblesFrameworks, PosiblesGeneros, PosiblesRoles
+from main.enum import PosiblesFrameworks, PosiblesGeneros, PosiblesRoles, PosiblesPermisos
 from proyectos.models import Proyecto, Participacion, Usuario, Actualizacion
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
@@ -72,6 +72,7 @@ def proyecto(request,nombre):
             roles_p = ""
             for rol in participacion.roles:
                 roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+            roles_p = roles_p + " - " + str(PosiblesPermisos.labels[PosiblesPermisos.values.index(participacion.permiso)])
             participaciones[participacion.usuario.username] = roles_p
         actualizaciones = proyecto.actualizaciones.all()
         for act in actualizaciones:
@@ -82,6 +83,8 @@ def proyecto(request,nombre):
             admin = True
         else:
             admin = False
+
+        
 
 
         #Revisar si el usuario sigue el proyecto
@@ -202,8 +205,11 @@ def gestionMiembros (request, nombre):
     for participacion in proyecto.participaciones.all():
                 roles_p = ""
                 for rol in participacion.roles:
-                    roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+                    roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)]) 
+                    
+                roles_p = roles_p + " - " + str(PosiblesPermisos.labels[PosiblesPermisos.values.index(participacion.permiso)])
                 participaciones[participacion.usuario.username] = roles_p
+
     return render(request,"proyectos/gestionMiembros.html",{
         "proyecto": proyecto,
         "miembros": participaciones
@@ -417,3 +423,6 @@ def seguir(request,nombre):
             proyecto.seguidores.add(usuario)
         proyecto.save()
         return HttpResponse(status=200)
+
+def explorarProyectos(request):
+    return render(request,"proyectos/explorarProyectos.html")

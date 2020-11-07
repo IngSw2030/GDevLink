@@ -12,5 +12,6 @@ urlpatterns = [
     path("agregarAdministrador/<str:nombre>", views.agregarAdministrador, name="agregarAdministrador"),
     path("eliminarAdministrador/<str:nombre>", views.eliminarAdministrador, name="eliminarAdministrador"),
     path("nuevaActualizacion/<str:nombre>", views.nuevaActualizacion, name="nuevaActualizacion"),
-    path("seguir/<str:nombre>", views.seguir, name="seguir")
+    path("seguir/<str:nombre>", views.seguir, name="seguir"),
+    path("explorarProyectos", views.explorarProyectos, name="explorarProyectos")
 ]
