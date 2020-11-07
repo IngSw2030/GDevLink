@@ -5,7 +5,6 @@
 {% endblock %}
 {% block bodyhead %}
 <div class="header">
-    
     <a href="" class="image fit"><img src="{% static 'main/2738.jpg' %}" alt="#" /></a> 
     <a href="https://www.freepik.com/vectors/background">by upklyak</a>
 </div>
@@ -13,29 +12,40 @@
 {% block body %}
 <link rel="stylesheet" href="{% static 'main/indexStyles.css' %}">
     {% if user.is_authenticated %}
-        
-        {% for actualizacion in actualizaciones%}
-            <div class="contenido">
-                <h4> {{actualizacion.proyecto.nombre}} </h4>
-                <div class="logop">
-                    {% if not actualizacion.imagen %}
-                    <a href="" class="image fit" id="limage"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
-                    {% else %}
-                    <img src="{{ actualizacion.imagen.url }}" class="" id="limage" alt="My Image" />
+        <div>
+            <h2 class="titulo"> Actualizaciones de los proyectos que sigues </h2>
+            {% for actualizacion in actualizaciones%}
+                <div class="contenido">
+                    <h4> 
+                        <a href="/proyectos/proyecto/{{actualizacion.proyecto.nombre}}"> {{actualizacion.proyecto.nombre}} </a>
+                    </h4>
+                    <p class="timestamp"> {{actualizacion.fecha}} </p>
+                    <p> {{actualizacion.descripcion}} </p>   
+                    {% if actualizacion.imagen %}
+                        <div class="logop">
+                            <img src="{{ actualizacion.imagen.url }}" class="" id="limage" alt="My Image" />
+                        </div>
                     {% endif %}
                 </div>
-                <h2>{{pop.nombre}}</h2>
-                <div>
-                    <p> {{actualizacion.descripcion}} </p>   
+                <div class="space"></div>     
+            {% empty %}
+                <div class="contenido">
+                    <p> En este momento no hay actualizaciones. </p>
                 </div> 
-            </div>
-            <div class="space"></div>
-            
-            
-        {% empty %}
-            <p> En este momento no hay actualizaciones. </p>
-        {% endfor %}
+            {% endfor %}
+            <ul class="pagination">
+                {% if pagina_anterior != -1 %}
+                    <li class="page-item"><a class="page-link" href="/?numero_pagina={{pagina_anterior}}">Anterior</a></li>
+                {% endif %}
+                {% if pagina_siguiente != -1 %}
+                    <li class="page-item"><a class="page-link" href="/?numero_pagina={{pagina_siguiente}}">Siguiente</a></li>
+                {% endif %}
+            </ul>    
+        </div>
+        
     {% else %}
+
+    <h2 class="titulo"> Proyectos más populares </h2>
 
     {% for pop in populares %}
     <div class="contenido">
