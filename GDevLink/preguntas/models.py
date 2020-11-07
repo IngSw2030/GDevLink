@@ -25,3 +25,5 @@ class Respuesta(models.Model):
         return self.puntosPositivos.all().count()
     def puntos_negativos(self):
         return self.puntosNegativos.all().count()
+    def puntos(self):
+        return self.puntosPositivos.all().count()-self.puntosNegativos.all().count()
