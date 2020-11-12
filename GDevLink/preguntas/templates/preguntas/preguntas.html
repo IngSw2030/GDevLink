@@ -10,10 +10,13 @@
     {% csrf_token %}
     <body>
         <div class="header" id="center"><h1>Preguntas</h1></div>
+        <!-- Seccion de mensajes de errores -->
         {% if message %}
             <div><span style="color: red">{{ message }}</span></div>
         {% endif %}
+        <!-- Seccion para ir a crear pregunta -->
         <p><a class="btn btn-primary topbtn" href="{%url 'crearPregunta'%}">Crear Pregunta</a></p>
+        <!-- Seccion para desplegar barra de busueda -->
         <div class="dropdown">
             <button onclick="myFunction()" class="btn btn-primary">Buscar Pregunta</button>
             <div id="myDropdown" class="dropdown-content">
@@ -27,6 +30,7 @@
                 {% endif %}
             </div>
           </div>
+        <!-- Seccion de preguntas mas puntuadas -->
         <div>
             {% if not preguntas %}
                 <h2>No hay preguntas disponibles</h2>
@@ -41,12 +45,11 @@
         </div>
     </body>
     <script>
-        /* When the user clicks on the button,
-        toggle between hiding and showing the dropdown content */
+        /*Funcion para desplegar barra de busqueda*/
         function myFunction() {
           document.getElementById("myDropdown").classList.toggle("show");
         }
-        
+        /*Funcion para filtrar la pregunta buscada*/
         function filterFunction() {
           var input, filter, ul, li, a, i;
           input = document.getElementById("myInput");
@@ -58,7 +61,7 @@
             if (txtValue.toUpperCase().indexOf(filter) > -1) {
               a[i].style.display = "";
             } else {
-              a[i].style.display = "none";
+              a[i].style.display = "Sin Resultados";
             }
           }
         }
