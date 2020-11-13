@@ -9,9 +9,11 @@
     <link rel="stylesheet" href="{% static 'preguntas/styles.css' %}">     
     {% csrf_token %}
     <body>
+        <!-- Seccion formulario para crear la pregunta -->
         <form action="{% url 'crearPregunta' %}" enctype="multipart/form-data" method="post" action="/foo/">
         {% csrf_token %}
             <div class="header" id="center"><h1>Crear Pregunta</h1></div>
+            <!-- Seccion de mensaje de error -->
             {% if message %}
                 <div><span style="color: red">{{ message }}</span></div>
             {% endif %}

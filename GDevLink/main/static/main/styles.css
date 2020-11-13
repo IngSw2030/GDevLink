@@ -71,7 +71,13 @@ html, body
 		line-height: 180%;
 	}
 	
-	
+	.contenido2{
+		width: 100%; height:auto;  margin:0px;
+		box-shadow: 20mm;
+		background: #ebebeb;
+		border-radius: 8px;
+		padding: 10px;
+	}
 	
 	
 	

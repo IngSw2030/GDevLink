@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from main.enum import *
-from main.enum import PosiblesFrameworks, PosiblesGeneros, PosiblesRoles, PosiblesPermisos
+from main.enum import PosiblesFrameworks, PosiblesGeneros, PosiblesRoles, PosiblesPermisos, PosiblesFases
 from proyectos.models import Proyecto, Participacion, Usuario, Actualizacion
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
@@ -425,4 +425,32 @@ def seguir(request,nombre):
         return HttpResponse(status=200)
 
 def explorarProyectos(request):
-    return render(request,"proyectos/explorarProyectos.html")
+
+    if request.method == "POST":
+        return render(request,"proyectos/explorarProyectos.html",{
+                "generos":PosiblesGeneros,
+                "fases":PosiblesFases,
+                "frameworks":PosiblesFrameworks
+            } )
+
+    else:
+        proyectos = []
+        proyectos = Proyecto.objects.all()
+        todos = Proyecto.objects.all().order_by('seguidores')
+        populares = [None] * 4
+        i=0
+        for pop in todos:
+            populares[i] = pop
+            if i == 3:
+                break
+            i = i+1
+
+        return render(request,"proyectos/explorarProyectos.html",{
+                "generos":PosiblesGeneros,
+                "fases":PosiblesFases,
+                "frameworks":PosiblesFrameworks,
+                "proyectos":proyectos,
+                "populares": populares
+            } )
+
+    

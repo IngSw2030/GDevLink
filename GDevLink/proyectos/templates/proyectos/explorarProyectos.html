@@ -2,11 +2,118 @@
 {% load static %}
 
 {% block body %}
+<link rel="stylesheet" href="{% static 'proyectos/styles.css' %}">
+<h2 align="center">Exploración de Proyectos</h2>
+<br><hr>
 
-<h2 align="center">Exploracion de Proyectos</h2>
+<form action="/proyectos/explorarProyectos" method="POST">
+    <input class="form-control" autofocus type="text" name="barraBusqueda" value=""><br>
+    <h3 class="titulo">Filtros de Busqueda</h3>
+    <br>
+    <div class="form-group col-md-6">
+        <div class="tbodyNegro">
+            <label for="exampleFormControlInput1">Generos</label>
+            <hr>
+            {% for genero in generos %}
+            <label class="checkbox" for="defaultCheck1">
+                <input class="form-check-input" name="generos" type="checkbox" id="defaultCheck1" value="{{genero}}">
+                {{genero.label}}
+            </label>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="form-group col-md-6">
+        <label class="fexampleFormControlInput1">Fase de desarrollo</label>
+        <hr>
+        {% for fase in fases %}
+        <label class="radio" for="exampleRadios1">
+            <input class="form-check-input" name="fase" type="radio" id="exampleRadios1" value="{{fase}}">
+            {{fase.label}}
+        </label>
+        {% endfor %}
+    </div>
+    <div class="form-group col-md-6">
+        <label class="fexampleFormControlInput1"> FrameWorks </label>
+        <hr>
+        {% for framework in frameworks %}
+        <label class="checkbox" for="defaultCheck3">
+            <input class="form-check-input" name="frameworks" type="checkbox" id="defaultCheck3" value="{{framework}}">
+            {{framework.label}}
+        </label>
+        {% endfor %}
+    </div>
+    <button type="submit" class="btn btn-primary">Buscar</button>
+
+    </div>
+
+</form>
+<br>
 
 
+</div>
+<div class="space"></div>
+<div class="" align="center">
 
+    {% for pop in populares %}
+    <div class="tbody">
+        <div class="logop">
+            {% if not pop.imagen %}
+            <a href="" class="image fit" id="limage"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+            {% else %}
+            <img src="{{ pop.imagen.url }}" class="" id="limage" alt="My Image" width="500" />
+            {% endif %}
+        </div>
+        <h2 style="color: black;">{{pop.nombre}}</h2>
+        <div>
+            <p>{{pop.descripcion}}</p>
+        </div>
+        <div align="center">
+            <br>
+            <h3> Generos </h3>
+            <hr>
+            <ul>
+                {% for genero in generos %}
+                {% if genero in pop.generos%}
+                <li>{{genero.label}}</li>
+                {% endif %}
+                {% endfor %}
+                <br>
+            </ul>
+            <h3> FrameWorks </h3>
+            <hr>
+            <ul>
+                {% for framework in frameworks %}
+                {% if framework in pop.frameworks%}
+                <li>{{framework.label}}</li>
+                {% endif %}
+                {% endfor %}
+                <br>
+            </ul>
+            <br>
+            <hr>
+            <h3> Fase de Desarrollo </h3>
+            <hr>
+            <ul>
+                {% for fase in fases %}
+                {% if fase in pop.fase%}
+                <li>{{fase.label}}</li>
+                {% endif %}
+                {% endfor %}
+                <br>
+            </ul>
 
+            <h3>  Numero de seguidores: {{pop.numero_seguidores}} </h3>
 
+        </div>
+
+        <hr style="color: black;">
+        <br><br>
+    </div>
+    <div class="space"></div>
+    <div class="space"></div>
+    <div class="space"></div>
+    {% endfor %}
+
+</div>
+<div class="space"></div>
 {% endblock %}

@@ -9,8 +9,10 @@
     <link rel="stylesheet" href="{% static 'preguntas/styles.css' %}">     
     {% csrf_token %}
     <body>
+        <!-- Seccion titulo de la pregunta con puntos -->
         <div class="header" id="center">
-            <h1 style="display: inline-block; color: #8B8B8B;" id="puntosPregunta" data-contador="{{puntosPregunta}}">{{puntosPregunta}}</h1>
+            <h1 style="display: none; color: #8B8B8B;" id="puntosPregunta" data-contador="{{puntosPregunta}}">{{puntosPregunta}}</h1>
+            <!-- Seccion Puntos de la pregunta -->
             {% if preguntaPos %}
                 <a class="addbutton" data-add-Puntos="{{preguntaPos}}" id="preguntaPuntosPositivos" style="border-bottom-color: goldenrod;"></a>
                 <a class="minbutton" data-sub-Puntos="{{preguntaNeg}}" id="preguntaPuntosNegativos"></a>
@@ -22,30 +24,32 @@
                     <a class="minbutton" data-sub-Puntos="{{preguntaNeg}}" id="preguntaPuntosNegativos"></a>
                 {% endif %}
             {% endif %}
-            
+            <!-- Seccion Titulo de la pregunta -->
             <h1 id="" style="display: inline-block; margin-left: 15px;">{{pregunta.titulo}}</h1>
             <p id="preguntaId" data-id="{{pregunta.id}}" style="font-size: 10px;display: inline-block;">{{pregunta.id}}</p>
         </div>
     </body>
-    <div >
-        
-    </div>
+    <!-- Seccion mensajes de error -->
     {% if message %}
         <div><span style="color: red">{{ message }}</span></div>
     {% endif %} 
+    <!-- Seccion descripcion de la pregunta con puntos -->
     <div style="margin-left: 25px; margin-top: 15px;">
         <p>{{pregunta.texto}}</p>
     </div>
     <hr>
+    <!-- Seccion de respuestas -->
     <label for="exampleFormControlInput1">Respuestas</label>
     <div class="arrow up"></div>
     <div class="arrow down"></div>
     <br>
+    <!-- Seccion para crear una respuesta -->
     {% if user.is_authenticated %}
         <input class="btn btn-primary" type="submit" id="responder" name="responder" value="Responder"></button>
     {% else %}
         Para responder <a href="{% url 'login' %}">Inicia sesión aquí.</a>
     {% endif %}
+    <!-- Seccion formulario para crear la pregunta -->
     <form id="respuesta" action="/preguntas/crearRespuesta/{{pregunta.id}}" enctype="multipart/form-data" method="post" action="/foo/">
         {% csrf_token %}
         <div class="overflow-auto" id="agregarRespuesta" style="display:none;">
@@ -56,7 +60,7 @@
     <input class="btn btn-primary" type="submit" id="cancelar" style="background-color:red; display: none;" value="Cancelar"></button>
     
     <script type="text/javascript">
-                
+        /*creacion de los eventListener*/
         document.addEventListener('DOMContentLoaded', function () {
             var x=document.getElementById("responder");
             x.addEventListener("click",
@@ -76,7 +80,6 @@
                 agregarPuntoNegativoPregunta(pregunta);
             });
 
-           
             const seccionRespuestas=document.getElementById("seccionRespuestas");
             seccionRespuestas.addEventListener('click', () => {
                 if(event.target.id == "respuestaPuntosPositivos"){
@@ -89,6 +92,7 @@
             });
         });
         
+        /*Funion para agregar/quitar punto positivo a la Pregunta*/
         function agregarPuntoPositivoPregunta(pregunta){ 
             const botonPPuntosPositivos=document.querySelector("#preguntaPuntosPositivos");
             let puntosPregunta=document.getElementById("puntosPregunta");
@@ -116,7 +120,7 @@
                 headers: { "X-CSRFToken": csrftoken }
             });
         };
-
+        /*Funion para agregar/quitar punto negativos a la Pregunta*/
         function agregarPuntoNegativoPregunta(pregunta){ 
             const botonPPuntosNegativos=document.getElementById("preguntaPuntosNegativos");
             let puntosPregunta=document.getElementById("puntosPregunta");
@@ -144,7 +148,7 @@
                 headers: { "X-CSRFToken": csrftoken }
             });
         };
-
+        /*Funion para validar y  crear la informacion de la respuesta*/
         function validar(button){
             event.preventDefault();
             var texto=document.getElementsByName("texto")[0].value;
@@ -154,7 +158,7 @@
             }
             document.getElementById("respuesta").submit();
         }
-
+        /*Cambio de vistas entre crear respuesta y cancelar respuesta*/
         function cambiarRespuesta(button){
             var y=document.getElementById("cancelar");
             var x=document.getElementById("responder");
@@ -187,6 +191,7 @@
             return cookieValue;
         }
 
+        /*Funcion para seleccionar la mejor respuesta*/
         function evaluarRespuesta(pregunta,event){
             const respuesta=event.target.parentElement;
             const respuestas=document.getElementsByClassName("respuestaSingular")
@@ -212,7 +217,7 @@
                 headers: { "X-CSRFToken": csrftoken }
             });
         }
-
+        /*Funcion para agregar/quitar punto positivo a una respuesta*/
         function agregarPuntoPositivoRespuesta(pregunta,event){
             const respuesta=event.target.parentElement;
             const botonrespuestaPuntosNegativos=event.target.parentElement.getElementsByClassName('minbuttonRes')[0];
@@ -240,7 +245,7 @@
                 headers: { "X-CSRFToken": csrftoken }
             });
         }
-
+        /*Funcion para agregar/quitar punto negativo a una respuesta*/
         function agregarPuntoNegativoRespuesta(pregunta,event){
             const respuesta=event.target.parentElement;
             const botonrespuestaPuntosPositivos=event.target.parentElement.getElementsByClassName('addbuttonRes')[0];
@@ -271,6 +276,7 @@
     </script>
     <br>
     {% if respuestas %}
+        <!-- Seccion de la mejor respuesta -->
         <div id="seccionRespuestas" style="margin-top: 15px;">
             {% for respuesta in respuestas %}
                 {% if respuesta.mejorRespuesta %}
@@ -295,7 +301,7 @@
                     </div>
                 {% endif %}
             {% endfor %}
-            
+            <!-- Seccion de las respuestas -->
             {% for respuesta in respuestas %}
                 {% if not respuesta.mejorRespuesta %}
                     <div id="respuestaSingular" class="respuestaSingular" data-id="{{respuesta.respuesta.id}}">

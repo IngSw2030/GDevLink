@@ -7,16 +7,20 @@ from django.http import HttpResponse, HttpResponseRedirect
 from preguntas.models import Usuario, Pregunta, Respuesta
 from django.db.models import Count
 
+#Vista principal de las preguntas. 
 def preguntas(request):
+    #Se muestran las preguntas ordenadas por puntos
     preguntas=Pregunta.objects.all().annotate(puntos=Count('puntosPositivos') - Count('puntosNegativos')).order_by('-puntos')
     return render(request,"preguntas/preguntas.html",{"preguntas":preguntas})
 
+#Vista del formulario para crear una pregunta. El usuario debe edtar autentificado.
 @login_required(login_url='/usuarios/login')
 def crearPregunta(request):
     preguntas=Pregunta.objects.all().order_by('-puntosPositivos')
     if request.method == "POST":
         titulo = request.POST["titulo"]
         texto = request.POST["texto"]
+        #Revision de los parametros de las preguntas
         if(titulo == ""):
             return render(request,"preguntas/crearPregunta.html",{"preguntas":preguntas,
              "message": "Por favor ingresar el titulo de la pregunta"})
@@ -27,6 +31,7 @@ def crearPregunta(request):
         if result > 0:
             return render(request,"preguntas/crearPregunta.html",{"preguntas":preguntas,
              "message": "Titulo de la pregunta ya existe"})
+        #Creacion de la Pregunta
         try:
             pregunta=Pregunta(titulo=titulo,texto=texto,autor=request.user)
             pregunta.save()
@@ -34,6 +39,7 @@ def crearPregunta(request):
             preguntaPos=False
             preguntaNeg=False
             autor=True
+            #Se redirecciona a la pagina de la pregunta
             return render(request,"preguntas/verPregunta.html",{
             "pregunta":pregunta, "respuestas":respuestas, 
             "puntosPregunta":pregunta.puntos_positivos()-pregunta.puntos_negativos(),
@@ -45,12 +51,15 @@ def crearPregunta(request):
              "message": "Error al crear la pregunta"})
     return render(request, "preguntas/crearPregunta.html",{"preguntas":preguntas})
 
+#Ver la informacion de una Pregunta. Se recibe el id de la pregunta
 def verPregunta(request,ids):
+    #Se busca la pregunta seleccionada
     try:
         pregunta=Pregunta.objects.get(id=ids)
         usuario = Usuario.objects.get(username=request.user.get_username())
         respuestasOrdenadas=pregunta.respuestas.annotate(puntos=Count('puntosPositivos') - Count('puntosNegativos')).order_by('-puntos')
         respuestas=[]
+        #Se ordenan las restpuestas a la pregunta por puntos
         for r in respuestasOrdenadas:
             mejorRespuesta=None
             mR=False
@@ -66,7 +75,7 @@ def verPregunta(request,ids):
                 rn=False
             respuesta={"respuesta":r,"mejorRespuesta":mR,"positivo":rp,"negativo":rn}
             respuestas.append(respuesta)
-
+        #Se verifica si la pregunta esta puntuada por el usuario
         if usuario.preguntasPuntosPositivos.filter(id = ids):
             preguntaPos = True
             preguntaNeg = False
@@ -88,8 +97,10 @@ def verPregunta(request,ids):
     except Pregunta.DoesNotExist:
         return HttpResponseRedirect(reverse("preguntas"))
 
+#Vista para crear una respuesta a una pregunta. El usuari
 @login_required(login_url='/usuarios/login')
 def crearRespuesta(request,ids):
+    #Datos principales de la vista
     pregunta=Pregunta.objects.get(id=ids)
     respuestas=pregunta.respuestas.all()
     usuario = Usuario.objects.get(username=request.user.get_username())
@@ -104,10 +115,11 @@ def crearRespuesta(request,ids):
             preguntaNeg = False
     if request.method == "POST":
         texto = request.POST['texto']
+    #Creacion de la pregunta
     try:
         respuesta = Respuesta(texto=texto,pregunta=pregunta,autor=request.user)
         respuesta.save()
-
+        #Recuperaciona de datos para la pagina de la pregunta
         pregunta=Pregunta.objects.get(id=ids)
         usuario = Usuario.objects.get(username=request.user.get_username())
         respuestasOrdenadas=pregunta.respuestas.annotate(puntos=Count('puntosPositivos') - Count('puntosNegativos')).order_by('-puntos')
@@ -147,6 +159,7 @@ def crearRespuesta(request,ids):
             "preguntaPos":preguntaPos, "preguntaNeg":preguntaNeg,
             "autor":autor})
     except IntegrityError as e:
+         #Recuperaciona de datos para la pagina de la pregunta
         pregunta=Pregunta.objects.get(id=ids)
         usuario = Usuario.objects.get(username=request.user.get_username())
         respuestasOrdenadas=pregunta.respuestas.annotate(puntos=Count('puntosPositivos') - Count('puntosNegativos')).order_by('-puntos')
@@ -185,13 +198,14 @@ def crearRespuesta(request,ids):
             "puntosPregunta":pregunta.puntos_positivos()-pregunta.puntos_negativos(),
             "preguntaPos":preguntaPos, "preguntaNeg":preguntaNeg,
             "autor":autor})
-
-
+#Vista para Puntuar Positivamente una Pregunta
+@login_required(login_url='/usuarios/login')
 def puntuarPreguntaPos(request,ids):
     if request.method == 'PUT':
         print("si")
         pregunta=Pregunta.objects.get(id=ids)
         usuario = Usuario.objects.get(username=request.user.get_username())
+        #Si la pregunta ya estaba puntuada, se le quita el Punto
         if usuario in pregunta.puntosPositivos.all():
             pregunta.puntosPositivos.remove(usuario)
         else:
@@ -201,10 +215,13 @@ def puntuarPreguntaPos(request,ids):
         pregunta.save()
     return HttpResponse(status=200)
 
+#Vista para Puntuar Negativamente una Pregunta
+@login_required(login_url='/usuarios/login')
 def puntuarPreguntaNeg(request,ids):
     if request.method == 'PUT':
         pregunta=Pregunta.objects.get(id=ids)
         usuario = Usuario.objects.get(username=request.user.get_username())
+        #Si la pregunta ya estaba puntuada, se le quita el Punto
         if usuario in pregunta.puntosNegativos.all():
             pregunta.puntosNegativos.remove(usuario)
         else:
@@ -214,11 +231,14 @@ def puntuarPreguntaNeg(request,ids):
             pregunta.puntosPositivos.remove(usuario)
     return HttpResponse(status=200)
 
+#Vista para Seleccionar la mejor respuesta
+@login_required(login_url='/usuarios/login')
 def seleccionarMejorRespuesta(request,ids):
     if request.method == 'PUT':
         respuesta=Respuesta.objects.get(id=ids)
         pregunta=respuesta.pregunta
         idp=pregunta.id
+        #Si la pregunta ya estaba seleccionada, se le desselecciona
         if pregunta.mejorRespuesta is None:
             pregunta.mejorRespuesta=respuesta
         else:
@@ -228,11 +248,13 @@ def seleccionarMejorRespuesta(request,ids):
                 pregunta.mejorRespuesta=respuesta
         pregunta.save()
     return HttpResponse(status=200)
-
+#Vista para Puntuar Positivamente una Respuesta
+@login_required(login_url='/usuarios/login')
 def puntuarRespuestaPos(request,ids):
     if request.method == 'PUT':
         respuesta=Respuesta.objects.get(id=ids)
         usuario = Usuario.objects.get(username=request.user.get_username())
+        #Si la respuesta ya estaba puntuada, se le quita el Punto
         if usuario in respuesta.puntosPositivos.all():
             respuesta.puntosPositivos.remove(usuario)
         else:
@@ -241,11 +263,13 @@ def puntuarRespuestaPos(request,ids):
         if usuario in respuesta.puntosNegativos.all():
             respuesta.puntosNegativos.remove(usuario)
     return HttpResponse(status=200)
-
+#Vista para Puntuar Negativamente una Respuesta
+@login_required(login_url='/usuarios/login')
 def puntuarRespuestaNeg(request,ids):
     if request.method == 'PUT':
         respuesta=Respuesta.objects.get(id=ids)
         usuario = Usuario.objects.get(username=request.user.get_username())
+        #Si la respuesta ya estaba puntuada, se le quita el Punto
         if usuario in respuesta.puntosNegativos.all():
             respuesta.puntosNegativos.remove(usuario)
         else:
