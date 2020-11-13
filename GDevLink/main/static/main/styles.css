@@ -195,6 +195,8 @@ html, body
 /* Heading Titles                                                                */
 /*********************************************************************************/
 
+	
+
 	.title
 	{
 		margin-bottom: 3em;
@@ -227,7 +229,12 @@ html, body
 		position: relative;
 	} 
 
+	.indicador{
+		height: 30px;
+		background-color: white;
+	}
 
+	
 
 /*********************************************************************************/
 /* Logo                                                                          */

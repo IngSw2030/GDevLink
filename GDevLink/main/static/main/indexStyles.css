@@ -31,3 +31,17 @@
   color: white;
   margin: 20px;
 }
+
+#header-img{
+  margin-bottom: -320px;
+  margin-top: -180px;	
+}
+
+.header{
+  height: 400px;
+}
+
+.space
+  {
+    padding: 0.5em;
+  }
