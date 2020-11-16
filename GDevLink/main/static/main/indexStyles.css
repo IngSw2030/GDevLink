@@ -1,14 +1,9 @@
 #tbodyID{
-  background-color: transparent;
+  
+  
 }
 
-.contenido{
-    width: 100%; height:auto;  margin:0px;
-    box-shadow: 20mm;
-    background: #ebebeb;
-    border-radius: 8px;
-    padding: 10px;
-}
+
 
 #limage{
   margin-bottom: -300px;

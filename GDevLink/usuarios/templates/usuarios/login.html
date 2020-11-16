@@ -3,7 +3,7 @@
 {% load static %}
 
 {% block body %}
-
+<div class="contenido">
     <h2>Inicio de Sesión</h2>
     
     {% if message %}
@@ -22,5 +22,6 @@
     <p><a href="{%url 'registrar'%}">Registrarse</a></p>
     <br>
     O inicia sesion con <a href="{% provider_login_url 'google' %}">Google</a>
-
+</div>
+    
 {% endblock %}

@@ -4,6 +4,7 @@
 
 {% block body %}
 
+<div class="contenido">
     <h2>Registrarse</h2>
      
     
@@ -61,6 +62,8 @@
     ¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí.</a>
     <br>
     O inicia sesion con <a href="{% provider_login_url 'google' %}">Google</a>
+</div>
+    
 {% endblock %}
 
 {% block script %}

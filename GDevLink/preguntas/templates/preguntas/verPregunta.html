@@ -9,329 +9,336 @@
     <link rel="stylesheet" href="{% static 'preguntas/styles.css' %}">     
     {% csrf_token %}
     <body>
-        <!-- Seccion titulo de la pregunta con puntos -->
-        <div class="header" id="center">
-            <h1 style="display: none; color: #8B8B8B;" id="puntosPregunta" data-contador="{{puntosPregunta}}">{{puntosPregunta}}</h1>
-            <!-- Seccion Puntos de la pregunta -->
-            {% if preguntaPos %}
-                <a class="addbutton" data-add-Puntos="{{preguntaPos}}" id="preguntaPuntosPositivos" style="border-bottom-color: goldenrod;"></a>
-                <a class="minbutton" data-sub-Puntos="{{preguntaNeg}}" id="preguntaPuntosNegativos"></a>
-            {% else %}
-                <a class="addbutton" data-add-Puntos="{{preguntaPos}}" id="preguntaPuntosPositivos"></a>
-                {% if preguntaNeg %}
-                    <a class="minbutton" data-sub-Puntos="{{preguntaNeg}}" id="preguntaPuntosNegativos"  style="border-top-color: goldenrod;"></a>
-                {% else %}
+        <div class="contenido">
+                <!-- Seccion titulo de la pregunta con puntos -->
+            <div class="header" id="center">
+                <h1 style="display: none; color: #8B8B8B;" id="puntosPregunta" data-contador="{{puntosPregunta}}">{{puntosPregunta}}</h1>
+                <!-- Seccion Puntos de la pregunta -->
+                {% if preguntaPos %}
+                    <a class="addbutton" data-add-Puntos="{{preguntaPos}}" id="preguntaPuntosPositivos" style="border-bottom-color: goldenrod;"></a>
                     <a class="minbutton" data-sub-Puntos="{{preguntaNeg}}" id="preguntaPuntosNegativos"></a>
+                {% else %}
+                    <a class="addbutton" data-add-Puntos="{{preguntaPos}}" id="preguntaPuntosPositivos"></a>
+                    {% if preguntaNeg %}
+                        <a class="minbutton" data-sub-Puntos="{{preguntaNeg}}" id="preguntaPuntosNegativos"  style="border-top-color: goldenrod;"></a>
+                    {% else %}
+                        <a class="minbutton" data-sub-Puntos="{{preguntaNeg}}" id="preguntaPuntosNegativos"></a>
+                    {% endif %}
                 {% endif %}
-            {% endif %}
-            <!-- Seccion Titulo de la pregunta -->
-            <h1 id="" style="display: inline-block; margin-left: 15px;">{{pregunta.titulo}}</h1>
-            <p id="preguntaId" data-id="{{pregunta.id}}" style="font-size: 10px;display: inline-block;">{{pregunta.id}}</p>
-        </div>
-    </body>
-    <!-- Seccion mensajes de error -->
-    {% if message %}
-        <div><span style="color: red">{{ message }}</span></div>
-    {% endif %} 
-    <!-- Seccion descripcion de la pregunta con puntos -->
-    <div style="margin-left: 25px; margin-top: 15px;">
-        <p>{{pregunta.texto}}</p>
-    </div>
-    <hr>
-    <!-- Seccion de respuestas -->
-    <label for="exampleFormControlInput1">Respuestas</label>
-    <div class="arrow up"></div>
-    <div class="arrow down"></div>
-    <br>
-    <!-- Seccion para crear una respuesta -->
-    {% if user.is_authenticated %}
-        <input class="btn btn-primary" type="submit" id="responder" name="responder" value="Responder"></button>
-    {% else %}
-        Para responder <a href="{% url 'login' %}">Inicia sesión aquí.</a>
-    {% endif %}
-    <!-- Seccion formulario para crear la pregunta -->
-    <form id="respuesta" action="/preguntas/crearRespuesta/{{pregunta.id}}" enctype="multipart/form-data" method="post" action="/foo/">
-        {% csrf_token %}
-        <div class="overflow-auto" id="agregarRespuesta" style="display:none;">
-            <textarea class="form-control" name="texto" id="exampleFormControlTextarea1" rows="3"></textarea>
-            <input class="btn btn-primary" type="submit" id="crearRespuesta" name="crearRespuesta" value="Responder"></button></td>
-        </div>
-    </form>
-    <input class="btn btn-primary" type="submit" id="cancelar" style="background-color:red; display: none;" value="Cancelar"></button>
-    
-    <script type="text/javascript">
-        /*creacion de los eventListener*/
-        document.addEventListener('DOMContentLoaded', function () {
-            var x=document.getElementById("responder");
-            x.addEventListener("click",
-            cambiarRespuesta);
-            var y=document.getElementById("cancelar");
-            y.addEventListener("click",cambiarRespuesta);
-            var z=document.getElementById("crearRespuesta");
-            z.addEventListener("click",validar);
-
-            const pregunta=document.querySelector("#preguntaId")
-            const botonPPuntosPositivos=document.querySelector("#preguntaPuntosPositivos");
-            botonPPuntosPositivos.addEventListener('click', () => {
-                agregarPuntoPositivoPregunta(pregunta);
-            });
-            const botonPPuntosNegativos=document.getElementById("preguntaPuntosNegativos");
-            botonPPuntosNegativos.addEventListener('click', () => {
-                agregarPuntoNegativoPregunta(pregunta);
-            });
-
-            const seccionRespuestas=document.getElementById("seccionRespuestas");
-            seccionRespuestas.addEventListener('click', () => {
-                if(event.target.id == "respuestaPuntosPositivos"){
-                    agregarPuntoPositivoRespuesta(pregunta,event);
-                }else if(event.target.id == "respuestaPuntosNegativos"){
-                    agregarPuntoNegativoRespuesta(pregunta,event);
-                }else if(event.target.id == "mejorRespuesta"){
-                    evaluarRespuesta(pregunta,event);
-                }
-            });
-        });
+                <!-- Seccion Titulo de la pregunta -->
+                <h1 id="" style="display: inline-block; margin-left: 15px;">{{pregunta.titulo}}</h1>
+                <p id="preguntaId" data-id="{{pregunta.id}}" style="font-size: 10px;display: inline-block;">{{pregunta.id}}</p>
+            </div>
         
-        /*Funion para agregar/quitar punto positivo a la Pregunta*/
-        function agregarPuntoPositivoPregunta(pregunta){ 
-            const botonPPuntosPositivos=document.querySelector("#preguntaPuntosPositivos");
-            let puntosPregunta=document.getElementById("puntosPregunta");
-            if(botonPPuntosPositivos.dataset.addPuntos == "False"){
-                puntosPregunta.dataset.contador++;
-                puntosPregunta.innerHTML=puntosPregunta.dataset.contador;
-                botonPPuntosPositivos.dataset.addPuntos="True";
-                botonPPuntosPositivos.style.borderBottomColor="#daa520";
+        <!-- Seccion mensajes de error -->
+        {% if message %}
+            <div><span style="color: red">{{ message }}</span></div>
+        {% endif %} 
+        <!-- Seccion descripcion de la pregunta con puntos -->
+        <div style="margin-left: 25px; margin-top: 15px;">
+            <p>{{pregunta.texto}}</p>
+        </div>
+        <hr>
+        <!-- Seccion de respuestas -->
+        <label for="exampleFormControlInput1">Respuestas</label>
+        <div class="arrow up"></div>
+        <div class="arrow down"></div>
+        <br>
+        <!-- Seccion para crear una respuesta -->
+        {% if user.is_authenticated %}
+            <input class="btn btn-primary" type="submit" id="responder" name="responder" value="Responder"></button>
+        {% else %}
+            Para responder <a href="{% url 'login' %}">Inicia sesión aquí.</a>
+        {% endif %}
+        <!-- Seccion formulario para crear la pregunta -->
+        <form id="respuesta" action="/preguntas/crearRespuesta/{{pregunta.id}}" enctype="multipart/form-data" method="post" action="/foo/">
+            {% csrf_token %}
+            <div class="overflow-auto" id="agregarRespuesta" style="display:none;">
+                <textarea class="form-control" name="texto" id="exampleFormControlTextarea1" rows="3"></textarea>
+                <input class="btn btn-primary" type="submit" id="crearRespuesta" name="crearRespuesta" value="Responder"></button></td>
+            </div>
+        </form>
+        <input class="btn btn-primary" type="submit" id="cancelar" style="background-color:red; display: none;" value="Cancelar"></button>
+
+
+
+        <script type="text/javascript">
+            /*creacion de los eventListener*/
+            document.addEventListener('DOMContentLoaded', function () {
+                var x=document.getElementById("responder");
+                x.addEventListener("click",
+                cambiarRespuesta);
+                var y=document.getElementById("cancelar");
+                y.addEventListener("click",cambiarRespuesta);
+                var z=document.getElementById("crearRespuesta");
+                z.addEventListener("click",validar);
+    
+                const pregunta=document.querySelector("#preguntaId")
+                const botonPPuntosPositivos=document.querySelector("#preguntaPuntosPositivos");
+                botonPPuntosPositivos.addEventListener('click', () => {
+                    agregarPuntoPositivoPregunta(pregunta);
+                });
                 const botonPPuntosNegativos=document.getElementById("preguntaPuntosNegativos");
-                if(botonPPuntosNegativos.dataset.subPuntos == "True"){
+                botonPPuntosNegativos.addEventListener('click', () => {
+                    agregarPuntoNegativoPregunta(pregunta);
+                });
+    
+                const seccionRespuestas=document.getElementById("seccionRespuestas");
+                seccionRespuestas.addEventListener('click', () => {
+                    if(event.target.id == "respuestaPuntosPositivos"){
+                        agregarPuntoPositivoRespuesta(pregunta,event);
+                    }else if(event.target.id == "respuestaPuntosNegativos"){
+                        agregarPuntoNegativoRespuesta(pregunta,event);
+                    }else if(event.target.id == "mejorRespuesta"){
+                        evaluarRespuesta(pregunta,event);
+                    }
+                });
+            });
+            
+            /*Funion para agregar/quitar punto positivo a la Pregunta*/
+            function agregarPuntoPositivoPregunta(pregunta){ 
+                const botonPPuntosPositivos=document.querySelector("#preguntaPuntosPositivos");
+                let puntosPregunta=document.getElementById("puntosPregunta");
+                if(botonPPuntosPositivos.dataset.addPuntos == "False"){
                     puntosPregunta.dataset.contador++;
                     puntosPregunta.innerHTML=puntosPregunta.dataset.contador;
-                    botonPPuntosNegativos.dataset.subPuntos="False";
-                    botonPPuntosNegativos.style.borderTopColor="#8B8B8B";
-                }
-            }else{
-                puntosPregunta.dataset.contador--;
-                puntosPregunta.innerHTML=puntosPregunta.dataset.contador;
-                botonPPuntosPositivos.dataset.addPuntos="False";
-                botonPPuntosPositivos.style.borderBottomColor="#8B8B8B";
-            }
-            let csrftoken = getCookie('csrftoken');
-            fetch(`/preguntas/puntuarPreguntaPos/${pregunta.dataset.id}`, {
-                method: 'PUT',
-                headers: { "X-CSRFToken": csrftoken }
-            });
-        };
-        /*Funion para agregar/quitar punto negativos a la Pregunta*/
-        function agregarPuntoNegativoPregunta(pregunta){ 
-            const botonPPuntosNegativos=document.getElementById("preguntaPuntosNegativos");
-            let puntosPregunta=document.getElementById("puntosPregunta");
-            if(botonPPuntosNegativos.dataset.subPuntos == "False"){
-                puntosPregunta.dataset.contador--;
-                puntosPregunta.innerHTML=puntosPregunta.dataset.contador;
-                botonPPuntosNegativos.dataset.subPuntos="True"
-                botonPPuntosNegativos.style.borderTopColor="#daa520"
-                const botonPPuntosPositivos=document.getElementById("preguntaPuntosPositivos");
-                if(botonPPuntosPositivos.dataset.addPuntos == "True"){
+                    botonPPuntosPositivos.dataset.addPuntos="True";
+                    botonPPuntosPositivos.style.borderBottomColor="#daa520";
+                    const botonPPuntosNegativos=document.getElementById("preguntaPuntosNegativos");
+                    if(botonPPuntosNegativos.dataset.subPuntos == "True"){
+                        puntosPregunta.dataset.contador++;
+                        puntosPregunta.innerHTML=puntosPregunta.dataset.contador;
+                        botonPPuntosNegativos.dataset.subPuntos="False";
+                        botonPPuntosNegativos.style.borderTopColor="#8B8B8B";
+                    }
+                }else{
                     puntosPregunta.dataset.contador--;
                     puntosPregunta.innerHTML=puntosPregunta.dataset.contador;
                     botonPPuntosPositivos.dataset.addPuntos="False";
                     botonPPuntosPositivos.style.borderBottomColor="#8B8B8B";
                 }
-            }else{
-                puntosPregunta.dataset.contador++;
-                puntosPregunta.innerHTML=puntosPregunta.dataset.contador;
-                botonPPuntosNegativos.dataset.subPuntos="False";
-                botonPPuntosNegativos.style.borderTopColor="#8B8B8B";
+                let csrftoken = getCookie('csrftoken');
+                fetch(`/preguntas/puntuarPreguntaPos/${pregunta.dataset.id}`, {
+                    method: 'PUT',
+                    headers: { "X-CSRFToken": csrftoken }
+                });
+            };
+            /*Funion para agregar/quitar punto negativos a la Pregunta*/
+            function agregarPuntoNegativoPregunta(pregunta){ 
+                const botonPPuntosNegativos=document.getElementById("preguntaPuntosNegativos");
+                let puntosPregunta=document.getElementById("puntosPregunta");
+                if(botonPPuntosNegativos.dataset.subPuntos == "False"){
+                    puntosPregunta.dataset.contador--;
+                    puntosPregunta.innerHTML=puntosPregunta.dataset.contador;
+                    botonPPuntosNegativos.dataset.subPuntos="True"
+                    botonPPuntosNegativos.style.borderTopColor="#daa520"
+                    const botonPPuntosPositivos=document.getElementById("preguntaPuntosPositivos");
+                    if(botonPPuntosPositivos.dataset.addPuntos == "True"){
+                        puntosPregunta.dataset.contador--;
+                        puntosPregunta.innerHTML=puntosPregunta.dataset.contador;
+                        botonPPuntosPositivos.dataset.addPuntos="False";
+                        botonPPuntosPositivos.style.borderBottomColor="#8B8B8B";
+                    }
+                }else{
+                    puntosPregunta.dataset.contador++;
+                    puntosPregunta.innerHTML=puntosPregunta.dataset.contador;
+                    botonPPuntosNegativos.dataset.subPuntos="False";
+                    botonPPuntosNegativos.style.borderTopColor="#8B8B8B";
+                }
+                let csrftoken = getCookie('csrftoken');
+                fetch(`/preguntas/puntuarPreguntaNeg/${pregunta.dataset.id}`, {
+                    method: 'PUT',
+                    headers: { "X-CSRFToken": csrftoken }
+                });
+            };
+            /*Funion para validar y  crear la informacion de la respuesta*/
+            function validar(button){
+                event.preventDefault();
+                var texto=document.getElementsByName("texto")[0].value;
+                if(texto==""){
+                    alert("Datos de respuesta incompletos");
+                    return;
+                }
+                document.getElementById("respuesta").submit();
             }
-            let csrftoken = getCookie('csrftoken');
-            fetch(`/preguntas/puntuarPreguntaNeg/${pregunta.dataset.id}`, {
-                method: 'PUT',
-                headers: { "X-CSRFToken": csrftoken }
-            });
-        };
-        /*Funion para validar y  crear la informacion de la respuesta*/
-        function validar(button){
-            event.preventDefault();
-            var texto=document.getElementsByName("texto")[0].value;
-            if(texto==""){
-                alert("Datos de respuesta incompletos");
-                return;
+            /*Cambio de vistas entre crear respuesta y cancelar respuesta*/
+            function cambiarRespuesta(button){
+                var y=document.getElementById("cancelar");
+                var x=document.getElementById("responder");
+                if(x.style.display!="none"){
+                    document.getElementById("agregarRespuesta").style.display="block";
+                    document.getElementById("cancelar").style.display="inline";
+                    x.style.display="none";
+                }else if(y.style.display!="none"){
+                    document.getElementById("agregarRespuesta").style.display="none";
+                    document.getElementById("responder").style.display="inline";
+                    y.style.display="none";
+                }  
             }
-            document.getElementById("respuesta").submit();
-        }
-        /*Cambio de vistas entre crear respuesta y cancelar respuesta*/
-        function cambiarRespuesta(button){
-            var y=document.getElementById("cancelar");
-            var x=document.getElementById("responder");
-            if(x.style.display!="none"){
-                document.getElementById("agregarRespuesta").style.display="block";
-                document.getElementById("cancelar").style.display="inline";
-                x.style.display="none";
-            }else if(y.style.display!="none"){
-                document.getElementById("agregarRespuesta").style.display="none";
-                document.getElementById("responder").style.display="inline";
-                y.style.display="none";
-            }  
-        }
-
-        // The following function was copied from the Django documentation at https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
-        // It's used for getting the csrf token that is needed in order to send the PUT request
-        function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = cookies[i].trim();
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
+    
+            // The following function was copied from the Django documentation at https://docs.djangoproject.com/en/dev/ref/csrf/#ajax
+            // It's used for getting the csrf token that is needed in order to send the PUT request
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
                     }
                 }
+                return cookieValue;
             }
-            return cookieValue;
-        }
-
-        /*Funcion para seleccionar la mejor respuesta*/
-        function evaluarRespuesta(pregunta,event){
-            const respuesta=event.target.parentElement;
-            const respuestas=document.getElementsByClassName("respuestaSingular")
-            if(event.target.dataset.mejor=="False"){
-                for(let i=0;i<respuestas.length;i++){
-                    if(respuestas[i].getElementsByClassName("mejorRespuesta")[0].dataset.mejor=="True"){
-                        respuestas[i].getElementsByClassName("mejorRespuesta")[0].style.color="#8B8B8B";
-                        respuestas[i].getElementsByClassName("mejorRespuesta")[0].dataset.mejor="False";
-                        respuestas[i].getElementsByClassName("puntosRespuesta")[0].style.color="#8B8B8B";
+    
+            /*Funcion para seleccionar la mejor respuesta*/
+            function evaluarRespuesta(pregunta,event){
+                const respuesta=event.target.parentElement;
+                const respuestas=document.getElementsByClassName("respuestaSingular")
+                if(event.target.dataset.mejor=="False"){
+                    for(let i=0;i<respuestas.length;i++){
+                        if(respuestas[i].getElementsByClassName("mejorRespuesta")[0].dataset.mejor=="True"){
+                            respuestas[i].getElementsByClassName("mejorRespuesta")[0].style.color="#8B8B8B";
+                            respuestas[i].getElementsByClassName("mejorRespuesta")[0].dataset.mejor="False";
+                            respuestas[i].getElementsByClassName("puntosRespuesta")[0].style.color="#8B8B8B";
+                        }
                     }
+                    event.target.style.color="#daa520";
+                    event.target.dataset.mejor="True";
+                    respuesta.getElementsByClassName("puntosRespuesta")[0].style.color="#daa520";
+                }else{
+                    event.target.style.color="#000000";
+                    event.target.dataset.mejor="False";
+                    respuesta.getElementsByClassName("puntosRespuesta")[0].style.color="#8B8B8B";
                 }
-                event.target.style.color="#daa520";
-                event.target.dataset.mejor="True";
-                respuesta.getElementsByClassName("puntosRespuesta")[0].style.color="#daa520";
-            }else{
-                event.target.style.color="#000000";
-                event.target.dataset.mejor="False";
-                respuesta.getElementsByClassName("puntosRespuesta")[0].style.color="#8B8B8B";
+                let csrftoken = getCookie('csrftoken');
+                fetch(`/preguntas/seleccionarMejorRespuesta/${respuesta.dataset.id}`, {
+                    method: 'PUT',
+                    headers: { "X-CSRFToken": csrftoken }
+                });
             }
-            let csrftoken = getCookie('csrftoken');
-            fetch(`/preguntas/seleccionarMejorRespuesta/${respuesta.dataset.id}`, {
-                method: 'PUT',
-                headers: { "X-CSRFToken": csrftoken }
-            });
-        }
-        /*Funcion para agregar/quitar punto positivo a una respuesta*/
-        function agregarPuntoPositivoRespuesta(pregunta,event){
-            const respuesta=event.target.parentElement;
-            const botonrespuestaPuntosNegativos=event.target.parentElement.getElementsByClassName('minbuttonRes')[0];
-            let puntosRespuesta=event.target.parentElement.getElementsByClassName("puntosRespuesta")[0];
-            if(event.target.dataset.respuestaPos=="False"){
-                puntosRespuesta.dataset.contador++;
-                puntosRespuesta.innerHTML=puntosRespuesta.dataset.contador;
-                event.target.style.borderBottomColor="#daa520";
-                event.target.dataset.respuestaPos="True";
-                if(botonrespuestaPuntosNegativos.dataset.respuestaNeg=="True"){
-                    botonrespuestaPuntosNegativos.dataset.respuestaNeg="False";
-                    botonrespuestaPuntosNegativos.style.borderTopColor="#8B8B8B";
+            /*Funcion para agregar/quitar punto positivo a una respuesta*/
+            function agregarPuntoPositivoRespuesta(pregunta,event){
+                const respuesta=event.target.parentElement;
+                const botonrespuestaPuntosNegativos=event.target.parentElement.getElementsByClassName('minbuttonRes')[0];
+                let puntosRespuesta=event.target.parentElement.getElementsByClassName("puntosRespuesta")[0];
+                if(event.target.dataset.respuestaPos=="False"){
                     puntosRespuesta.dataset.contador++;
                     puntosRespuesta.innerHTML=puntosRespuesta.dataset.contador;
-                }
-            }else{
-                puntosRespuesta.dataset.contador--;
-                puntosRespuesta.innerHTML=puntosRespuesta.dataset.contador;
-                event.target.style.borderBottomColor="#8B8B8B";
-                event.target.dataset.respuestaPos="False";
-            }
-            let csrftoken = getCookie('csrftoken');
-            fetch(`/preguntas/puntuarRespuestaPos/${respuesta.dataset.id}`, {
-                method: 'PUT',
-                headers: { "X-CSRFToken": csrftoken }
-            });
-        }
-        /*Funcion para agregar/quitar punto negativo a una respuesta*/
-        function agregarPuntoNegativoRespuesta(pregunta,event){
-            const respuesta=event.target.parentElement;
-            const botonrespuestaPuntosPositivos=event.target.parentElement.getElementsByClassName('addbuttonRes')[0];
-            let puntosRespuesta=event.target.parentElement.getElementsByClassName("puntosRespuesta")[0];
-            if(event.target.dataset.respuestaNeg=="False"){
-                puntosRespuesta.dataset.contador--;
-                puntosRespuesta.innerHTML=puntosRespuesta.dataset.contador;
-                event.target.style.borderTopColor="#daa520";
-                event.target.dataset.respuestaNeg="True";
-                if(botonrespuestaPuntosPositivos.dataset.respuestaPos=="True"){
-                    botonrespuestaPuntosPositivos.dataset.respuestaPos="False";
-                    botonrespuestaPuntosPositivos.style.borderBottomColor="#8B8B8B";
+                    event.target.style.borderBottomColor="#daa520";
+                    event.target.dataset.respuestaPos="True";
+                    if(botonrespuestaPuntosNegativos.dataset.respuestaNeg=="True"){
+                        botonrespuestaPuntosNegativos.dataset.respuestaNeg="False";
+                        botonrespuestaPuntosNegativos.style.borderTopColor="#8B8B8B";
+                        puntosRespuesta.dataset.contador++;
+                        puntosRespuesta.innerHTML=puntosRespuesta.dataset.contador;
+                    }
+                }else{
                     puntosRespuesta.dataset.contador--;
                     puntosRespuesta.innerHTML=puntosRespuesta.dataset.contador;
+                    event.target.style.borderBottomColor="#8B8B8B";
+                    event.target.dataset.respuestaPos="False";
                 }
-            }else{
-                puntosRespuesta.dataset.contador++;
-                puntosRespuesta.innerHTML=puntosRespuesta.dataset.contador;
-                event.target.style.borderTopColor="#8B8B8B";
-                event.target.dataset.respuestaNeg="False";
+                let csrftoken = getCookie('csrftoken');
+                fetch(`/preguntas/puntuarRespuestaPos/${respuesta.dataset.id}`, {
+                    method: 'PUT',
+                    headers: { "X-CSRFToken": csrftoken }
+                });
             }
-            let csrftoken = getCookie('csrftoken');
-            fetch(`/preguntas/puntuarRespuestaNeg/${respuesta.dataset.id}`, {
-                method: 'PUT',
-                headers: { "X-CSRFToken": csrftoken }
-            });
-        }
-    </script>
-    <br>
-    {% if respuestas %}
-        <!-- Seccion de la mejor respuesta -->
-        <div id="seccionRespuestas" style="margin-top: 15px;">
-            {% for respuesta in respuestas %}
-                {% if respuesta.mejorRespuesta %}
-                    <div class="respuestaSingular" id="respuestaSingular" data-id="{{respuesta.respuesta.id}}">
-                        <p class="puntosRespuesta" style="color:goldenrod; display: inline-block;" data-contador="{{respuesta.respuesta.puntos}}">{{respuesta.respuesta.puntos}} </p>
-                        {% if mejorRespuesta.positivo %}
-                            <div class="addbuttonRes" id="respuestaPuntosPositivos" data-respuesta-Pos="{{respuesta.positivo}}" style="border-bottom-color: goldenrod;"></div>
-                            <div class="minbuttonRes" id="respuestaPuntosNegativos" data-respuesta-Neg="{{respuesta.negativo}}"></div>
-                        {% else %}
-                            <div class="addbuttonRes" id="respuestaPuntosPositivos" data-respuesta-Pos="{{respuesta.positivo}}"></div>
-                            {% if mejorRespuesta.negativo %}
-                                <div class="minbuttonRes" id="respuestaPuntosNegativos" data-respuesta-Neg="{{respuesta.negativo}}" style="border-top-color: goldenrod;"></div>
+            /*Funcion para agregar/quitar punto negativo a una respuesta*/
+            function agregarPuntoNegativoRespuesta(pregunta,event){
+                const respuesta=event.target.parentElement;
+                const botonrespuestaPuntosPositivos=event.target.parentElement.getElementsByClassName('addbuttonRes')[0];
+                let puntosRespuesta=event.target.parentElement.getElementsByClassName("puntosRespuesta")[0];
+                if(event.target.dataset.respuestaNeg=="False"){
+                    puntosRespuesta.dataset.contador--;
+                    puntosRespuesta.innerHTML=puntosRespuesta.dataset.contador;
+                    event.target.style.borderTopColor="#daa520";
+                    event.target.dataset.respuestaNeg="True";
+                    if(botonrespuestaPuntosPositivos.dataset.respuestaPos=="True"){
+                        botonrespuestaPuntosPositivos.dataset.respuestaPos="False";
+                        botonrespuestaPuntosPositivos.style.borderBottomColor="#8B8B8B";
+                        puntosRespuesta.dataset.contador--;
+                        puntosRespuesta.innerHTML=puntosRespuesta.dataset.contador;
+                    }
+                }else{
+                    puntosRespuesta.dataset.contador++;
+                    puntosRespuesta.innerHTML=puntosRespuesta.dataset.contador;
+                    event.target.style.borderTopColor="#8B8B8B";
+                    event.target.dataset.respuestaNeg="False";
+                }
+                let csrftoken = getCookie('csrftoken');
+                fetch(`/preguntas/puntuarRespuestaNeg/${respuesta.dataset.id}`, {
+                    method: 'PUT',
+                    headers: { "X-CSRFToken": csrftoken }
+                });
+            }
+        </script>
+        <br>
+        {% if respuestas %}
+            <!-- Seccion de la mejor respuesta -->
+            <div id="seccionRespuestas" style="margin-top: 15px;">
+                {% for respuesta in respuestas %}
+                    {% if respuesta.mejorRespuesta %}
+                        <div class="respuestaSingular" id="respuestaSingular" data-id="{{respuesta.respuesta.id}}">
+                            <p class="puntosRespuesta" style="color:goldenrod; display: inline-block;" data-contador="{{respuesta.respuesta.puntos}}">{{respuesta.respuesta.puntos}} </p>
+                            {% if mejorRespuesta.positivo %}
+                                <div class="addbuttonRes" id="respuestaPuntosPositivos" data-respuesta-Pos="{{respuesta.positivo}}" style="border-bottom-color: goldenrod;"></div>
+                                <div class="minbuttonRes" id="respuestaPuntosNegativos" data-respuesta-Neg="{{respuesta.negativo}}"></div>
                             {% else %}
-                            <div class="minbuttonRes" id="respuestaPuntosNegativos" data-respuesta-Neg="{{respuesta.negativo}}"></div>
+                                <div class="addbuttonRes" id="respuestaPuntosPositivos" data-respuesta-Pos="{{respuesta.positivo}}"></div>
+                                {% if mejorRespuesta.negativo %}
+                                    <div class="minbuttonRes" id="respuestaPuntosNegativos" data-respuesta-Neg="{{respuesta.negativo}}" style="border-top-color: goldenrod;"></div>
+                                {% else %}
+                                <div class="minbuttonRes" id="respuestaPuntosNegativos" data-respuesta-Neg="{{respuesta.negativo}}"></div>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
-                        <p class="resTexto" style="display: inline-block; margin-left: 10px;">{{respuesta.respuesta.texto}}</p>
-                        {% if autor %}
-                            <div class="mejorRespuesta" id="mejorRespuesta" style="display: block; color:goldenrod;" data-mejor="True">&#10004;</div>
-                        {% endif %}
-                        <hr>
-                    </div>
-                {% endif %}
-            {% endfor %}
-            <!-- Seccion de las respuestas -->
-            {% for respuesta in respuestas %}
-                {% if not respuesta.mejorRespuesta %}
-                    <div id="respuestaSingular" class="respuestaSingular" data-id="{{respuesta.respuesta.id}}">
-                        <p class="puntosRespuesta" style="color:#8B8B8B; display: inline-block;" data-contador="{{respuesta.respuesta.puntos}}">{{respuesta.respuesta.puntos}} </p>
-                        {% if respuesta.positivo %}
-                            <div class="addbuttonRes" id="respuestaPuntosPositivos" data-respuesta-Pos="{{respuesta.positivo}}" style="border-bottom-color: goldenrod;"></div>
-                            <div class="minbuttonRes" id="respuestaPuntosNegativos" data-respuesta-Neg="{{respuesta.negativo}}"></div>
-                        {% else %}
-                            <div class="addbuttonRes" id="respuestaPuntosPositivos" data-respuesta-Pos="{{respuesta.positivo}}"></div>
-                            {% if respuesta.negativo %}
-                                <div class="minbuttonRes" id="respuestaPuntosNegativos" data-respuesta-Neg="{{respuesta.negativo}}" style="border-top-color: goldenrod;"></div>
+                            <p class="resTexto" style="display: inline-block; margin-left: 10px;">{{respuesta.respuesta.texto}}</p>
+                            {% if autor %}
+                                <div class="mejorRespuesta" id="mejorRespuesta" style="display: block; color:goldenrod;" data-mejor="True">&#10004;</div>
+                            {% endif %}
+                            <hr>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                <!-- Seccion de las respuestas -->
+                {% for respuesta in respuestas %}
+                    {% if not respuesta.mejorRespuesta %}
+                        <div id="respuestaSingular" class="respuestaSingular" data-id="{{respuesta.respuesta.id}}">
+                            <p class="puntosRespuesta" style="color:#8B8B8B; display: inline-block;" data-contador="{{respuesta.respuesta.puntos}}">{{respuesta.respuesta.puntos}} </p>
+                            {% if respuesta.positivo %}
+                                <div class="addbuttonRes" id="respuestaPuntosPositivos" data-respuesta-Pos="{{respuesta.positivo}}" style="border-bottom-color: goldenrod;"></div>
+                                <div class="minbuttonRes" id="respuestaPuntosNegativos" data-respuesta-Neg="{{respuesta.negativo}}"></div>
                             {% else %}
-                            <div class="minbuttonRes" id="respuestaPuntosNegativos" data-respuesta-Neg="{{respuesta.negativo}}"></div>
+                                <div class="addbuttonRes" id="respuestaPuntosPositivos" data-respuesta-Pos="{{respuesta.positivo}}"></div>
+                                {% if respuesta.negativo %}
+                                    <div class="minbuttonRes" id="respuestaPuntosNegativos" data-respuesta-Neg="{{respuesta.negativo}}" style="border-top-color: goldenrod;"></div>
+                                {% else %}
+                                <div class="minbuttonRes" id="respuestaPuntosNegativos" data-respuesta-Neg="{{respuesta.negativo}}"></div>
+                                {% endif %}
                             {% endif %}
-                        {% endif %}
-                        <p style="display: inline-block; margin-left: 10px;">{{respuesta.respuesta.texto}}</p>
-                        {% if autor %}
-                            <div class="mejorRespuesta" id="mejorRespuesta" style="display: block;" data-mejor="False">&#10004;</div>
-                        {% endif %}
-                        <hr>
-                    </div>
-                {% endif %}
-            {% endfor %}
-        </div>
-    {% else %}
-        <p>No hay respuestas</p>
-    {% endif %}
-    <p><a class="btn btn-primary topbtn" href="{%url 'preguntas'%}">Volver</a></p>
+                            <p style="display: inline-block; margin-left: 10px;">{{respuesta.respuesta.texto}}</p>
+                            {% if autor %}
+                                <div class="mejorRespuesta" id="mejorRespuesta" style="display: block;" data-mejor="False">&#10004;</div>
+                            {% endif %}
+                            <hr>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+            </div>
+        {% else %}
+            <p>No hay respuestas</p>
+        {% endif %}
+        <p><a class="btn btn-primary topbtn" href="{%url 'preguntas'%}">Volver</a></p>
+        
+    </div>
+       
+    
 
-
+</body>
 {% endblock %}
 
 {% block script %}

@@ -9,25 +9,28 @@
     <link rel="stylesheet" href="{% static 'preguntas/styles.css' %}">     
     {% csrf_token %}
     <body>
-        <!-- Seccion formulario para crear la pregunta -->
-        <form action="{% url 'crearPregunta' %}" enctype="multipart/form-data" method="post" action="/foo/">
-        {% csrf_token %}
-            <div class="header" id="center"><h1>Crear Pregunta</h1></div>
-            <!-- Seccion de mensaje de error -->
-            {% if message %}
-                <div><span style="color: red">{{ message }}</span></div>
-            {% endif %}
-            <div class="form-group">
-                <label for="exampleFormControlInput1">Titulo</label>
-                <input class="form-control" autofocus type="text" name="titulo" placeholder="Titulo de la pregunta">
-            </div>
-            <div class="form-group">
-                <label for="exampleFormControlInput1">Descripcion</label>
-                <textarea class="form-control" name="texto" id="exampleFormControlTextarea1" rows="3"></textarea>
-            </div>
-            <input class="btn btn-primary" type="submit" name="crearPregunta" id="crearPregunta" value="Crear">
-            <p><a class="btn btn-primary" href="{%url 'preguntas'%}">Cancelar</a></p>
-        </form>
+        <div class="contenido">
+            <!-- Seccion formulario para crear la pregunta -->
+            <form action="{% url 'crearPregunta' %}" enctype="multipart/form-data" method="post" action="/foo/">
+            {% csrf_token %}
+                <div class="header" id="center"><h1>Crear Pregunta</h1></div>
+                <!-- Seccion de mensaje de error -->
+                {% if message %}
+                    <div><span style="color: red">{{ message }}</span></div>
+                {% endif %}
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Titulo</label>
+                    <input class="form-control" autofocus type="text" name="titulo" placeholder="Titulo de la pregunta">
+                </div>
+                <div class="form-group">
+                    <label for="exampleFormControlInput1">Descripcion</label>
+                    <textarea class="form-control" name="texto" id="exampleFormControlTextarea1" rows="3"></textarea>
+                </div>
+                <input class="btn btn-primary" type="submit" name="crearPregunta" id="crearPregunta" value="Crear">
+                <p><a class="btn btn-primary" href="{%url 'preguntas'%}">Cancelar</a></p>
+            </form>
+        </div>
+        
     </body>
 {% endblock %}
 

@@ -11,14 +11,15 @@
     {% csrf_token %}
     <body>
             <div class="header" id="center"></div>
+            <div class="logop">
+                {% if not proyecto.imagen %}
+                <a href="" class="image fit" id="limage"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+                {% else %}
+                <img src="{{ proyecto.imagen.url }}" class="" id="limage" alt="My Image" />
+                {% endif %}
+            </div>
         <div class="contenido" >
-                <div class="logop">
-                    {% if not proyecto.imagen %}
-                    <a href="" class="image fit" id="limage"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
-                    {% else %}
-                    <img src="{{ proyecto.imagen.url }}" class="" id="limage" alt="My Image" />
-                    {% endif %}
-                </div>
+                
             <div> 
                 <h1 id="nombre-proyecto">{{proyecto.nombre}}</h1>
                 <div class="elemento">
