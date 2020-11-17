@@ -16,10 +16,11 @@
     <link rel="stylesheet" href="{% static 'proyectos/stylesMisP.css' %}">
     <body>
         
-        <p><a class="btn btn-primary topbtn" href="{%url 'crearProyecto'%}">Crear Proyecto</a></p>
-        <div class="row">
+        <div class="withShadow">
+            <p><a class="btn btn-primary topbtn" href="{%url 'crearProyecto'%}">Crear Proyecto</a></p>
+            <div class="row">
             {% for proyecto in proyectos %}
-                <div class="col-sm-6">
+                <div class="col-sm">
                     <div class="card">
                         {% if not proyecto.imagen %}
                         <img class="card-img-top" src="{% static 'proyectos/pic03.jpg' %}" alt="Card image cap">
@@ -34,7 +35,10 @@
                     </div>
                 </div>
             {% endfor %}
+            </div>
         </div>
+        
+        
         
     </body>
 

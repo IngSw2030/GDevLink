@@ -1,6 +1,6 @@
 #tbodyID{
  width: 100%;
- margin: 0;
+
  padding: 0;   
  background-color: transparent;
  color: #e6e6e6;
@@ -16,11 +16,7 @@
     height: auto; 
   } 
 
-.contenido{
-    width: 100%; height:auto;  margin:0px;
-    box-shadow: 20mm;
-    background: #423d46;
-}
+
 
 .act{
     border-collapse: separate;
@@ -59,20 +55,7 @@
   width: 100%;
 }
 
-#limage{
-  margin-bottom: -300px;
-  margin-top: -300px;
-  width: 100%;
-}
 
-.logop{
-  height: 300px;
-  overflow: hidden;
-  height: 500px;
-  width: 100%;
-  padding-bottom: 10px;
-  
-}
 
 h1, h3{
     text-align: center;
@@ -96,9 +79,6 @@ h1, h3{
   
 }
 
-#gris{
-  background-color: #1f1f1f;
-}
 
 #miembros{
   width: 60%;

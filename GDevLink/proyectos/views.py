@@ -83,10 +83,6 @@ def proyecto(request,nombre):
             admin = True
         else:
             admin = False
-
-        
-
-
         #Revisar si el usuario sigue el proyecto
         usuario = Usuario.objects.get(username=request.user.get_username())
         if usuario.proyectos_seguidos.filter(nombre = nombre):
@@ -303,7 +299,7 @@ def eliminarMiembros (request, nombre):
             } )
         except Proyecto.DoesNotExist:
             return render(request, "main/error.html", {
-                "mensaje": "Proyecto no encontrado."
+                "mensaje": "Error inesperado."
             })
 
 def agregarAdministrador (request, nombre):

@@ -15,42 +15,46 @@
     </script>
     <link rel="stylesheet" href="{% static 'comunicacion/styles.css' %}">  
 
-    <form action="{% url 'conversaciones' %}" method="post">
-        {% csrf_token %}
-        <nav class="navbarp busqueda">
-            <div class="usuarios">
-                
+    <div class="contenido">
+        <form action="{% url 'conversaciones' %}" method="post">
+            {% csrf_token %}
+            <nav class="navbarp busqueda">
+                <div class="usuarios">
                     
-                    <div id="searchWrapper">
-                        <input
-                            type="text"
-                            name="searchBar"
-                            id="searchBar"
-                            placeholder="Busca un usuario"
-                        />
-                        <input class="btn btn-primary" type="submit" value="crear">
-                        <ul id="usuarios"></ul>
-                    </div>
-
-                
-            </div>
+                        
+                        <div id="searchWrapper">
+                            <input
+                                type="text"
+                                name="searchBar"
+                                id="searchBar"
+                                placeholder="Busca un usuario"
+                            />
+                            <input class="btn btn-primary" type="submit" value="crear">
+                            <ul id="usuarios"></ul>
+                        </div>
     
-        </nav>
-    </form>
-            <div class="conversaciones contenidoPrincipal">
-                {% for conversacion in conversaciones %}
-                    {% for participacion in conversacion.participantes.all %}
-
-                        {% if participacion.username != request.user.username %}
-                            <div class="list-group overflow-auto">
-                                <a href="/comunicacion/chat/{{conversacion.id}}/" class="list-group-item list-group-item-action active">
-                                {{participacion.username}}
-                                </a>
-                            </div>
-                        {% endif %}
+                    
+                </div>
+        
+            </nav>
+        </form>
+                <div class="conversaciones contenidoPrincipal">
+                    {% for conversacion in conversaciones %}
+                        {% for participacion in conversacion.participantes.all %}
+    
+                            {% if participacion.username != request.user.username %}
+                                <div class="list-group overflow-auto">
+                                    <a href="/comunicacion/chat/{{conversacion.id}}/" class="list-group-item list-group-item-action active">
+                                    {{participacion.username}}
+                                    </a>
+                                </div>
+                            {% endif %}
+                        {% endfor %}
                     {% endfor %}
-                {% endfor %}
-            </div>
+                </div>
+    </div>
+
+    
             
 
             {{ users | json_script:"users" }}

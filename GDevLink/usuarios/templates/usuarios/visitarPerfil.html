@@ -3,54 +3,58 @@
 
 {% block body %}
 
+<div class="contenido">
     <h2  align="center">{{usuario.username}}</h2>
      
-        <link rel="stylesheet" href="{% static 'usuarios/styles.css' %}">
-        {% csrf_token %}
-        <div class="">
-            {% if not usuario.imagen %}
-                <img src="https://i.ibb.co/MNdStBT/foto-perfil.png" alt="foto-perfil" class="center" width="180">
-            {% else %}
-                <img src="{{ usuario.imagen.url }}" class="center" alt="My Image" />
-            {% endif %}
-            <br>
-        </div>
-        <div>
-            <span> Descripción: </span>{{usuario.descripcion}} 
-        </div>
+    <link rel="stylesheet" href="{% static 'usuarios/styles.css' %}">
+    {% csrf_token %}
+    <div class="">
+        {% if not usuario.imagen %}
+            <img src="https://i.ibb.co/MNdStBT/foto-perfil.png" alt="foto-perfil" class="center" width="180">
+        {% else %}
+            <img src="{{ usuario.imagen.url }}" class="center" alt="My Image" />
+        {% endif %}
         <br>
-        <div>
-            <span > Roles: </span>
-            <ul style="list-style-type: circle">
-                {% for rol in roles %}
-                    <li> {{rol}} </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div>
-            <span > Géneros de interés: </span>
-            <ul style="list-style-type: circle">
-                {% for genero in generos %}
-                    <li> {{genero}} </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div>
-            <span > FrameWorks: </span>
-            <ul style="list-style-type: circle">
-                {% for framework in frameworks %}
-                    <li> {{framework}} </li>
-                {% endfor %}
-            </ul>
-        </div>
-        <div>
-            <span > Proyectos: </span>
-            <ul style="list-style-type: circle">
-                {% for key,value in participaciones.items %}
-                    <li>
-                        {{key}} - {{value}}
-                    </li>
-                {% endfor %}
-            </ul>
-        </div>
+    </div>
+    <div>
+        <span> Descripción: </span>{{usuario.descripcion}} 
+    </div>
+    <br>
+    <div>
+        <span > Roles: </span>
+        <ul style="list-style-type: circle">
+            {% for rol in roles %}
+                <li> {{rol}} </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <span > Géneros de interés: </span>
+        <ul style="list-style-type: circle">
+            {% for genero in generos %}
+                <li> {{genero}} </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <span > FrameWorks: </span>
+        <ul style="list-style-type: circle">
+            {% for framework in frameworks %}
+                <li> {{framework}} </li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div>
+        <span > Proyectos: </span>
+        <ul style="list-style-type: circle">
+            {% for key,value in participaciones.items %}
+                <li>
+                    {{key}} - {{value}}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+   
 {% endblock %}
