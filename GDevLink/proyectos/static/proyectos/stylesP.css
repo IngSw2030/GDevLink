@@ -1,6 +1,6 @@
 #tbodyID{
  width: 100%;
- margin: 0;
+
  padding: 0;   
  background-color: transparent;
  color: #e6e6e6;
@@ -55,21 +55,7 @@
   width: 100%;
 }
 
-#limage{
-  margin-bottom: -300px;
-  margin-top: -300px;
-  width: 100%;
-  max-width:100%;
-}
 
-.logop{
-  height: 300px;
-  overflow: auto;
-  
-  width: 100%;
-  
-  max-width:100%;
-}
 
 h1, h3{
     text-align: center;

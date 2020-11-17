@@ -4,16 +4,21 @@
 
 {% endblock %}
 {% block bodyhead %}
-<div class="header">
-    <a href="" class="image fit"><img src="{% static 'main/2738.jpg' %}" alt="#" id="" /></a> 
+<link rel="stylesheet" href="{% static 'main/indexStyles.css' %}">
+<div class="logop header" id="">
+    <a href="" class="image fit limage"><img src="{% static 'main/2738.jpg' %}" alt="#" id="" /></a> 
     <a href="https://www.freepik.com/vectors/background">by upklyak</a>
 </div>
 
 {% endblock %}
 {% block body %}
 <link rel="stylesheet" href="{% static 'main/indexStyles.css' %}">
+
+
+
+<div class="">
     {% if user.is_authenticated %}
-        <div>
+        
             <h2 class="titulo"> Actualizaciones de los proyectos que sigues </h2>
             {% for actualizacion in actualizaciones%}
                 <div class="contenido">
@@ -42,7 +47,7 @@
                     <li class="page-item"><a class="page-link" href="/?numero_pagina={{pagina_siguiente}}">Siguiente</a></li>
                 {% endif %}
             </ul>    
-        </div>
+        
         
     {% else %}
 
@@ -64,12 +69,28 @@
     </div>
     <div class="space"></div>
     {% endfor %}
+    {% endif %}
+
     
+</div>
     
 
-     
-    {% endif %}
+
 {% endblock %}
+
+
+
+{% block bodyDerecha %}
+<div class="" id="vacantes">
+    
+    <div  id="container">
+        <h1>Vacantes</h1>
+        <h1>Interesantes</h1>
+    </div>
+</div>
+
+{% endblock %}
+
 
 {% block script %}
 

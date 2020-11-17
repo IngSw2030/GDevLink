@@ -105,10 +105,8 @@ html, body
 	
 	.container
 	{
-		overflow: hidden;
-		margin: 0em auto;
-		width: 1000px;
-  }
+		
+  	}
   
   .tbody
   {
@@ -293,6 +291,28 @@ html, body
 		color: #FFF;
 	}
 
+	
+
+	  #limage{
+ 
+		width: 100%;
+		
+	  }
+	  
+	  .logop{
+		height: 400px;
+		overflow: hidden;
+		
+		width: 100%;
+		
+	   
+	  }
+	  
+	  #headerp{
+		width: 1500px;
+		max-width: 4500px;;
+		margin: 0;
+	  }
 /*********************************************************************************/
 /* Menu                                                                          */
 /*********************************************************************************/
@@ -438,8 +458,9 @@ html, body
 	  }
 	  
 	  #contenidoPrincipal {
-		margin-left: 10rem;
-		
+		margin-left: 6rem;
+		justify-content: flex-start;
+		max-width: 1400px;
 	  }
 	  
 	  .navbarp {
