@@ -38,7 +38,7 @@
 
 
 
-@media only screen and (min-width: 1201px) {
+@media only screen and (min-width: 1101px) {
   
   #vacantes{
    
@@ -64,6 +64,6 @@
 
   }
 
-  @media all and (max-width: 1200px) {
+  @media all and (max-width: 1100px) {
     #vacantes { display: none; }
   }
