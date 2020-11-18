@@ -448,5 +448,3 @@ def explorarProyectos(request):
                 "proyectos":proyectos,
                 "populares": populares
             } )
-
-    

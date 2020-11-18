@@ -80,6 +80,12 @@
         </div>
         <div class="contenido" id="miembros">
             <h3>Miembros del proyecto</h3>
+            {% if administrador %}
+                <div class="card-body">
+                    <a  href="/proyectos/gestionMiembros/{{proyecto.nombre}}" class="btn btn-primary">Editar miembros</a>
+                    <a href="/posicionVacante/gestionarVacantes/{{proyecto.nombre}}" class="btn btn-primary">Gestionar Vacantes</a>
+                </div>
+            {% endif %}
             <div class="elemento">
                 <label for="exampleFormControlInput1">Miembros:</label>
                 <div class="list-group"> 
@@ -87,9 +93,6 @@
                     <li><a href="/usuarios/visitarPerfil/{{key}}">{{key}} - {{value}}</a></li>
                     {% endfor %}
                 </div>
-                {% if administrador %}
-                <a  href="/proyectos/gestionMiembros/{{proyecto.nombre}}">Editar miembros</a>
-                {% endif %}
             </div> 
         </div>
         <div class="space"></div>
@@ -122,7 +125,9 @@
             
         </div>
         <div class="contenido">
-            <input type="button" id="nuevaActualizacion" style="background-color:#008CBA; margin: 5px;" value="Nueva Actualizacion"></button>
+            {% if administrador %}
+                <input type="button" id="nuevaActualizacion" style="background-color:#008CBA; margin: 5px;" value="Nueva Actualizacion"></button>
+            {% endif %}
             <input type="button" id="cancelarActualizacion" style="background-color:red; margin: 5px; display: none;" value="Cancelar"></button>
             <br>
             <h3 style="text-align: center;">Actualizaciones</h3>
