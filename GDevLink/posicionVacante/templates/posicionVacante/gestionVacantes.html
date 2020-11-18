@@ -79,18 +79,35 @@
                             <td>
                                 {% for rol in vacante.roles %}
                                     <span>{{rol}}</span>
+                                    <br>
                                 {% endfor %}
                             </td>
                             <td>
                                 {% for framework in vacante.frameworks %}
                                     <span>{{framework}}</span>
+                                    <br>
                                 {% endfor %}
                             </td>
                             <td style="width: 50%;">
                                 <p>{{vacante.descripcion}}</p>
                             </td>
                         </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align: right;">
+                                <form id="editar" style="display: inline;" action="/posicionVacante/editarVacante/{{vacante.id}}" enctype="multipart/form-data" method="post" action="/foo/">
+                                    {% csrf_token %}
+                                    <button class="btn btn-primary" name="editarVacante" style="display: none;">Editar</button>
+                                </form>
+                                <form id="eliminar" style="display: inline;" action="/posicionVacante/eliminarVacante/{{vacante.id}}" enctype="multipart/form-data" method="post" action="/foo/">
+                                    {% csrf_token %}
+                                    <button class="btn btn-primary" name="eliminarVacante" style="display: none;">Eliminar</button>
+                                </form>
+                            </td>
+                        </tr>
                     </table>
+                    <hr>
                 {% endfor %}
             {% else %}
                 <h3>Noy hay vacantes disponibles</h3>
@@ -112,15 +129,25 @@
         function editarVacantes(button){
             var botonEditar=document.getElementById("editar");
             var botonCancelar=document.getElementById("cancelar");
+            var botonEditarVacante=document.getElementsByName("editarVacante");
+            var botonEliminar=document.getElementsByName("eliminarVacante");
             var nuevaVacante=document.getElementById("agregarPosicionVacante");
             if(nuevaVacante.style.display=="none"){
                 botonEditar.style.display="none";
                 nuevaVacante.style.display="grid";
                 botonCancelar.style.display="inline";
+                for(let i=0; i<botonEditarVacante.length; i++){
+                    botonEditarVacante[i].style.display="inline";
+                    botonEliminar[i].style.display="inline";
+                }
             }else{
                 botonEditar.style.display="inline";
                 nuevaVacante.style.display="none";
                 botonCancelar.style.display="none";
+                for(let i=0; i<botonEditarVacante.length; i++){
+                    botonEditarVacante[i].style.display="none";
+                    botonEliminar[i].style.display="none";
+                }
             }
             return;
         }
