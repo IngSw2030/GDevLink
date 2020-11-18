@@ -1,0 +1,166 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+
+
+{% block body %}
+    <body>
+        <div class="contenido">
+            <div class="header" id="center"><h1>Posiciones Vacantes</h1></div>
+            <button class="btn btn-primary" id="editar" value="Editar">Editar</button>
+            <br>
+            <button class="btn btn-primary" id="cancelar" style="display: none;">Cancelar</button>
+            <form id="vacante" action="/posicionVacante/nuevaVacante/{{proyecto.nombre}}" enctype="multipart/form-data" method="post" action="/foo/">
+                {% csrf_token %}
+                <div class="overflow-auto" id="agregarPosicionVacante" style="display: none;">
+                    <br>
+                    
+                    <table width="95%" cellpadding="0" cellspacing="0" style="border: 0px; margin: auto;">
+                        <tr>
+                            <td>
+                                <h3>Roles:</h3>
+                            </td>
+                            <td>
+                                <h3>Frameworks:</h3>
+                            </td>
+                            <td>
+                                <h3>Descripcion:</h3>
+                            </td>
+                        </tr>
+                        <tr style="width: auto;">
+                            <td>
+                                {% for rol in roles %}
+                                    <label class="checkbox" for="checkbox">
+                                        <input class="form-check-input" name="roles"  type="checkbox" id="defaultCheck4" value="{{rol}}">     
+                                        {{rol.label}}
+                                    </label>  
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for framework in frameworks %}
+                                    <label class="checkbox" for="defaultCheck3">
+                                        <input class="form-check-input" name="frameworks"  type="checkbox" id="defaultCheck3" value="{{framework}}">
+                                        {{framework.label}}
+                                    </label>
+                                {% endfor %}
+                            </td>
+                            <td style="width: 50%;">
+                                <textarea class="form-control" name="descripcion" id="descripcion" rows="5"></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align: right;">
+                                <input class="btn btn-primary" type="submit" id="crearVacante" name="crearVacante" value="Crear Vacante">
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <hr>
+            </form>
+            {% if vacantes %}
+                {% for vacante in vacantes %}
+                    <table width="95%" cellpadding="0" cellspacing="0" style="border: 0px; margin: auto;">
+                        <tr>
+                            <td>
+                                <h3>Roles:</h3>
+                            </td>
+                            <td>
+                                <h3>Frameworks:</h3>
+                            </td>
+                            <td>
+                                <h3>Descripcion:</h3>
+                            </td>
+                        </tr>
+                        <tr style="width: auto;">
+                            <td>
+                                {% for rol in vacante.roles %}
+                                    <span>{{rol}}</span>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for framework in vacante.frameworks %}
+                                    <span>{{framework}}</span>
+                                {% endfor %}
+                            </td>
+                            <td style="width: 50%;">
+                                <p>{{vacante.descripcion}}</p>
+                            </td>
+                        </tr>
+                    </table>
+                {% endfor %}
+            {% else %}
+                <h3>Noy hay vacantes disponibles</h3>
+            {% endif %}
+            <p><a class="btn btn-primary topbtn" href="/proyectos/proyecto/{{proyecto.nombre}}">Volver</a></p>
+        </div>
+    </body>
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            var botonEditar=document.getElementById("editar");
+            var botonCancelar=document.getElementById("cancelar");
+            botonEditar.addEventListener("click",editarVacantes);
+            botonCancelar.addEventListener("click",editarVacantes);
+
+            var botonCrearVacante=document.getElementById("crearVacante");
+            botonCrearVacante.addEventListener("click",validar);
+        });
+        
+        function editarVacantes(button){
+            var botonEditar=document.getElementById("editar");
+            var botonCancelar=document.getElementById("cancelar");
+            var nuevaVacante=document.getElementById("agregarPosicionVacante");
+            if(nuevaVacante.style.display=="none"){
+                botonEditar.style.display="none";
+                nuevaVacante.style.display="grid";
+                botonCancelar.style.display="inline";
+            }else{
+                botonEditar.style.display="inline";
+                nuevaVacante.style.display="none";
+                botonCancelar.style.display="none";
+            }
+            return;
+        }
+
+        function validar(button){
+            event.preventDefault();
+            var texto=document.getElementById("descripcion").value;
+            if(texto==""){
+                alert("Descripcion de posicion incompleta");
+                return;
+            }
+            var roles=document.getElementsByName("roles");
+            var r=false;
+            for(let i=0; i<roles.length; i++){
+                if(roles[i].checked){
+                    r=true;
+                    break;
+                }
+            }
+            if(!r){
+                alert("Elija almenos un rol para la posicion");
+                return;
+            }
+            var frames=document.getElementsByName("frameworks");
+            var f=false;
+            for(let i=0; i<frames.length; i++){
+                if(frames[i].checked){
+                    f=true;
+                    break;
+                }
+            }
+            if(!f){
+                alert("Elija almenos un framework para la posicion");
+                return;
+            }
+            document.getElementById("vacante").submit();
+        }
+    </script>
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}
