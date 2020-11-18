@@ -12,9 +12,6 @@ from random import randint
 from django.shortcuts import redirect
 # Create your views here.
 
-@login_required
-def lobby(request):
-     return render(request,"comunicacion/lobby.html")
 
 @login_required
 def conversaciones(request):
