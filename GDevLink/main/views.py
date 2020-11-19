@@ -3,9 +3,11 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from proyectos.models import Proyecto, Usuario, Actualizacion
 from django.core.paginator import Paginator
+from posicionVacante.models import PosicionVacante
 
 # Vista para la página principal
 def index(request):
+     
      #Si el usuario está autenticado, se le muestran las actualizaciones de los proyectos a los que sigue
      if request.user.is_authenticated:
           #Se obtiene el número de página solicitado
@@ -31,15 +33,22 @@ def index(request):
                #Se revisa si hay página siguiente
                if pagina.has_next():
                     pagina_siguiente = numero_pagina + 1
+               rolesUser = request.user.roles
+               vacantes = []
+               #fase = PosiblesFases.labels[PosiblesFases.values.index(proyecto.fase)]
+               for r in rolesUser:
+                    vacantes = vacantes + list(PosicionVacante.objects.filter(roles__contains=[r])) 
           except Actualizacion.DoesNotExist:
                actualizaciones = []
           return render(request,"main/index.html",{
                "actualizaciones": pagina,
                "pagina_anterior": pagina_anterior,
-               "pagina_siguiente": pagina_siguiente
+               "pagina_siguiente": pagina_siguiente,
+               "vacantes": vacantes
           })
      else:
           todos = Proyecto.objects.all().order_by('seguidores')
+          vacantes = PosicionVacante.objects.all()
           populares = [None] * 4
           i=0
           for pop in todos:
@@ -48,4 +57,4 @@ def index(request):
                     break
                i = i+1
                 
-          return render(request,"main/index.html",{"populares": populares})
+          return render(request,"main/index.html",{"populares": populares, "vacantes": vacantes})
