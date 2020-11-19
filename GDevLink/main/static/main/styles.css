@@ -154,6 +154,9 @@ html, body
 		width: 100%;
 	}
 	
+	.imagePerfil{
+		border-radius: 50%;
+	}
 
 
 /*********************************************************************************/
@@ -556,6 +559,31 @@ html, body
 	  .navbar:hover .logo svg {
 		transform: rotate(-180deg);
 	  }
+
+/* Small screens */
+@media only screen and (max-width: 600px) {
+	.navbarp {
+	  bottom: 0;
+	  width: 100vw;
+	  height: 5rem;
+	}
+  
+	.logop {
+	  display: none;
+	}
+  
+	.navbar-navp {
+	  flex-direction: row;
+	}
+  
+	.nav-linkp {
+	  justify-content: center;
+	}
+  
+	main {
+	  margin: 0;
+	}
+  }
 
 	  /* Large screens */
 @media only screen and (min-width: 600px) {
