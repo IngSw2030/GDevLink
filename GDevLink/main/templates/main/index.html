@@ -86,6 +86,17 @@
     <div  id="container">
         <h1>Vacantes</h1>
         <h1>Interesantes</h1>
+        {% for vac in vacantes%}
+        <br>
+            <h3>{{vac.proyecto.nombre}}</h3>
+            <p class="">        
+                {% for rol in vac.roles %}
+                {{ rol }},
+                {% endfor %}
+             </p>
+          <button>Aplicar</button>
+        <br>
+        {% endfor %}
     </div>
 </div>
 
