@@ -3,6 +3,7 @@ from django.shortcuts import render
 from django.http import HttpResponse
 from proyectos.models import Proyecto, Usuario, Actualizacion
 from django.core.paginator import Paginator
+from posicionVacante.models import PosicionVacante
 
 # Vista para la página principal
 def index(request):
@@ -40,6 +41,7 @@ def index(request):
           })
      else:
           todos = Proyecto.objects.all().order_by('seguidores')
+
           populares = [None] * 4
           i=0
           for pop in todos:

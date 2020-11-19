@@ -60,7 +60,9 @@ def registrar(request):
             user.roles = roles
             user.generos = generos
             user.frameworks = frameworks
+            user.imagen = '/usuarios/defaultUser.png'
             user.save()
+            
         except IntegrityError as e:
             print(e)
             return render(request, "usuarios/registrar.html", {

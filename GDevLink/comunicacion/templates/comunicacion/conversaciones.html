@@ -18,7 +18,7 @@
     <div class="contenido">
         <form action="{% url 'conversaciones' %}" method="post">
             {% csrf_token %}
-            <nav class="navbarp busqueda">
+            <nav class=" busqueda">
                 <div class="usuarios">
                     
                         
@@ -73,7 +73,10 @@
                             
                         );
                     });
-                    displayCharacters(filteredCharacters);
+                    if(e.target.value != ""){
+                        displayCharacters(filteredCharacters);
+                    }
+                    
                 });
 
                 const loadCharacters = async () => {
@@ -99,8 +102,9 @@
                         .map((character) => {
                             return `
                             <li class="character">
-                                <input class="form-check-input" type="radio" name="usuarioB" id="exampleRadios1" value="${character.username}" checked>
+                                
                                 <label class="form-check-label" for="exampleRadios1">
+                                    <input class="form-check-input" type="radio" name="usuarioB" id="exampleRadios1" value="${character.username}" checked>
                                     ${character.username}
                                 </label>
                             </li>
