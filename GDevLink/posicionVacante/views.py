@@ -21,7 +21,6 @@ def gestionarVacantes(request,nombre):
         "roles":PosiblesRoles})
 
 def nuevaVacante(request, nombre):
-    print("SI")
     if request.method == "POST":
         proyecto = Proyecto.objects.get(nombre=nombre)
         roles=request.POST.getlist("roles")
@@ -43,6 +42,24 @@ def nuevaVacante(request, nombre):
             "vacantes":vacantes,
             "frameworks":PosiblesFrameworks,
             "roles":PosiblesRoles})
+    vacantes=proyecto.vacantes.all()
+    return render(request, "posicionVacante/gestionVacantes.html",{
+        "proyecto":proyecto,
+        "vacantes":vacantes,
+        "frameworks":PosiblesFrameworks,
+        "roles":PosiblesRoles})
+
+def editarVacante(request, ids):
+    vacante=PosicionVacante.objects.get(id=ids)
+    proyecto=vacante.proyecto
+    return render(request, "posicionVacante/editarVacante.html",{
+        "vacante":vacante,
+    })
+
+def eliminarVacante(request, ids):
+    vacante=PosicionVacante.objects.get(id=ids)
+    proyecto=vacante.proyecto
+    vacante.delete()
     vacantes=proyecto.vacantes.all()
     return render(request, "posicionVacante/gestionVacantes.html",{
         "proyecto":proyecto,
