@@ -18331,6 +18331,35 @@
 							"propertyLabel": {
 								"$ref": "AAAAAAF14YVyS4X8atk="
 							}
+						},
+						{
+							"_type": "UMLNoteView",
+							"_id": "AAAAAAF15lE+VAE0dtM=",
+							"_parent": {
+								"$ref": "AAAAAAF14XDfo4C9xyg="
+							},
+							"font": "Arial;13;0",
+							"left": 104,
+							"top": 368,
+							"width": 70,
+							"height": 51,
+							"text": "Faltan algunos métodos"
+						},
+						{
+							"_type": "UMLNoteLinkView",
+							"_id": "AAAAAAF15lGBOgE5RUk=",
+							"_parent": {
+								"$ref": "AAAAAAF14XDfo4C9xyg="
+							},
+							"font": "Arial;13;0",
+							"head": {
+								"$ref": "AAAAAAF14XKUW4Hekfo="
+							},
+							"tail": {
+								"$ref": "AAAAAAF15lE+VAE0dtM="
+							},
+							"lineStyle": 1,
+							"points": "174:400;271:418"
 						}
 					]
 				},
