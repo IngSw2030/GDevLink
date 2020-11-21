@@ -422,7 +422,7 @@
 											"top": 47,
 											"width": 267,
 											"height": 13,
-											"text": "Modelo"
+											"text": "GDevLink"
 										},
 										{
 											"_type": "LabelView",
@@ -7378,7 +7378,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Modelo",
+					"name": "GDevLink",
 					"ownedElements": [
 						{
 							"_type": "UMLInterfaceRealization",

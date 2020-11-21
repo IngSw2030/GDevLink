@@ -20539,7 +20539,7 @@
 					"_parent": {
 						"$ref": "AAAAAAFF+qBWK6M3Z8Y="
 					},
-					"name": "Componente Modelo",
+					"name": "Componente GDevLink",
 					"ownedViews": [
 						{
 							"_type": "UMLInterfaceView",
