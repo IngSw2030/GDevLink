@@ -10,6 +10,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from json import dumps
 from random import randint
 from django.shortcuts import redirect
+from comunicacion.ManejadorComunicacion import ManejadorComunicacion
 # Create your views here.
 
 
@@ -19,18 +20,19 @@ def conversaciones(request):
           usuarioB = request.POST.getlist('usuarioB')
           #codigo = randint(1000000000, 9999999999)
           #conv = Conversacion(codigo = codigo)
-          conv = Conversacion()
-          conv.save()
-          conv.participantes.add(request.user)     
-          conv.participantes.add(Usuario.objects.get(username=usuarioB[0]))
-          
+          conv = ManejadorComunicacion.agregarConversacion(request.user.username, usuarioB[0])
+          if conv is None:
+               return render(request, "main/error.html", {
+                    "mensaje": "Ocurrió un error."
+               })
           return redirect('/comunicacion/chat/'+ str(conv.id))
 
 
      else:
           result_list = list(Usuario.objects.all().values('username'))
           dataJSON = dumps(result_list) 
-          conversaciones = request.user.conversaciones.all()
+          conversaciones = ManejadorComunicacion.obtenerConversaciones(request.user.username)
+
           #print(conversaciones.Conversacion)
           #participantes = conversaciones.participantes.objects.all()
          
@@ -47,6 +49,6 @@ def chat(request, room_name):
          # print("mensaje añadido")
           
           #return HttpResponse("Añadido")
-     conversacion = Conversacion.objects.get(id=room_name)
+     conversacion = ManejadorComunicacion.obtenerMensajes(request.user.username, room_name)
      return render(request, "comunicacion/chat.html", {
                "conversacion": conversacion, 'room_name': room_name})
