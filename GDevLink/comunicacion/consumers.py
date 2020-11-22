@@ -3,6 +3,7 @@ from asgiref.sync import async_to_sync
 import json
 from comunicacion.models import Mensaje, Conversacion
 from usuarios.models import Usuario
+from comunicacion.ManejadorEnvioMensajes import ManejadorEnvioMensajes
 
 class ChatConsumer(WebsocketConsumer):
     def connect(self):
@@ -30,20 +31,17 @@ class ChatConsumer(WebsocketConsumer):
         message = text_data_json['message']
         autor = text_data_json['autor']
         
+        if ManejadorEnvioMensajes.enviarMensaje(autor, self.room_name, message) == 0:
+            # Send message to room group
+            async_to_sync (self.channel_layer.group_send)(
+                self.room_group_name,
+                {
+                    'type': 'chat_message',
+                    'message': message,
+                    'autor': autor
+                }
+            )
         
-        conversacion = Conversacion.objects.get(id=self.room_name)
-        usuario = Usuario.objects.get(username=autor)
-        mensaje = Mensaje.objects.create(Conversacion=conversacion,texto=message, autor=usuario)
-        mensaje.save()
-        # Send message to room group
-        async_to_sync (self.channel_layer.group_send)(
-            self.room_group_name,
-            {
-                'type': 'chat_message',
-                'message': message,
-                'autor': autor
-            }
-        )
 
     # Receive message from room group
     def chat_message(self, event):
