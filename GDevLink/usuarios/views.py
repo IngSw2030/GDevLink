@@ -12,106 +12,98 @@ from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
-
-
+from usuarios.ManejadorUsuarios import ManejadorUsuarios
 
 def vista_login(request):
     if request.method == "POST" and 'login' in request.POST:
-            username = request.POST["username"]
-            password = request.POST["password"]
-            user = authenticate(request, username=username, password=password)
-            if user is not None:
-                login(request, user)
-                return HttpResponseRedirect(reverse("index"))
-            else:
-                return render(request, "usuarios/login.html", {
-                    "message": "Datos de inicio de sesion incorrectos"
-                })
+        username = request.POST["username"]
+        password = request.POST["password"]
+        if ManejadorUsuarios.login(request, username, password) is not None:
+            return HttpResponseRedirect(reverse("index"))
+        else:
+            return render(request, "usuarios/login.html", {
+                "message": "Datos de inicio de sesion incorrectos"
+            })
     return render(request, "usuarios/login.html")
 
 
 def vista_logout(request):
-    logout(request)
+    ManejadorUsuarios.logOut(request)
     return HttpResponseRedirect(reverse("login"))
 
 
 def registrar(request):
     if request.method == "POST":
+        #Se obtienen datos de la solicitud
         username = request.POST["username"]
         email = request.POST["email"]
         roles = request.POST.getlist('roles')
         generos = request.POST.getlist('generos')
         frameworks = request.POST.getlist('frameworks')
-
-        for f in roles:
-            print(f)
-
-        # Ensure password matches confirmation
+        #Se revisa que ambas contraseñas coincidan
         password = request.POST["password"]
         confirmation = request.POST["confirmation"]
         if password != confirmation:
             return render(request, "usuarios/registrar.html", {
                 "message": "Las contraseñas no coinciden."
             })
-
-        # Attempt to create new user
-        try:
-            user = Usuario.objects.create_user(username, email, password)
-            user.roles = roles
-            user.generos = generos
-            user.frameworks = frameworks
-            user.imagen = '/usuarios/defaultUser.png'
-            user.save()
-            
-        except IntegrityError as e:
-            print(e)
+        #Se intenta crear el nuevo usuario. En caso de que falle la creación,
+        #se le indica al usuario
+        user = ManejadorUsuarios.registrar(username, email, roles, generos, frameworks, password)
+        if user is None:
             return render(request, "usuarios/registrar.html", {
-                "message": "Correo o nombre de usuario ya registrado."
+                "message": "Correo o nombre de usuario ya registrado.",
+                "roles": PosiblesRoles,
+                "generos": PosiblesGeneros,
+                "frameworks": PosiblesFrameworks
             })
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
-        return HttpResponseRedirect(reverse("index"))
+        return HttpResponseRedirect(reverse("index"))  
     else:
-        return render(request, "usuarios/registrar.html", {"roles": PosiblesRoles, "generos": PosiblesGeneros, "frameworks": PosiblesFrameworks})
+        return render(request, "usuarios/registrar.html", {
+            "roles": PosiblesRoles,
+            "generos": PosiblesGeneros,
+            "frameworks": PosiblesFrameworks
+        })
 
 
 def perfil(request, nombre_usuario):
-    try:
-        usuario = Usuario.objects.get(username=nombre_usuario)
-        participaciones = {}
-        roles = []
-        generos = []
-        frameworks = []
-        if(usuario.roles is None or usuario.generos is None or usuario.frameworks is None):
-            usuario.roles = roles
-            usuario.generos = generos
-            usuario.frameworks = frameworks
-            usuario.save()
-        for rol in usuario.roles:
-            roles.append(
-                (PosiblesRoles.labels[PosiblesRoles.values.index(rol)]))
-        for genero in usuario.generos:
-            generos.append(
-                (PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
-        for framework in usuario.frameworks:
-            frameworks.append(
-                (PosiblesFrameworks.labels[PosiblesFrameworks.values.index(framework)]))
-        for participacion in usuario.participaciones.all():
-            roles_p = ""
-            for rol in participacion.roles:
-                roles_p = roles_p + " " + \
-                    str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
-            participaciones[participacion.proyecto.nombre] = roles_p
-        return render(request, "usuarios/perfil.html", {
-            "usuario": usuario,
-            "participaciones": participaciones,
-            "roles": roles,
-            "generos": generos,
-            "frameworks": frameworks
-        })
-    except Usuario.DoesNotExist:
+    usuario = ManejadorUsuarios.obtenerUsuario(nombre_usuario)
+    if usuario is None:
         return render(request, "main/error.html", {
             "mensaje": "Usuario no encontrado."
         })
+    participaciones = {}
+    roles = []
+    generos = []
+    frameworks = []
+    if(usuario.roles is None or usuario.generos is None or usuario.frameworks is None):
+        usuario.roles = roles
+        usuario.generos = generos
+        usuario.frameworks = frameworks
+        usuario.save()
+    for rol in usuario.roles:
+        roles.append(
+            (PosiblesRoles.labels[PosiblesRoles.values.index(rol)]))
+    for genero in usuario.generos:
+        generos.append(
+            (PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
+    for framework in usuario.frameworks:
+        frameworks.append(
+            (PosiblesFrameworks.labels[PosiblesFrameworks.values.index(framework)]))
+    for participacion in usuario.participaciones.all():
+        roles_p = ""
+        for rol in participacion.roles:
+            roles_p = roles_p + " " + \
+                str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+        participaciones[participacion.proyecto.nombre] = roles_p
+    return render(request, "usuarios/perfil.html", {
+        "usuario": usuario,
+        "participaciones": participaciones,
+        "roles": roles,
+        "generos": generos,
+        "frameworks": frameworks
+    })
 
 
 def editar(request, nombre_usuario):
@@ -120,75 +112,42 @@ def editar(request, nombre_usuario):
         roles = request.POST.getlist('roles')
         generos = request.POST.getlist('generos')
         frameworks = request.POST.getlist('frameworks')
-
         if(len(roles)==0):
             return render(request, "main/error.html", {
             "mensaje": "Debe seleccionar al menos (1) rol."
         })
-
-        user = Usuario.objects.get(username=nombre_usuario)
-
+        user = ManejadorUsuarios.obtenerUsuario(nombre_usuario)
+        #Se revisa que el usuario que va a modificar el perfil sea el dueño del perfil
+        if user is None:
+            return render(request, "usuarios/editar.html", {
+                "message": "Error inesperado"
+            })
+        if user != request.user:
+            return render(request, "main/error.html", {
+                "mensaje": "No tiene acceso a este recurso."
+            })
         if 'imagen' in request.FILES:
             imagen = request.FILES['imagen']
         else:
             imagen=user.imagen
-
-
-        for f in roles:
-            print(f)
-
-        # Attempt to create new user
-        try:
-            
-            user.roles = roles
-            user.generos = generos
-            user.frameworks = frameworks
-            user.descripcion = descripcion
-            user.imagen = imagen
-            user.save()
-        except IntegrityError as e:
-            print(e)
+        user = ManejadorUsuarios.editarPerfil(nombre_usuario, roles, generos, frameworks, descripcion, imagen)
+        if user is None:
             return render(request, "usuarios/editar.html", {
                 "message": "Error inesperado"
             })
-        return HttpResponseRedirect(reverse("index"))
+        return HttpResponseRedirect(reverse("perfil", kwargs={"nombre_usuario": nombre_usuario})) 
     else:
-        try:
-            form = PasswordChangeForm(request.user)
-            usuario = Usuario.objects.get(username=nombre_usuario)
-            participaciones = {}
-            roles = []
-            generos = []
-            frameworks = []
-            for rol in usuario.roles:
-                roles.append((PosiblesRoles.labels[PosiblesRoles.values.index(rol)]))
-            for genero in usuario.generos:
-                generos.append((PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
-            for framework in usuario.frameworks:
-                frameworks.append((PosiblesFrameworks.labels[PosiblesFrameworks.values.index(framework)]))
-            for participacion in usuario.participaciones.all():
-                roles_p = ""
-                for rol in participacion.roles:
-                    roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
-                participaciones[participacion.proyecto.nombre] = roles_p
-            return render(request, "usuarios/editar.html", {
-                "usuario": usuario,
-                "participaciones": participaciones,
-                "roles": roles,
-                "posiblesRoles": PosiblesRoles,
-                "generos": generos,
-                "posiblesGeneros": PosiblesGeneros,
-                "frameworks": frameworks,
-                "posiblesFrameworks": PosiblesFrameworks
-            })
-        except Usuario.DoesNotExist:
+        form = PasswordChangeForm(request.user)
+        usuario = ManejadorUsuarios.obtenerUsuario(nombre_usuario)
+        if usuario is None:
             return render(request, "main/error.html", {
                 "mensaje": "Usuario no encontrado."
             })
-
-def visitarPerfil(request,nombre_usuario):
-    try:
-        usuario = Usuario.objects.get(username=nombre_usuario)
+        #Se revisa que el usuario que va a acceder a la página sea el dueño del perfil
+        if usuario != request.user:
+            return render(request, "main/error.html", {
+                "mensaje": "No tiene acceso a este recurso."
+            })
         participaciones = {}
         roles = []
         generos = []
@@ -204,19 +163,18 @@ def visitarPerfil(request,nombre_usuario):
             for rol in participacion.roles:
                 roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
             participaciones[participacion.proyecto.nombre] = roles_p
-        return render(request, "usuarios/visitarPerfil.html", {
+        return render(request, "usuarios/editar.html", {
             "usuario": usuario,
             "participaciones": participaciones,
             "roles": roles,
+            "posiblesRoles": PosiblesRoles,
             "generos": generos,
-            "frameworks": frameworks
-        })
-    except Usuario.DoesNotExist:
-        return render(request, "main/error.html", {
-            "mensaje": "Usuario no encontrado."
+            "posiblesGeneros": PosiblesGeneros,
+            "frameworks": frameworks,
+            "posiblesFrameworks": PosiblesFrameworks
         })
 
-
+#???
 def cambiarClave(request):
     if request.method == 'POST':
         print("post")
