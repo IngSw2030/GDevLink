@@ -2,6 +2,8 @@ from usuarios.models import Usuario
 from usuarios.IManejadorUsuarios import IManejadorUsuarios
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
+from django.contrib.auth import update_session_auth_hash
+from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 
 #Clase que implementa la interfaz IManejadorUsuarios
 class ManejadorUsuarios(IManejadorUsuarios):
@@ -58,3 +60,12 @@ class ManejadorUsuarios(IManejadorUsuarios):
         #Se retorna None si el usuario no existe o si ocurre algun error en la actualización de los datos
         except (IntegrityError, Usuario.DoesNotExist) as e:
             return None
+
+    def cambiarContrasena(request):
+        if request.method == 'POST':
+            form = PasswordChangeForm(user=request.user, data=request.POST)
+            if form.is_valid():
+                form.save()
+                update_session_auth_hash(request, form.user)
+                return True
+        return False

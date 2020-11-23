@@ -7,7 +7,6 @@ from main.enum import PosiblesFrameworks, PosiblesGeneros, PosiblesRoles
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django import forms
-from django.contrib.auth import update_session_auth_hash
 from django.contrib import messages
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
@@ -174,25 +173,15 @@ def editar(request, nombre_usuario):
             "posiblesFrameworks": PosiblesFrameworks
         })
 
-#???
 def cambiarClave(request):
     if request.method == 'POST':
-        print("post")
-        form = PasswordChangeForm( user=request.user,data=request.POST)
-
-        if form.is_valid():
-            print("entro valid")
-            form.save()
-            update_session_auth_hash(request, form.user)
-            #return redirect(reverse('usuarios:perfil'))
+        form = PasswordChangeForm(user=request.user,data=request.POST)
+        if ManejadorUsuarios.cambiarContrasena(request):
+            return HttpResponseRedirect(reverse("index"))
         else:
-            print("no valid")
             return render(request, "main/error.html", {
-                "mensaje": "Se produjo un error en el cambio de clave. Lea las advertencias en cambiar contraseña"
-            })
-        
-        return HttpResponseRedirect(reverse("index"))
-        
+                "mensaje": "Se produjo un error en el cambio de clave. Asegúrate de que tu contraseña cumpla con los requisitos."
+            })    
     else:
         form = PasswordChangeForm(user=request.user)
         args = {'form': form}
