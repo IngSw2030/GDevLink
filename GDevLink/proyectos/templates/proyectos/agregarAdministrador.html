@@ -41,6 +41,7 @@
                 <div class="list-group">
                     {% for usuariosPointer in usuarios %}
                     {%if usuariosPointer  in miembros%}
+                    
                     <label class="checkbox" for="defaultCheck1"></label>
                     <li><a href="/usuarios/visitarPerfil/{{usuariosPointer.username}}">{{usuariosPointer.username}}</a></li>
                     {%endif%}
@@ -52,7 +53,7 @@
                     <input class="btn btn-primary" type="submit" name="Agregar" value="Agregar">
 
                 </div>
-                <a href="/proyectos/gestionMiembros/{{proyecto.nombre}}">Volvera gestion de miembros</a>
+                <a href="/proyectos/gestionMiembros/{{proyecto.nombre}}">Volver a gestion de miembros</a>
             </div>
         </form>
         <script src="https://code.jquery.com/jquery-3.2.0.min.js"></script>

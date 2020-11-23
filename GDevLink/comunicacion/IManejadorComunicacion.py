@@ -1,6 +1,6 @@
 #Interfaz del manejador de comunicación
 class IManejadorComunicacion:
-    #Método que retorna las conersaciones del usuario cuyo nombre de usuario
+    #Método que retorna las conversaciones del usuario cuyo nombre de usuario
     #es pasado como parámetro. En caso de que el usuario no exista, se
     #retorna None
     def obtenerConversaciones(nombreUsuario):

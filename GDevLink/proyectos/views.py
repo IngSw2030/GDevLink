@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from main.enum import *
+
 from main.enum import PosiblesFrameworks, PosiblesGeneros, PosiblesRoles, PosiblesPermisos, PosiblesFases
 from proyectos.models import Proyecto, Participacion, Usuario, Actualizacion
 from datetime import datetime
@@ -7,12 +7,14 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
+from proyectos.ManejadorProyectos import ManejadorProyectos
 # Create your views here.
 
     
 @login_required
 def crearProyecto(request):
     if request.method == "POST" and 'crearProyecto' in request.POST:
+        #Se obtienen los datos de los campos del formulario de creación de proyectos
         nombre = request.POST["name"]
         generos = request.POST.getlist("generos")
         fase = request.POST.getlist('fase')
@@ -22,6 +24,7 @@ def crearProyecto(request):
         enlace_juego = request.POST["enlacedescargar"]
         roles = request.POST.getlist("roles")
 
+        #Se verifica que se hallan rellenado los campos obligatorios
         if(nombre == ""):
             return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
              "message": "Por favor ingresar un nombre"})
@@ -36,24 +39,19 @@ def crearProyecto(request):
             imagen = request.FILES['imagen']
         else:
             imagen=None
-        result=Proyecto.objects.filter(nombre=nombre).count()
-        if result > 0:
+
+        result = ManejadorProyectos.crearProyecto(request.user, nombre, generos, fase, descripcion, frameworks, enlace_video, enlace_juego, roles, imagen)
+        
+        if result is None:
             return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
              "message": "Nombre de proyecto ya registrado"})
-        try:
-            proyecto = Proyecto(nombre=nombre,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlace_video,enlace_juego=enlace_juego,imagen=imagen)
-            proyecto.save()
-        except IntegrityError as e:
-            print(e)
-            return render(request, "proyectos/crearProyecto.html", {"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
-                "message": "Error al crear el proyecto"})
-        try:
-            participacion= Participacion(usuario=request.user,proyecto=proyecto,roles=roles,permiso=PosiblesPermisos.MASTER)
-            participacion.save()
-            return HttpResponseRedirect(reverse("proyecto", kwargs={"nombre": nombre}))
-        except IntegrityError as e:
-            return render(request, "proyectos/crearProyecto.html", {
-                "message": "Error en la creacion de participacion"})
+
+        if result = -1:
+            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
+             "message": "Error al crear el proyecto"})
+        
+        return HttpResponseRedirect(reverse("proyecto", kwargs={"nombre": nombre}))
+                
     return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles})
 
 def proyecto(request,nombre):
@@ -107,10 +105,7 @@ def proyecto(request,nombre):
 
 def proyectosUsuario(request):
     if request.user.is_authenticated:
-       if request.user.participaciones:
-           proyectos = []
-           for participacion in request.user.participaciones.all():
-               proyectos.append(participacion.proyecto)
+        proyectos = ManejadorProyectos.obtenerProyectosUsuario(request.user)
            return render(request,"proyectos/proyectosUsuario.html",{"proyectos": proyectos})    
     return render(request,"proyectos/proyectosUsuario.html")
        #else
@@ -118,6 +113,7 @@ def proyectosUsuario(request):
 
 def editarProyecto(request, nombre):
     if request.method == "POST" and 'Actualizar' in request.POST: 
+        #Se obtienen los datos de los campos del formulario de edición de proyectos
         generos = request.POST.getlist("generos")
         fase = request.POST.getlist('fase')
         descripcion = request.POST['descripcion']
@@ -125,6 +121,7 @@ def editarProyecto(request, nombre):
         enlace_video =request.POST["enlaceVideo"]
         enlace_descargar = request.POST["enlaceDescargar"]
         
+        #Se verifica que se hallan rellenado los campos obligatorios
         if(len(fase)!=1):
             return render(request, "main/error.html", {
                 "mensaje": " Debe seleccionar (1) fase."
@@ -146,23 +143,16 @@ def editarProyecto(request, nombre):
         else:
             imagen=user.imagen
 
-
-        try:
-            print(PosiblesPermisos.MASTER)
-            proyecto = Proyecto.objects.get(nombre=nombre)
-            proyecto.generos = generos
-            proyecto.fase = fase
-            proyecto.descripcion = descripcion
-            proyecto.frameworks = frameworks
-            proyecto.enlace_video = enlace_video
-            proyecto.enlace_juego = enlace_descargar
-            proyecto.imagen = imagen
-            proyecto.save()
-        except IntegrityError as e:
-            print(e)
-            return render(request, "proyectos/crearProyecto.html", {
-                "message": "Nombre de proyecto ya registrado"})
-        return HttpResponseRedirect(reverse("index"))
+        #Se llama al controlador de proyecto para que lo edite
+        result = ManejadorProyectos.editarProyecto(nombre, generos, fase, descripcion, frameworks, enlace_video, enlace_juego, roles, imagen)
+        
+         
+        #Si result es -1, el proyecto no pudo ser editado correctamente
+        if result = -1:
+            return render(request, "main/error.html", {
+                "mensaje": "Proyecto no encontrado."
+            })
+        return HttpResponseRedirect(reverse("proyecto",kwargs={"nombre": nombre}))
     else:
         try:
             proyecto = Proyecto.objects.get(nombre=nombre)
@@ -179,6 +169,7 @@ def editarProyecto(request, nombre):
                 for rol in participacion.roles:
                     roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
                 participaciones[participacion.usuario.username] = roles_p
+                #Se renderiza la página de edición de proyecto, con sus atributos
             return render(request, "proyectos/editarProyecto.html", {
                         "proyecto": proyecto,
                         "generos": generos,
@@ -196,9 +187,13 @@ def editarProyecto(request, nombre):
             })
             
 def gestionMiembros (request, nombre):
-    proyecto = Proyecto.objects.get(nombre=nombre)
+    proyecto = ManejadorProyectos.obtenerProyecto(nombre)
+    #Se obtienen las participaciones del proyecto
+    participacionesPro = ManejadorProyectos.obtenerParticipaciones(nombre)
     participaciones = {}
-    for participacion in proyecto.participaciones.all():
+    #Se crea una lista de participaciones, en donde cada elemento es un string con 
+    #el nombre del usuario, seguido de sus roles en el proyecto
+    for participacion in participacionesPro:
                 roles_p = ""
                 for rol in participacion.roles:
                     roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)]) 
@@ -215,87 +210,77 @@ def agregarMiembros (request, nombre):
     if request.method == "POST" and 'Agregar' in request.POST: 
         roles = request.POST.getlist("roles")
         nom_us = request.POST["nuevoMiembro"]
-        
-
-        try:
-            nuevo_usuario = Usuario.objects.get(username=nom_us) 
-            proyecto = Proyecto.objects.get(nombre=nombre)
-            participacion = Participacion(usuario=nuevo_usuario,proyecto=proyecto,roles=roles,permiso=PosiblesPermisos.MIEMBRO)
-            participacion.save()
-            return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
-        except Usuario.DoesNotExist:
+        #Se llama al manejador para que agrege el miembro al proyecto
+        result = ManejadorProyectos.agregarMiembro(nombre,)
+        #Si result es none, el proyecto no existe
+        if result = None:
             return render(request, "main/error.html", {
-            "mensaje": "Usuario no encontrado."
+            "mensaje": "El proyecto no existe."
         })
-        except IntegrityError as e:
-            print(e)
+        #Si result es -1, hubo un error inesperado
+        if result = -1
             return render(request, "main/error.html", {
                 "mensaje": "Se produjo un error en agregar nuevo miembro"
             })
+        #Se retorna la página de gestión con los datos actualizados
+        return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
     else:
         try:
-            proyecto = Proyecto.objects.get(nombre=nombre)
-            personas = []
-            for auxPersonas in proyecto.participaciones.all():
-                personas.append(auxPersonas.usuario)
-            queryset = request.GET.get("buscar")
+            #Si el request no es POST, entonces se renderiza la página
+        
+            proyecto = ManejadorProyectos.obtenerProyecto(nombre=nombre)
+            #Se obtiene una lista de todos los usuarios como JSON
+            #result_list = list(Usuario.objects.all().values('username'))
+            #dataJSON = dumps(result_list) 
             usuarios = Usuario.objects.all()
-            if queryset:
-                usuarios= Usuario.objects.filter(
-                    username__icontains=queryset
-                )
-            
 
+            #Se renderiza la página de agregar miembros
+            personas = ManejadorProyectos.obtenerMiembros(nombre)
             return render(request,"proyectos/agregarMiembros.html",{
                 "miembros": personas,
                 "proyecto": proyecto,
-                "usuarios": usuarios,
+                "users": usuarios,
                 "posiblesroles": PosiblesRoles
                 
-            } )
+            })
         except Proyecto.DoesNotExist:
             return render(request, "main/error.html", {
                 "mensaje": "Proyecto no encontrado."
             })
-            
+
+
+
+
 def eliminarMiembros (request, nombre):
     if request.method == "POST" and 'Eliminar' in request.POST: 
         nom_us = request.POST["eliminarMiembro"]
         
-        try:
-            nuevo_usuario = Usuario.objects.get(username=nom_us) 
-            proyecto = Proyecto.objects.get(nombre=nombre)
-            participacion = Participacion.objects.get(usuario = nuevo_usuario)
-            participacion.delete()
-            return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
-        except Participacion.DoesNotExist:
-            return render(request, "main/error.html", {
-            "mensaje": "El Usuario no participa en el proyecto."
-        })
-        except Usuario.DoesNotExist:
-            return render(request, "main/error.html", {
-            "mensaje": "Usuario no encontrado."
-        })
-        except IntegrityError as e:
-            print(e)
-            return render(request, "main/error.html", {
-                "mensaje": "Se produjo un error al eliminar un miembro"
+            #Se llama al manejador para que elimine al miembro del proyecto
+            result = ManejadorProyectos.quitarMiembro(nombre,nom_us)
+            #Si result es -1 hubo un error inesperado
+            if result = -1
+                return render(request, "main/error.html", {
+                "mensaje": "El Usuario no participa en el proyecto."
             })
+            #Se carga la página de gestión con el usuario ya eliminado
+            return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
+        
     else:
         try:
-            proyecto = Proyecto.objects.get(nombre=nombre)
+            participacionesTodas = ManejadorProyectos.obtenerParticipaciones(nombre)
             personas = []
             for auxPersonas in proyecto.participaciones.all():
                 if auxPersonas.permiso !=  PosiblesPermisos.MASTER:
                     personas.append(auxPersonas.usuario)      
             usuarios = Usuario.objects.all()
+            #Se renderiza la página de eliminar miembros   
+            proyecto = ManejadorProyectos.obtenerProyecto(nombre=nombre)
             
-
+             usuarios = Usuario.objects.all()
             return render(request,"proyectos/eliminarMiembros.html",{
                 "miembros": personas,
                 "proyecto": proyecto,
-                "usuarios": usuarios
-                
+                "usuarios": usuarios           
             } )
         except Proyecto.DoesNotExist:
             return render(request, "main/error.html", {
@@ -304,45 +289,31 @@ def eliminarMiembros (request, nombre):
 
 def agregarAdministrador (request, nombre):
     if request.method == "POST" and 'Agregar' in request.POST: 
-        nom_us = request.POST["nuevoAdmin"]
-         
 
-        try:
-            nuevo_usuario = Usuario.objects.get(username=nom_us)
-            proyecto = Proyecto.objects.get(nombre=nombre)
-            participacion = Participacion.objects.get(usuario=nuevo_usuario)
-            participacion.permiso = PosiblesPermisos.ADMIN
-            participacion.save()
-            return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
-        except Participacion.DoesNotExist:
+        nom_us = request.POST["nuevoAdmin"]
+        #Se llama al manejador para que promueva un miembro de un proyecto a administrador       
+        result = ManejadorProyectos.promoverMiembro(nombre, nom_us)
+        
+        if result = -1:
             return render(request, "main/error.html", {
-            "mensaje": "El Usuario no participa en el proyecto."
-        })
-        except Usuario.DoesNotExist:
-            return render(request, "main/error.html", {
-            "mensaje": "Usuario no encontrado."
-        })
-        except IntegrityError as e:
-            print(e)
-            return render(request, "main/error.html", {
-                "mensaje": "Se produjo un error al agregar un administrador"
-        }) 
+                "mensaje": "Se produjo un error al agregar un administrador"})
+         return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
     else:
         try:
-            proyecto = Proyecto.objects.get(nombre=nombre)
+            proyecto = ManejadorProyectos.obtenerProyecto(nombre)
             personas = []
+            #La lista de miembros solo es rellenada con miembros que no sean ya administradores
             for auxPersonas in proyecto.participaciones.all():
                 if auxPersonas.permiso !=  PosiblesPermisos.MASTER and auxPersonas.permiso !=  PosiblesPermisos.ADMIN:
                     personas.append(auxPersonas.usuario)
-            usuarios = Usuario.objects.all()
+             usuarios = Usuario.objects.all()
             
-
+            #Se renderiza la página de agregar administrador
             return render(request,"proyectos/agregarAdministrador.html",{
                 "miembros": personas,
                 "proyecto": proyecto,
-                "usuarios": usuarios,
-                "posiblesroles": PosiblesRoles
-                
+                "posiblesroles": PosiblesRoles,
+                "usuarios": usuarios
             } )
         except Proyecto.DoesNotExist:
             return render(request, "main/error.html", {
@@ -352,30 +323,18 @@ def agregarAdministrador (request, nombre):
 def eliminarAdministrador (request, nombre):
     if request.method == "POST" and 'Eliminar' in request.POST: 
         nom_us = request.POST["eliminarAdmin"]
-    
-        try:
-            nuevo_usuario = Usuario.objects.get(username=nom_us) 
-            proyecto = Proyecto.objects.get(nombre=nombre)
-            participacion = Participacion.objects.get(usuario=nuevo_usuario)
-            participacion.permiso = PosiblesPermisos.MIEMBRO
-            participacion.save()
-            return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
-        except Participacion.DoesNotExist:
+        #Se llama al manejador de proyectos para que revoque los permisos de administrador de un miembro
+        result = ManejadorProyectos.revocarMiembro(nombre, nom_us)
+        if result = -1
             return render(request, "main/error.html", {
-            "mensaje": "El Usuario no participa en el proyecto."
-        })
-        except Usuario.DoesNotExist:
-            return render(request, "main/error.html", {
-            "mensaje": "Usuario no encontrado."
-        })
-        except IntegrityError as e:
-            print(e)
-            return render(request, "main/error.html", {
-                "mensaje": "Se produjo un error al eliminar un administrador"
-            }) 
+                "mensaje": "El Usuario no participa en el proyecto."
+            })
+        return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
+        
     else:
         try:
-            proyecto = Proyecto.objects.get(nombre=nombre)
+            #Se renderiza la página de remover administrador con los miembros que son administradores
+            proyecto = ManejadorProyectos.obtenerProyecto(nombre)
             personas = []
             for auxPersonas in proyecto.participaciones.all():
                 if auxPersonas.permiso ==  PosiblesPermisos.ADMIN:
@@ -402,23 +361,18 @@ def nuevaActualizacion(request,nombre):
         else:
             imagen=None
         descripcion = request.POST['descripcionActualizacion']
-    try:
-        actualizacion = Actualizacion(proyecto=proyecto,descripcion=descripcion,imagen=imagen)
-        actualizacion.save()
-    except IntegrityError as e:
+        #Se llama al manejador para que cree una nueva actualización para un proyecto
+        result = ManejadorProyectos.nuevaActualizacion(nombre,descripcion,imagen)
+
+        if result = -1:
             return HttpResponseRedirect(reverse("proyecto",kwargs={"nombre": nombre}))
+
     return HttpResponseRedirect(reverse("proyecto",kwargs={"nombre": nombre}))
 
 def seguir(request,nombre):
     if request.method == 'PUT':
-        proyecto = Proyecto.objects.get(nombre=nombre)
-        usuario = Usuario.objects.get(username=request.user.get_username())
-        if usuario in proyecto.seguidores.all():
-            proyecto.seguidores.remove(usuario)
-        else:
-            proyecto.seguidores.add(usuario)
-        proyecto.save()
-        return HttpResponse(status=200)
+        ManejadorProyectos.seguirProyecto(request.user, nombre)    
+    return HttpResponse(status=200)
 
 def explorarProyectos(request):
 
