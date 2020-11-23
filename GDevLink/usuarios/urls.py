@@ -9,5 +9,6 @@ urlpatterns = [
     path("editar/<str:nombre_usuario>", views.editar, name="editar"),
     path('accounts/', include('allauth.urls')),
     path("cambiarClave", views.cambiarClave, name="cambiarClave"),
+    path("visitarPerfil/<str:nombre_usuario>", views.visitarPerfil, name="visitarPerfil")
 
 ]

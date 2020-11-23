@@ -13,6 +13,6 @@ urlpatterns = [
     path("eliminarAdministrador/<str:nombre>", views.eliminarAdministrador, name="eliminarAdministrador"),
     path("nuevaActualizacion/<str:nombre>", views.nuevaActualizacion, name="nuevaActualizacion"),
     path("seguir/<str:nombre>", views.seguir, name="seguir"),
-    path("explorarProyectos", views.explorarProyectos, name="explorarProyectos"),
+    path("explorarProyectos", views.explorarProyectos, name="explorarProyectos")
     
 ]

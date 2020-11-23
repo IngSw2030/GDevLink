@@ -174,7 +174,7 @@ def editar(request, nombre_usuario):
             "posiblesFrameworks": PosiblesFrameworks
         })
 
-#???
+
 def cambiarClave(request):
     if request.method == 'POST':
         print("post")
@@ -197,3 +197,37 @@ def cambiarClave(request):
         form = PasswordChangeForm(user=request.user)
         args = {'form': form}
         return render(request, 'usuarios/cambiarClave.html', args)
+
+def visitarPerfil(request, nombre_usuario):
+    
+    form = PasswordChangeForm(request.user)
+    usuario = ManejadorUsuarios.obtenerUsuario(nombre_usuario)
+    if usuario is None:
+        return render(request, "main/error.html", {
+            "mensaje": "Usuario no encontrado."
+        })
+    participaciones = {}
+    roles = []
+    generos = []
+    frameworks = []
+    for rol in usuario.roles:
+        roles.append((PosiblesRoles.labels[PosiblesRoles.values.index(rol)]))
+    for genero in usuario.generos:
+        generos.append((PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
+    for framework in usuario.frameworks:
+        frameworks.append((PosiblesFrameworks.labels[PosiblesFrameworks.values.index(framework)]))
+    for participacion in usuario.participaciones.all():
+        roles_p = ""
+        for rol in participacion.roles:
+            roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+        participaciones[participacion.proyecto.nombre] = roles_p
+    return render(request, "usuarios/visitarPerfil.html", {
+        "usuario": usuario,
+        "participaciones": participaciones,
+        "roles": roles,
+        "posiblesRoles": PosiblesRoles,
+        "generos": generos,
+        "posiblesGeneros": PosiblesGeneros,
+        "frameworks": frameworks,
+        "posiblesFrameworks": PosiblesFrameworks
+    })

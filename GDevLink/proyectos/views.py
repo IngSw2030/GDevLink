@@ -447,4 +447,4 @@ def explorarProyectos(request):
                 "frameworks":PosiblesFrameworks,
                 "proyectos":proyectos,
                 "populares": populares
-            } )
+            } ) 
