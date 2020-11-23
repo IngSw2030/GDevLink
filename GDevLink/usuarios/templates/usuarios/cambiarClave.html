@@ -15,7 +15,7 @@
     <li>La nueva contrasena NO debe ser comunmente usada</li>
 </ul>
 </div>
-<form action="/usuarios/cambiarClave"  method="post" >
+<form action="/usuarios/cambio-clave"  method="post" >
     {% csrf_token %}
 
     <div class="form-group">
@@ -31,7 +31,7 @@
 </form>
 <br />
 <hr />
-<a href="/usuarios/perfil/{{user.username}}">Cancelar</a>
+<a href="/usuarios/{{user.username}}/perfil">Cancelar</a>
 
 
 

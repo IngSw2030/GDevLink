@@ -10,7 +10,7 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 
 
-@login_required(login_url='/usuarios/login')
+@login_required(login_url='/usuarios/inicio-sesion')
 def gestionarVacantes(request,nombre):
     proyecto = Proyecto.objects.get(nombre=nombre)
     vacantes=proyecto.vacantes.all()

@@ -6,7 +6,7 @@
 <div class="contenido">
             <h2 align="center">Editar mi perfil: {{usuario.username}}</h2>
 
-        <form action="/usuarios/editar/{{user.username}}" enctype="multipart/form-data" method="post" action="/foo/">
+        <form action="/usuarios/{{user.username}}/perfil" enctype="multipart/form-data" method="post" action="/foo/">
 
 
             <link rel="stylesheet" href="{% static 'usuarios/styles.css' %}">
@@ -89,13 +89,13 @@
                     </ul>
                 </div>   
                 <br>
-                <a href="/usuarios/cambiarClave">Cambiar Contraseña</a>
+                <a href="/usuarios/cambio-clave">Cambiar Contraseña</a>
                 <br><br>
                 <input class="btn btn-primary" type="submit" value="Guardar">
         </form>
         <br />
         <hr />
-        <a href="/usuarios/perfil/{{user.username}}">Cancelar</a>
+        <a href="/usuarios/{{user.username}}/perfil">Cancelar</a>
 </div>
 
 

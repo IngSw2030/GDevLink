@@ -28,7 +28,7 @@
                 <!-- Seccion Titulo de la pregunta -->
                 <h1 id="" style="display: inline-block; margin-left: 15px;">{{pregunta.titulo}}</h1>
                 <p id="preguntaId" data-id="{{pregunta.id}}" style="font-size: 10px;display: none;">{{pregunta.id}}</p>
-                <a style="font-size: 10px;display:inline; text-align: left;"href="/usuarios/perfil/{{pregunta.autor}}">{{pregunta.autor}}</a>
+                <a style="font-size: 10px;display:inline; text-align: left;"href="/usuarios/{{pregunta.autor}}/perfil">{{pregunta.autor}}</a>
             </div>
         
         <!-- Seccion mensajes de error -->
@@ -49,7 +49,7 @@
         {% if user.is_authenticated %}
             <input class="btn btn-primary" type="submit" id="responder" name="responder" value="Responder"></button>
         {% else %}
-            Para responder <a href="{% url 'login' %}">Inicia sesión aquí.</a>
+            Para responder <a href="{% url 'inicio-sesion' %}">Inicia sesión aquí.</a>
         {% endif %}
         <!-- Seccion formulario para crear la pregunta -->
         <form id="respuesta" action="/preguntas/crearRespuesta/{{pregunta.id}}" enctype="multipart/form-data" method="post" action="/foo/">
@@ -301,7 +301,7 @@
                             {% if autor %}
                                 <div class="mejorRespuesta" id="mejorRespuesta" style="display: block; color:goldenrod;" data-mejor="True">&#10004;</div>
                             {% endif %}
-                            <a style="font-size: 10px;display:inline; text-align: left;"href="/usuarios/perfil/{{respuesta.autor}}">{{respuesta.autor}}</a>
+                            <a style="font-size: 10px;display:inline; text-align: left;"href="/usuarios/{{respuesta.autor}}/perfil">{{respuesta.autor}}</a>
                             <hr>
                         </div>
                     {% endif %}
@@ -326,7 +326,7 @@
                             {% if autor %}
                                 <div class="mejorRespuesta" id="mejorRespuesta" style="display: block;" data-mejor="False">&#10004;</div>
                             {% endif %}
-                            <a style="font-size: 10px;display:block; text-align: right;"href="/usuarios/perfil/{{respuesta.autor}}">{{respuesta.autor}}</a>
+                            <a style="font-size: 10px;display:block; text-align: right;"href="/usuarios/{{respuesta.autor}}/perfil">{{respuesta.autor}}</a>
                             <hr>
                         </div>
                     {% endif %}

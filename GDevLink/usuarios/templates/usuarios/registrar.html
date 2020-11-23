@@ -9,7 +9,7 @@
      
     <div> {{message}} </div>
 
-    <form action="{% url 'registrar' %}" method="post">
+    <form action="{% url 'registro' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
             <input class="form-control" autofocus type="text" name="username" placeholder="Nombre de usuario" required>
@@ -59,7 +59,7 @@
         
     </form>
 
-    ¿Ya tienes una cuenta? <a href="{% url 'login' %}">Inicia sesión aquí.</a>
+    ¿Ya tienes una cuenta? <a href="{% url 'inicio-sesion' %}">Inicia sesión aquí.</a>
     <br>
     O inicia sesion con <a href="{% provider_login_url 'google' %}">Google</a>
 </div>

@@ -13,7 +13,7 @@ from django.contrib.auth.forms import UserChangeForm, PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from usuarios.ManejadorUsuarios import ManejadorUsuarios
 
-def vista_login(request):
+def inicio_sesion(request):
     if request.method == "POST" and 'login' in request.POST:
         username = request.POST["username"]
         password = request.POST["password"]
@@ -23,15 +23,17 @@ def vista_login(request):
             return render(request, "usuarios/login.html", {
                 "message": "Datos de inicio de sesion incorrectos"
             })
-    return render(request, "usuarios/login.html")
+    elif request.method == "GET":
+        return render(request, "usuarios/login.html")
 
 
-def vista_logout(request):
-    ManejadorUsuarios.logOut(request)
-    return HttpResponseRedirect(reverse("login"))
+def cierre_sesion(request):
+    if request.method == "GET":
+        ManejadorUsuarios.logOut(request)
+        return HttpResponseRedirect(reverse("inicio-sesion"))
 
 
-def registrar(request):
+def registro(request):
     if request.method == "POST":
         #Se obtienen datos de la solicitud
         username = request.POST["username"]
@@ -58,7 +60,7 @@ def registrar(request):
             })
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         return HttpResponseRedirect(reverse("index"))  
-    else:
+    elif request.method == "GET":
         return render(request, "usuarios/registrar.html", {
             "roles": PosiblesRoles,
             "generos": PosiblesGeneros,
@@ -67,46 +69,44 @@ def registrar(request):
 
 
 def perfil(request, nombre_usuario):
-    usuario = ManejadorUsuarios.obtenerUsuario(nombre_usuario)
-    if usuario is None:
-        return render(request, "main/error.html", {
-            "mensaje": "Usuario no encontrado."
+    if request.method == "GET":
+        usuario = ManejadorUsuarios.obtenerUsuario(nombre_usuario)
+        if usuario is None:
+            return render(request, "main/error.html", {
+                "mensaje": "Usuario no encontrado."
+            })
+        participaciones = {}
+        roles = []
+        generos = []
+        frameworks = []
+        if(usuario.roles is None or usuario.generos is None or usuario.frameworks is None):
+            usuario.roles = roles
+            usuario.generos = generos
+            usuario.frameworks = frameworks
+            usuario.save()
+        for rol in usuario.roles:
+            roles.append(
+                (PosiblesRoles.labels[PosiblesRoles.values.index(rol)]))
+        for genero in usuario.generos:
+            generos.append(
+                (PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
+        for framework in usuario.frameworks:
+            frameworks.append(
+                (PosiblesFrameworks.labels[PosiblesFrameworks.values.index(framework)]))
+        for participacion in usuario.participaciones.all():
+            roles_p = ""
+            for rol in participacion.roles:
+                roles_p = roles_p + " " + \
+                    str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+            participaciones[participacion.proyecto.nombre] = roles_p
+        return render(request, "usuarios/perfil.html", {
+            "usuario": usuario,
+            "participaciones": participaciones,
+            "roles": roles,
+            "generos": generos,
+            "frameworks": frameworks
         })
-    participaciones = {}
-    roles = []
-    generos = []
-    frameworks = []
-    if(usuario.roles is None or usuario.generos is None or usuario.frameworks is None):
-        usuario.roles = roles
-        usuario.generos = generos
-        usuario.frameworks = frameworks
-        usuario.save()
-    for rol in usuario.roles:
-        roles.append(
-            (PosiblesRoles.labels[PosiblesRoles.values.index(rol)]))
-    for genero in usuario.generos:
-        generos.append(
-            (PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
-    for framework in usuario.frameworks:
-        frameworks.append(
-            (PosiblesFrameworks.labels[PosiblesFrameworks.values.index(framework)]))
-    for participacion in usuario.participaciones.all():
-        roles_p = ""
-        for rol in participacion.roles:
-            roles_p = roles_p + " " + \
-                str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
-        participaciones[participacion.proyecto.nombre] = roles_p
-    return render(request, "usuarios/perfil.html", {
-        "usuario": usuario,
-        "participaciones": participaciones,
-        "roles": roles,
-        "generos": generos,
-        "frameworks": frameworks
-    })
-
-
-def editar(request, nombre_usuario):
-    if request.method == "POST":
+    elif request.method == "POST":
         descripcion = request.POST['descripcion']
         roles = request.POST.getlist('roles')
         generos = request.POST.getlist('generos')
@@ -135,7 +135,11 @@ def editar(request, nombre_usuario):
                 "message": "Error inesperado"
             })
         return HttpResponseRedirect(reverse("perfil", kwargs={"nombre_usuario": nombre_usuario})) 
-    else:
+
+
+
+def edicion(request, nombre_usuario):
+    if request.method == "GET":
         form = PasswordChangeForm(request.user)
         usuario = ManejadorUsuarios.obtenerUsuario(nombre_usuario)
         if usuario is None:
@@ -173,7 +177,7 @@ def editar(request, nombre_usuario):
             "posiblesFrameworks": PosiblesFrameworks
         })
 
-def cambiarClave(request):
+def cambio_clave(request):
     if request.method == 'POST':
         form = PasswordChangeForm(user=request.user,data=request.POST)
         if ManejadorUsuarios.cambiarContrasena(request):
@@ -182,7 +186,7 @@ def cambiarClave(request):
             return render(request, "main/error.html", {
                 "mensaje": "Se produjo un error en el cambio de clave. Asegúrate de que tu contraseña cumpla con los requisitos."
             })    
-    else:
+    elif request.method == 'POST':
         form = PasswordChangeForm(user=request.user)
         args = {'form': form}
         return render(request, 'usuarios/cambiarClave.html', args)

@@ -44,7 +44,7 @@
                     {% for usuariosPointer in usuarios %}
                     {%if usuariosPointer  in miembros%}
                     <label class="checkbox" for="defaultCheck1"></label>
-                    <li><a href="/usuarios/perfil/{{usuariosPointer.username}}">{{usuariosPointer.username}}</a></li>
+                    <li><a href="/usuarios/{{usuariosPointer.username}}/perfil">{{usuariosPointer.username}}</a></li>
                     {%endif%}
                     {% endfor %}
                     <br>

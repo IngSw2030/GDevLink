@@ -9,7 +9,7 @@
     {% if message %}
         <div><span style="color: red">{{ message }}</span></div>
     {% endif %}
-    <form action="{% url 'login' %}" method="post">
+    <form action="{% url 'inicio-sesion' %}" method="post">
         {% csrf_token %}
         <div class="form-group">
             <input class="form-control" type="text" name="username" placeholder="Nombre de usuario">
@@ -19,7 +19,7 @@
         </div>
         <input class="btn btn-primary" type="submit" name="login" value="Iniciar Sesion">
     </form>
-    <p><a href="{%url 'registrar'%}">Registrarse</a></p>
+    <p><a href="{%url 'registro'%}">Registrarse</a></p>
     <br>
     O inicia sesion con <a href="{% provider_login_url 'google' %}">Google</a>
 </div>
