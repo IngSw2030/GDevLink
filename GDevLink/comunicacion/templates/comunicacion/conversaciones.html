@@ -44,7 +44,7 @@
     
                             {% if participacion.username != request.user.username %}
                                 <div class="list-group overflow-auto">
-                                    <a href="/comunicacion/chat/{{conversacion.id}}/" class="list-group-item list-group-item-action active">
+                                    <a href="conversaciones/{{conversacion.id}}/chat/" class="list-group-item list-group-item-action active">
                                     {{participacion.username}}
                                     </a>
                                 </div>

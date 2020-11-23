@@ -25,10 +25,8 @@ def conversaciones(request):
                return render(request, "main/error.html", {
                     "mensaje": "Ocurrió un error."
                })
-          return redirect('/comunicacion/chat/'+ str(conv.id))
-
-
-     else:
+          return redirect('conversaciones/'+ str(conv.id) + '/chat/')
+     elif request.method == "GET":
           result_list = list(Usuario.objects.all().values('username'))
           dataJSON = dumps(result_list) 
           conversaciones = ManejadorComunicacion.obtenerConversaciones(request.user.username)
@@ -42,13 +40,7 @@ def conversaciones(request):
 
 @login_required
 def chat(request, room_name):
-     #conversacion = Conversacion.objects.get(id=room_name)
-     #if request.method == "POST":
-          #mensaje = Mensaje(Conversacion=conversacion, texto=request.POST["msg"],autor=request.user)
-          #mensaje.save()
-         # print("mensaje añadido")
-          
-          #return HttpResponse("Añadido")
-     conversacion = ManejadorComunicacion.obtenerMensajes(request.user.username, room_name)
-     return render(request, "comunicacion/chat.html", {
-               "conversacion": conversacion, 'room_name': room_name})
+     if request.method == "GET":
+          conversacion = ManejadorComunicacion.obtenerMensajes(request.user.username, room_name)
+          return render(request, "comunicacion/chat.html", {
+                    "conversacion": conversacion, 'room_name': room_name})
