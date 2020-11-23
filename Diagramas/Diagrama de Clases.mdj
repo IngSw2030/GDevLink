@@ -14593,13 +14593,30 @@
 											"height": 13,
 											"text": "+puntuarRespuestaNeg(request: AsgiRequest, ids: int)",
 											"horizontalAlignment": 0
+										},
+										{
+											"_type": "UMLOperationView",
+											"_id": "AAAAAAF19cgB7sJaZKU=",
+											"_parent": {
+												"$ref": "AAAAAAF14XJrF4G6f/g="
+											},
+											"model": {
+												"$ref": "AAAAAAF19cgBmsJXQQw="
+											},
+											"font": "Arial;13;0",
+											"left": 277,
+											"top": 911,
+											"width": 345.75048828125,
+											"height": 13,
+											"text": "-obtenerRespuestas(respuestas: Respuesta)",
+											"horizontalAlignment": 0
 										}
 									],
 									"font": "Arial;13;0",
 									"left": 272,
 									"top": 771,
 									"width": 355.75048828125,
-									"height": 143
+									"height": 158
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -14639,7 +14656,7 @@
 							"left": 272,
 							"top": 736,
 							"width": 355.75048828125,
-							"height": 178,
+							"height": 193,
 							"nameCompartment": {
 								"$ref": "AAAAAAF14XJrF4G0cLg="
 							},
@@ -15938,7 +15955,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 205,
-									"top": 838,
+									"top": 840,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -15958,8 +15975,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 205,
-									"top": 853,
+									"left": 204,
+									"top": 855,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -15980,7 +15997,7 @@
 									"visible": false,
 									"font": "Arial;13;0",
 									"left": 206,
-									"top": 809,
+									"top": 811,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -15998,7 +16015,7 @@
 								"$ref": "AAAAAAF14XJrFoGzxz8="
 							},
 							"lineStyle": 1,
-							"points": "271:833;142.78271484375:828.3772004362825",
+							"points": "271:836;142.78271484375:828.6832449776786",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAF14XO+j4M3+t0="
@@ -18259,8 +18276,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 843,
-									"top": 807,
+									"left": 842,
+									"top": 810,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 15,
@@ -18280,8 +18297,8 @@
 									},
 									"visible": null,
 									"font": "Arial;13;0",
-									"left": 843,
-									"top": 792,
+									"left": 842,
+									"top": 795,
 									"height": 13,
 									"alpha": 1.5707963267948966,
 									"distance": 30,
@@ -18301,8 +18318,8 @@
 									},
 									"visible": false,
 									"font": "Arial;13;0",
-									"left": 842,
-									"top": 836,
+									"left": 843,
+									"top": 839,
 									"height": 13,
 									"alpha": -1.5707963267948966,
 									"distance": 15,
@@ -18320,7 +18337,7 @@
 								"$ref": "AAAAAAF14XJrFoGzxz8="
 							},
 							"lineStyle": 1,
-							"points": "628:829;1059.09814453125:828.6890198613556",
+							"points": "628:834;1059.09814453125:828.8425671214789",
 							"showVisibility": true,
 							"nameLabel": {
 								"$ref": "AAAAAAF14YVyS4X6gXI="
@@ -19260,6 +19277,28 @@
 									},
 									"name": "ids",
 									"type": "int"
+								}
+							]
+						},
+						{
+							"_type": "UMLOperation",
+							"_id": "AAAAAAF19cgBmsJXQQw=",
+							"_parent": {
+								"$ref": "AAAAAAF14XJrFoGxElI="
+							},
+							"name": "obtenerRespuestas",
+							"visibility": "private",
+							"parameters": [
+								{
+									"_type": "UMLParameter",
+									"_id": "AAAAAAF19ciN28Jeg/E=",
+									"_parent": {
+										"$ref": "AAAAAAF19cgBmsJXQQw="
+									},
+									"name": "respuestas",
+									"type": {
+										"$ref": "AAAAAAF0vKkrL3VP3/s="
+									}
 								}
 							]
 						}
@@ -22151,23 +22190,6 @@
 										},
 										{
 											"_type": "UMLOperationView",
-											"_id": "AAAAAAF14i8rMBc47SU=",
-											"_parent": {
-												"$ref": "AAAAAAF14YhPjYfWOuI="
-											},
-											"model": {
-												"$ref": "AAAAAAF14i8rBxc1wQw="
-											},
-											"font": "Arial;13;0",
-											"left": 205,
-											"top": 566,
-											"width": 397.794921875,
-											"height": 13,
-											"text": "+buscarPregunta(nombre: String): List",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
 											"_id": "AAAAAAF14jFqYB0MIP0=",
 											"_parent": {
 												"$ref": "AAAAAAF14YhPjYfWOuI="
@@ -22177,7 +22199,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 205,
-											"top": 581,
+											"top": 566,
 											"width": 397.794921875,
 											"height": 13,
 											"text": "+verPregunta(idPregunta: int): Pregunta",
@@ -22194,7 +22216,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 205,
-											"top": 596,
+											"top": 581,
 											"width": 397.794921875,
 											"height": 13,
 											"text": "+responderPregunta(idPregunta: int, texto: String, autor: String): int",
@@ -22211,10 +22233,10 @@
 											},
 											"font": "Arial;13;0",
 											"left": 205,
-											"top": 611,
+											"top": 596,
 											"width": 397.794921875,
 											"height": 13,
-											"text": "+escogerRespuesta(idPregunta: int, idRespuesta: int): int",
+											"text": "+escogerRespuesta(idRespuesta: int): int",
 											"horizontalAlignment": 0
 										},
 										{
@@ -22228,7 +22250,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 205,
-											"top": 626,
+											"top": 611,
 											"width": 397.794921875,
 											"height": 13,
 											"text": "+puntuarPreguntaPos(idPregunta: int, nombreUsuario: String): int",
@@ -22245,7 +22267,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 205,
-											"top": 641,
+											"top": 626,
 											"width": 397.794921875,
 											"height": 13,
 											"text": "+puntuarPreguntaNeg(idPregunta: int, nombreUsuario: String): int",
@@ -22262,7 +22284,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 205,
-											"top": 656,
+											"top": 641,
 											"width": 397.794921875,
 											"height": 13,
 											"text": "+puntuarRespuestaPos(idRespuesta: int, nombreUsuario: String): int",
@@ -22279,7 +22301,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 205,
-											"top": 671,
+											"top": 656,
 											"width": 397.794921875,
 											"height": 13,
 											"text": "+puntuarRespuestaNeg(idRespuesta: int, nombreUsuario: String): int",
@@ -22290,7 +22312,7 @@
 									"left": 200,
 									"top": 531,
 									"width": 407.794921875,
-									"height": 158
+									"height": 143
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
@@ -34962,34 +34984,6 @@
 						},
 						{
 							"_type": "UMLOperation",
-							"_id": "AAAAAAF14i8rBxc1wQw=",
-							"_parent": {
-								"$ref": "AAAAAAF14YhPjYfN3dQ="
-							},
-							"name": "buscarPregunta",
-							"parameters": [
-								{
-									"_type": "UMLParameter",
-									"_id": "AAAAAAF14i9SFhjUUtU=",
-									"_parent": {
-										"$ref": "AAAAAAF14i8rBxc1wQw="
-									},
-									"name": "nombre",
-									"type": "String"
-								},
-								{
-									"_type": "UMLParameter",
-									"_id": "AAAAAAF14i9SFxjVPoI=",
-									"_parent": {
-										"$ref": "AAAAAAF14i8rBxc1wQw="
-									},
-									"type": "List",
-									"direction": "return"
-								}
-							]
-						},
-						{
-							"_type": "UMLOperation",
 							"_id": "AAAAAAF14jFqMx0Jkts=",
 							"_parent": {
 								"$ref": "AAAAAAF14YhPjYfN3dQ="
@@ -35075,15 +35069,6 @@
 								{
 									"_type": "UMLParameter",
 									"_id": "AAAAAAF14jNI4yyEZ5g=",
-									"_parent": {
-										"$ref": "AAAAAAF14jL+mirl7cI="
-									},
-									"name": "idPregunta",
-									"type": "int"
-								},
-								{
-									"_type": "UMLParameter",
-									"_id": "AAAAAAF14jNI5CyFwxg=",
 									"_parent": {
 										"$ref": "AAAAAAF14jL+mirl7cI="
 									},
@@ -49045,23 +49030,6 @@
 										},
 										{
 											"_type": "UMLOperationView",
-											"_id": "AAAAAAF159SbH5RaX8Y=",
-											"_parent": {
-												"$ref": "AAAAAAF159SbH5RXJaA="
-											},
-											"model": {
-												"$ref": "AAAAAAF14i8rBxc1wQw="
-											},
-											"font": "Arial;13;0",
-											"left": 269,
-											"top": 310,
-											"width": 397.794921875,
-											"height": 13,
-											"text": "+buscarPregunta(nombre: String): List",
-											"horizontalAlignment": 0
-										},
-										{
-											"_type": "UMLOperationView",
 											"_id": "AAAAAAF159SbH5RbZJA=",
 											"_parent": {
 												"$ref": "AAAAAAF159SbH5RXJaA="
@@ -49071,7 +49039,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 269,
-											"top": 325,
+											"top": 310,
 											"width": 397.794921875,
 											"height": 13,
 											"text": "+verPregunta(idPregunta: int): Pregunta",
@@ -49088,7 +49056,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 269,
-											"top": 340,
+											"top": 325,
 											"width": 397.794921875,
 											"height": 13,
 											"text": "+responderPregunta(idPregunta: int, texto: String, autor: String): int",
@@ -49105,7 +49073,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 269,
-											"top": 355,
+											"top": 340,
 											"width": 397.794921875,
 											"height": 13,
 											"text": "+escogerRespuesta(idPregunta: int, idRespuesta: int): int",
@@ -49122,7 +49090,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 269,
-											"top": 370,
+											"top": 355,
 											"width": 397.794921875,
 											"height": 13,
 											"text": "+puntuarPreguntaPos(idPregunta: int, nombreUsuario: String): int",
@@ -49139,7 +49107,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 269,
-											"top": 385,
+											"top": 370,
 											"width": 397.794921875,
 											"height": 13,
 											"text": "+puntuarPreguntaNeg(idPregunta: int, nombreUsuario: String): int",
@@ -49156,7 +49124,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 269,
-											"top": 400,
+											"top": 385,
 											"width": 397.794921875,
 											"height": 13,
 											"text": "+puntuarRespuestaPos(idRespuesta: int, nombreUsuario: String): int",
@@ -49173,7 +49141,7 @@
 											},
 											"font": "Arial;13;0",
 											"left": 269,
-											"top": 415,
+											"top": 400,
 											"width": 397.794921875,
 											"height": 13,
 											"text": "+puntuarRespuestaNeg(idRespuesta: int, nombreUsuario: String): int",
@@ -49184,7 +49152,7 @@
 									"left": 264,
 									"top": 275,
 									"width": 407.794921875,
-									"height": 158
+									"height": 143
 								},
 								{
 									"_type": "UMLReceptionCompartmentView",
