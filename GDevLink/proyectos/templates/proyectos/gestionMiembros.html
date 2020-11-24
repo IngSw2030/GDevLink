@@ -76,7 +76,7 @@
                             {% for usuariosPointer in miembros %}
                             
                             <tr>
-                                <td><a href="/usuarios/visitarPerfil/{{usuariosPointer.usuario.username}}">{{usuariosPointer.usuario.username}}.</a></td>
+                                <td><a href="/usuarios/{{usuariosPointer.usuario.username}}/perfil">{{usuariosPointer.usuario.username}}.</a></td>
                                 <td>
                                 {% for rolesPointer in posiblesRoles %}
                                 {% if rolesPointer in usuariosPointer.roles  %}
