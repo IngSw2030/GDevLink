@@ -9,11 +9,6 @@ from django.db import IntegrityError
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 
-def vacantes(request):
-    if request.method == "GET":
-        #Mostrar página de vacantes
-        pass
-
 @login_required(login_url='/usuarios/inicio-sesion')
 def gestion_vacantes(request,nombre):
     if request.method == "GET":
