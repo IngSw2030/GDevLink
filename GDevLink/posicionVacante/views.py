@@ -79,3 +79,46 @@ def aplicantes(request, ids):
     if request.method == "POST":
         #Código para agregar aplicante
         pass
+
+def explorarVacantes(request):
+    if request.method == "POST":
+        nombre_busqueda = request.POST['barraBusqueda']
+        roles = request.POST.getlist("roles")
+        frameworks = request.POST.getlist('frameworks')
+
+        if nombre_busqueda != '':
+            proyecto = Proyecto.objects.get(nombre=nombre_busqueda)
+            vacantes = PosicionVacante.objects.filter(
+		    
+                roles__contains =  roles,
+			
+		        frameworks__contains =  frameworks,
+            
+                proyecto=proyecto
+            )
+        else:
+            vacantes = PosicionVacante.objects.filter(
+		    
+                roles__contains =  roles,
+			
+		        frameworks__contains =  frameworks,
+            )
+
+        
+
+
+        return render(request, "posicionVacante/explorarVacantes.html", {
+            "posicionesVacantes": vacantes,
+            "posiblesRoles": PosiblesRoles,
+            "posiblesFrameworks": PosiblesFrameworks
+        })
+
+    else:
+        vacantes = []
+        vacantes = PosicionVacante.objects.all()
+
+        return render(request, "posicionVacante/explorarVacantes.html", {
+            "posicionesVacantes": vacantes,
+            "posiblesRoles": PosiblesRoles,
+            "posiblesFrameworks": PosiblesFrameworks
+        })

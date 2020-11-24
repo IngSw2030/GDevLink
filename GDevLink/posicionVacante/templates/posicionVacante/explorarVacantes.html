@@ -1,0 +1,113 @@
+{% extends "main/layout.html" %}
+{% load static %}
+
+{% block body %}
+
+
+<div class="contenido">
+    
+    <link rel="stylesheet" href="{% static 'proyectos/styles.css' %}">
+    
+    <h2 align="center">Exploración de Posiciones Vacantes</h2>
+    <br><hr>
+    <form action="/vacantes/explorarVacantes" method="POST">
+        {% csrf_token %}
+        <h3 class="titulo">Filtros de Busqueda</h3>
+        <br>
+        <label for="exampleFormControlInput1">Nombre proyecto de la posicion</label>
+        <input class="form-control"  type="text" name="barraBusqueda"><br>
+        
+        <br>
+        <div class="form-group col-md-6">
+            <div class="tbodyNegro">
+                <label for="exampleFormControlInput1">Generos</label>
+                <hr>
+                {% for rol in posiblesRoles %}
+                <label class="checkbox" for="defaultCheck1">
+                    <input class="form-check-input" name="roles" type="checkbox" id="defaultCheck1" value="{{rol}}">
+                    {{rol.label}}
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="form-group col-md-6">
+            <label class="fexampleFormControlInput1"> FrameWorks </label>
+            <hr>
+            {% for framework in posiblesFrameworks %}
+            <label class="checkbox" for="defaultCheck3">
+                <input class="form-check-input" name="frameworks" type="checkbox" id="defaultCheck3" value="{{framework}}">
+                {{framework.label}}
+            </label>
+            {% endfor %}
+        </div>
+        <button type="submit" class="btn btn-primary">Buscar</button>
+    
+      
+    
+    </form>
+
+
+
+<br>
+
+
+
+<div class="space"></div>
+<div class="" align="center">
+
+    {% for vacante in posicionesVacantes %}
+    <table width="95%" cellpadding="0" cellspacing="0" style="border: 0px; margin: auto;">
+        <tr>
+            <td>
+                <h3>Roles:</h3>
+            </td>
+            <td>
+                <h3>Frameworks:</h3>
+            </td>
+            <td>
+                <h3>Descripcion:</h3>
+            </td>
+        </tr>
+        <tr style="width: auto;">
+            <td>
+                {% for rol in posiblesRoles%}
+                    {% if rol in vacante.roles%}
+                    <span>{{rol.label}}</span>
+                {% endif %}
+                    <br>
+                {% endfor %}
+            </td>
+            <td>
+                {% for framework in posiblesFrameworks %}
+                    {% if framework in vacante.frameworks%}
+                    <span>{{framework.label}}</span>
+                    {% endif %}
+                    <br>
+                {% endfor %}
+            </td>
+            <td style="width: 50%;">
+                <p>{{vacante.descripcion}}</p>
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td></td>
+            <td style="text-align: right;">
+                <form id="editar" style="display: inline;" action="estion-vacante/{{vacante.id}}" enctype="multipart/form-data" method="post" action="/foo/">
+                    {% csrf_token %}
+                    <button class="btn btn-primary" name="editarVacante" style="display: none;">Editar</button>
+                </form>
+                <form id="eliminar" style="display: inline;" action="/vacantes/vacante/{{vacante.id}}" enctype="multipart/form-data" method="post" action="/foo/">
+                    {% csrf_token %}
+                    <input name="request" type="hidden" value="DELETE">
+                    <button class="btn btn-primary" name="eliminarVacante" style="display: none;">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+    <hr>
+{% endfor %}
+</div>
+</div>
+<div class="space"></div>
+{% endblock %}
