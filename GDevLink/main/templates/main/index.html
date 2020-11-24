@@ -23,7 +23,7 @@
             {% for actualizacion in actualizaciones%}
                 <div class="contenido">
                     <h4> 
-                        <a href="/proyectos/proyecto/{{actualizacion.proyecto.nombre}}"> {{actualizacion.proyecto.nombre}} </a>
+                        <a href="/proyectos/{{actualizacion.proyecto.nombre}}/proyecto"> {{actualizacion.proyecto.nombre}} </a>
                     </h4>
                     <p class="timestamp"> {{actualizacion.fecha}} </p>
                     <p> {{actualizacion.descripcion}} </p>   
