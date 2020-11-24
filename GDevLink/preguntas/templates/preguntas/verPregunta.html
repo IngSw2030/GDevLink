@@ -52,7 +52,7 @@
             Para responder <a href="{% url 'inicio-sesion' %}">Inicia sesión aquí.</a>
         {% endif %}
         <!-- Seccion formulario para crear la pregunta -->
-        <form id="respuesta" action="/preguntas/crearRespuesta/{{pregunta.id}}" enctype="multipart/form-data" method="post" action="/foo/">
+        <form id="respuesta" action="/preguntas/pregunta/{{pregunta.id}}/respuestas" enctype="multipart/form-data" method="post" action="/foo/">
             {% csrf_token %}
             <div class="overflow-auto" id="agregarRespuesta" style="display:none;">
                 <textarea class="form-control" name="texto" id="exampleFormControlTextarea1" rows="3"></textarea>
@@ -119,7 +119,7 @@
                     botonPPuntosPositivos.style.borderBottomColor="#8B8B8B";
                 }
                 let csrftoken = getCookie('csrftoken');
-                fetch(`/preguntas/puntuarPreguntaPos/${pregunta.dataset.id}`, {
+                fetch(`/preguntas/pregunta/${pregunta.dataset.id}/puntos-positivos`, {
                     method: 'PUT',
                     headers: { "X-CSRFToken": csrftoken }
                 });
@@ -147,7 +147,7 @@
                     botonPPuntosNegativos.style.borderTopColor="#8B8B8B";
                 }
                 let csrftoken = getCookie('csrftoken');
-                fetch(`/preguntas/puntuarPreguntaNeg/${pregunta.dataset.id}`, {
+                fetch(`/preguntas/pregunta/${pregunta.dataset.id}/puntos-negativos`, {
                     method: 'PUT',
                     headers: { "X-CSRFToken": csrftoken }
                 });
@@ -216,7 +216,7 @@
                     respuesta.getElementsByClassName("puntosRespuesta")[0].style.color="#8B8B8B";
                 }
                 let csrftoken = getCookie('csrftoken');
-                fetch(`/preguntas/seleccionarMejorRespuesta/${respuesta.dataset.id}`, {
+                fetch(`/preguntas/pregunta/${respuesta.dataset.id}/mejor-respuesta`, {
                     method: 'PUT',
                     headers: { "X-CSRFToken": csrftoken }
                 });
@@ -244,7 +244,7 @@
                     event.target.dataset.respuestaPos="False";
                 }
                 let csrftoken = getCookie('csrftoken');
-                fetch(`/preguntas/puntuarRespuestaPos/${respuesta.dataset.id}`, {
+                fetch(`/preguntas/respuesta/${respuesta.dataset.id}/puntos-positivos`, {
                     method: 'PUT',
                     headers: { "X-CSRFToken": csrftoken }
                 });
@@ -272,7 +272,7 @@
                     event.target.dataset.respuestaNeg="False";
                 }
                 let csrftoken = getCookie('csrftoken');
-                fetch(`/preguntas/puntuarRespuestaNeg/${respuesta.dataset.id}`, {
+                fetch(`/preguntas/respuesta/${respuesta.dataset.id}/puntos-negativos`, {
                     method: 'PUT',
                     headers: { "X-CSRFToken": csrftoken }
                 });

@@ -5,12 +5,18 @@
 
 
 <div class="contenido">
+    
     <link rel="stylesheet" href="{% static 'proyectos/styles.css' %}">
+    
     <h2 align="center">Exploración de Proyectos</h2>
     <br><hr>
     <form action="/proyectos/explorarProyectos" method="POST">
-        <input class="form-control" autofocus type="text" name="barraBusqueda" value=""><br>
+        {% csrf_token %}
         <h3 class="titulo">Filtros de Busqueda</h3>
+        <br>
+        <label for="exampleFormControlInput1">Nombre proyecto</label>
+        <input class="form-control"  type="text" name="barraBusqueda"><br>
+        
         <br>
         <div class="form-group col-md-6">
             <div class="tbodyNegro">

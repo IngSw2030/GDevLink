@@ -26,7 +26,7 @@
                         <h2>No hay preguntas disponibles</h2>
                     {% else %}
                         {% for pregunta in preguntas %}       
-                        <a href="/preguntas/verPregunta/{{pregunta.id}}">{{pregunta.titulo}}</a>
+                        <a href="/preguntas/pregunta/{{pregunta.id}}">{{pregunta.titulo}}</a>
                         {% endfor %}
                     {% endif %}
                 </div>
@@ -39,7 +39,7 @@
                     <hr>
                     <div class="list-group"> 
                         {% for pregunta in preguntas %}       
-                            <li><a href="/preguntas/verPregunta/{{pregunta.id}}">{{pregunta.titulo}} - {{pregunta.texto}}</a><hr></li>
+                            <li><a href="/preguntas/pregunta/{{pregunta.id}}">{{pregunta.titulo}} - {{pregunta.texto}}</a><hr></li>
                         {% endfor %}
                     </div>
                 {% endif %}
