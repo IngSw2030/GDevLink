@@ -12,13 +12,16 @@
     
 .con{
     background: #202124;
-    height: 400px;
-    
-    
+    margin-left: 10%;
+    margin-right: 10%;
+    max-width: 90%;
+    justify-content: flex-end;
+    max-height: 300px;
 }
 
 .conversaciones{
   padding-left: 20em;
+  margin-top: 0rem;
 }
 
 .actual{
@@ -83,8 +86,34 @@
     position: relative;
   }
 
+  #usuarios{
+    background-color: gray;
+    overflow: visible;
+  }
   
+  .panel{
+    max-width: 20%;
+    background-color: transparent;
+    margin-right: 0%;
+  }
 
- 
+  .form-check-input{
+    margin-right: 25%;
+  }
 
-  
+  :checked + span {
+    font-weight: bold;
+}
+
+/* Optional other stuff just to make it look better */
+label {
+    display: inline-block;
+    width: 200px;
+    padding: 5px;
+}
+label:hover {
+    background:#eee;
+    cursor:pointer;
+    border: 1px solid #aaa;
+    padding: 4px;
+}

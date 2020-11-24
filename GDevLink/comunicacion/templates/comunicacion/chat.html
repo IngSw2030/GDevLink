@@ -15,51 +15,53 @@
     </script>
     <link rel="stylesheet" href="{% static 'comunicacion/styles.css' %}">  
     
-        <div class="conversacion contenido">
+        <div class="contenido container">
             
-            <div> 
+           
                 <div class="con overflow-auto">
                 
-                {% if conversacion.mensajes %}
-                    {% for mensaje in conversacion.mensajes.all %}
+                    {% if conversacion.mensajes %}
+                        {% for mensaje in conversacion.mensajes.all %}
 
-                        {% if mensaje.autor == request.user %}
+                            {% if mensaje.autor == request.user %}
 
-                        <div class="mine messages">
-                            <div class="message">
-                            {{mensaje.texto}}
-                            </div>
-                        </div>
-                        {% else %}
-
-                        <div class="yours messages">
-                            <div class="message">
+                            <div class="mine messages">
+                                <div class="message">
                                 {{mensaje.texto}}
+                                </div>
                             </div>
-                        
-                        </div>
+                            {% else %}
 
-                        {% endif %}
+                            <div class="yours messages">
+                                <div class="message">
+                                    {{mensaje.texto}}
+                                </div>
+                            
+                            </div>
 
-                    {% endfor %}
-                {% endif %}
+                            {% endif %}
 
-                <div class="yours messages" id="currentYours">
+                        {% endfor %}
+                    {% endif %}
 
-                </div>  
+                    <div class="yours messages" id="currentYours">
 
-                 <div class="mine messages" id="currentMine">
+                    </div>  
 
-                </div>  
-                                                                        
+                    <div class="mine messages" id="currentMine">
+
+                    </div>  
+                    <div id="chat__form">
+                        <input id="chat-message-input" type="text" placeholder="Escribe un mensaje" size="80">
+                        <button id="chat-message-submit" type="button" >Send</button>
+                    </div>                                           
                 </div>
                 
-            </div> 
+
+                
+           
             
-            <div id="chat__form">
-                <input id="chat-message-input" type="text" placeholder="Escribe un mensaje" size="130">
-                <button id="chat-message-submit" type="button" >Send</button>
-            </div>
+            
             
             
         </div>
@@ -82,10 +84,10 @@
 
             const chatSocket = new WebSocket(
                 'ws://'
-                + os.location.host
-                + '/ws/comunicacion/chat/'
+                + window.location.host
+                + '/ws/comunicacion/conversaciones/'
                 + roomName
-                + '/'
+                + '/chat/'
                 
             );
             creada = 1;

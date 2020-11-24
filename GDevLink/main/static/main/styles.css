@@ -179,6 +179,9 @@ html, body
 		border-radius: 50%;
 	}
 
+	.list-group {
+		margin-bottom: 0px;
+	}
 
 
 

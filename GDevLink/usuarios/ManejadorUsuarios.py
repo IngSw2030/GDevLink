@@ -69,3 +69,6 @@ class ManejadorUsuarios(IManejadorUsuarios):
                 update_session_auth_hash(request, form.user)
                 return True
         return False
+    
+    def obtenerUsuarios():
+        return Usuario.objects.all()

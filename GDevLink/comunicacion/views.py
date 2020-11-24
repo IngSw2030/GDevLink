@@ -11,6 +11,8 @@ from json import dumps
 from random import randint
 from django.shortcuts import redirect
 from comunicacion.ManejadorComunicacion import ManejadorComunicacion
+from usuarios.ManejadorUsuarios import ManejadorUsuarios
+
 # Create your views here.
 
 
@@ -18,7 +20,7 @@ from comunicacion.ManejadorComunicacion import ManejadorComunicacion
 def conversaciones(request):
      if request.method == "POST":
           usuarioB = request.POST.getlist('usuarioB')
-
+          print(usuarioB)
           conv = ManejadorComunicacion.agregarConversacion(request.user.username, usuarioB[0])
           if conv is None:
                return render(request, "main/error.html", {
@@ -29,10 +31,12 @@ def conversaciones(request):
           result_list = list(Usuario.objects.all().values('username'))
           dataJSON = dumps(result_list) 
           conversaciones = ManejadorComunicacion.obtenerConversaciones(request.user.username)
+         
+          usuarios = ManejadorUsuarios.obtenerUsuarios()
 
   
          
-          return render(request,"comunicacion/conversaciones.html", {'users': dataJSON, 'conversaciones': conversaciones})
+          return render(request,"comunicacion/conversaciones.html", {'users': dataJSON, 'conversaciones': conversaciones,"usuarios":usuarios})
      
   
 
@@ -40,5 +44,6 @@ def conversaciones(request):
 def chat(request, room_name):
      if request.method == "GET":
           conversacion = ManejadorComunicacion.obtenerMensajes(request.user.username, room_name)
+          conversaciones = ManejadorComunicacion.obtenerConversaciones(request.user.username)
           return render(request, "comunicacion/chat.html", {
-                    "conversacion": conversacion, 'room_name': room_name})
+                    "conversacion": conversacion, 'room_name': room_name, 'conversaciones': conversaciones})

@@ -37,3 +37,8 @@ class IManejadorUsuarios:
     #abiertas del usuario luego de cambiar la contraseña.
     def cambiarContrasena(request):
         pass
+
+    #Método para obtener todos los usuarios de la aplicación
+    #Retorna una lista de usuarios
+    def obtenerUsuarios():
+        pass

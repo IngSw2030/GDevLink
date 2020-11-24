@@ -16,38 +16,53 @@
     <link rel="stylesheet" href="{% static 'comunicacion/styles.css' %}">  
 
     <div class="contenido">
-        <form action="{% url 'conversaciones' %}" method="post">
-            {% csrf_token %}
-            <nav class=" busqueda">
-                <div class="usuarios">        
-                        <div id="searchWrapper">
-                            <input
-                                type="text"
-                                name="searchBar"
-                                id="searchBar"
-                                placeholder="Busca un usuario"
-                            />
-                            <input class="btn btn-primary" type="submit" value="crear">
-                            <ul id="usuarios"></ul>
-                        </div>
-                </div>
-        
-            </nav>
-        </form>
-                <div class="conversaciones contenidoPrincipal">
-                    {% for conversacion in conversaciones %}
-                        {% for participacion in conversacion.participantes.all %}
-    
-                            {% if participacion.username != request.user.username %}
-                                <div class="list-group overflow-auto">
-                                    <a href="conversaciones/{{conversacion.id}}/chat/" class="list-group-item list-group-item-action active">
-                                    {{participacion.username}}
-                                    </a>
+        <div class="panel">
+            <form action="{% url 'conversaciones' %}" method="post">
+                {% csrf_token %}
+                <nav class=" busqueda">
+                    <div class="usuarios">        
+                            <div id="searchWrapper">
+                                <input
+                                    type="text"
+                                    name="searchBar"
+                                    id="searchBar"
+                                    placeholder="Busca un usuario"
+                                />
+                                <input class="btn btn-primary" type="submit" value="crear">
+                                <div class="dropdown-menu" id="" aria-labelledby="dropdownMenuLink">
+                                    
                                 </div>
-                            {% endif %}
+                                
+                                <ul class="select" name="usuarioB" id="usuarios">
+    
+                                </ul>
+  
+                                
+    
+                            </div>
+                    </div>
+            
+                </nav>
+            </form>
+                    <div class="">
+                        {% for conversacion in conversaciones %}
+                            {% for participacion in conversacion.participantes.all %}
+        
+                                {% if participacion.username != request.user.username %}
+                                    <div class="list-group overflow-auto">
+                                        <a href="conversaciones/{{conversacion.id}}/chat/" class="list-group-item list-group-item-action active">
+                                        {{participacion.username}}
+                                        </a>
+                                    </div>
+                                    
+                                {% endif %}
+                            {% endfor %}
                         {% endfor %}
-                    {% endfor %}
-                </div>
+                    </div>
+        </div>
+        {% block chatbody %}
+        {% endblock %}
+        
     </div>
 
     
@@ -97,11 +112,13 @@
                     const htmlString = characters
                         .map((character) => {
                             return `
-                            <li class="character">
+                            
                                 
-                                <label class="form-check-label" for="exampleRadios1">
-                                    <input class="form-check-input" type="radio" name="usuarioB" id="exampleRadios1" value="${character.username}" checked>
-                                    ${character.username}
+                                
+                            <li class="">
+                                <label>
+                                        <input type="radio" value="${character.username}" name="usuarioB" checked="checked" />
+                                        <span>${character.username}</span>
                                 </label>
                             </li>
 
