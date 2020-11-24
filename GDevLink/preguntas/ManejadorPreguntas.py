@@ -12,8 +12,9 @@ class ManejadorPreguntas(IManejadorPreguntas):
 
     def crearPregunta(tituloPregunta, textoPregunta, autor):
         #Se recupera el usuario
-        usuario=Usuario.objects.get(nombre=autor)
+        usuario=Usuario.objects.get(username=autor)
         try:
+            print("trata")
             #Se crea la pregunta con sus valores iniciales
             pregunta=Pregunta(titulo=tituloPregunta,texto=textoPregunta,autor=usuario)
             pregunta.save()
@@ -36,9 +37,11 @@ class ManejadorPreguntas(IManejadorPreguntas):
             return None
 
     def responderPregunta(idPregunta, texto, autor):
+        pregunta=Pregunta.objects.get(id=idPregunta)
+        usuario=Usuario.objects.get(username=autor)
         try:
             #Creacion de la pregunta con valores iniciales
-            respuesta = Respuesta(texto=texto,pregunta=pregunta,autor=request.user)
+            respuesta = Respuesta(texto=texto,pregunta=pregunta,autor=usuario)
             respuesta.save()
             return 0
         except IntegrityError as e:
