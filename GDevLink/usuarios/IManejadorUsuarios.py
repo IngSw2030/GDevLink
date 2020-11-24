@@ -30,3 +30,10 @@ class IManejadorUsuarios:
     #contrario se retorna None.
     def editarPerfil(nombreUsuario, roles, generos, frameworks, descripcion, imagen):
         pass
+
+    #Método que cambia la contrasena de un usuario a partir de la información
+    #de una solicitud. Si la solicitud es válida, se hace el cambio y se retorna
+    #True, en caso contrario se retorna False. Se cierran todas las sesiones
+    #abiertas del usuario luego de cambiar la contraseña.
+    def cambiarContrasena(request):
+        pass

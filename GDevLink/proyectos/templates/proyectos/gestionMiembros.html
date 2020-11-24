@@ -12,54 +12,247 @@
 {% csrf_token %}
 
 <body>
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
     <div class="header" id="center">
 
 
-
-    </div>
-
-    <div class="contenido">
-        <div class="logo">
-            {% if not proyecto.imagen %}
-            <a href="" class="image fit" id="limage"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
-            {% else %}
-            <img src="{{ proyecto.imagen.url }}" class="" id="limage" alt="My Image" />
-            {% endif %}
-        </div>
-        <div>
-            <h1>{{proyecto.nombre}}</h1>
-        </div>
-    </div>
-    <div class="space">
-
-    </div>
-    <div class="contenido" id="miembros">
-        <h3>Miembros del proyecto</h3>
-        <div class="elemento">
-            <label for="exampleFormControlInput1">Miembros:</label>
-            <div class="list-group">
-                {% for key,value in miembros.items %}
-                <li><a href="/usuarios/perfil/{{key}}">{{key}} - {{value}}</a></li>
-                {% endfor %}
-
+        <div class="contenido">
+            <div class="logo">
+                {% if not proyecto.imagen %}
+                <a href="" class="image fit" id="limage"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+                {% else %}
+                <img src="{{ proyecto.imagen.url }}" class="" id="limage" alt="My Image" />
+                {% endif %}
             </div>
             <div>
-                <div>
-                    <a href="/proyectos/agregarMiembros/{{proyecto.nombre}}">Agregar Miembro</a>
-                </div>
-                <div>
-                    <a href="/proyectos/eliminarMiembros/{{proyecto.nombre}}">Eliminar Miembro</a>
-                </div>
-                <div>
-                    <a href="/proyectos/agregarAdministrador/{{proyecto.nombre}}">Agregar Administrador</a>
-                </div>
-                <div>
-                    <a href="/proyectos/eliminarAdministrador/{{proyecto.nombre}}">Eliminar Administrador</a>
-                </div>
+                <h1 id="nombre-proyecto">{{proyecto.nombre}}</h1>
             </div>
         </div>
-    </div>
+        <div class="space"></div>
+        <div class="contenido"> 
+                <form action="/proyectos/gestionMiembros/{{proyecto.nombre}}" method="post"> {% csrf_token %}
+                    <nav class=" busqueda">
+                        <div class="usuarios" align="center">
+                                <div id="searchWrapper">
+                                    <input
+                                        type="text"
+                                        name="searchBar"
+                                        id="searchBar"
+                                        placeholder="Busca un usuario"
+                                    />
+                                    <ul id="usuarios"></ul>
+                                    <label> Roles: </label>
+                                    {% for auxRol in posiblesRoles %}
+                                    <label class="checkbox" for="defaultCheck1">
+                                        <input class="form-check-input" name="roles" type="checkbox" id="defaultCheck1"
+                                            value="{{auxRol}}">
+                                        {{auxRol.label}}                        
+                                    </label>
+                                    {% endfor %}
+                                    <input onClick="location.reload()" class="btn btn-primary" type="submit" value="Agregar Miembro">
+                                </div>           
+                        </div>
+                    </nav>
+                </form>
+                <br>
+                <br>
+                <h1>Miembros del proyecto:</h1>
+                <table style="width:100%" >
+                    <thead>
+                        <tr>
+                            <th>Usuario </th>
+                            <th>Rol </th>
+                            <th>Permiso </th>
+                            <th>Acciones </th>
+                        </tr>
+                    </thead>
+                    <br>
+                    <tbody>
+                            {% for usuariosPointer in miembros %}
+                            
+                            <tr>
+                                <td><a href="/usuarios/{{usuariosPointer.usuario.username}}/perfil">{{usuariosPointer.usuario.username}}.</a></td>
+                                <td>
+                                {% for rolesPointer in posiblesRoles %}
+                                {% if rolesPointer in usuariosPointer.roles  %}
+                                {{rolesPointer.label}}.
+                                {% endif %}
+                                {% endfor %}
+                                </td>
+                                <td>
+                                {% for permisosPointer in posiblesPermisos %}
+                                {% if permisosPointer in usuariosPointer.permiso  %}
+                                {{permisosPointer.label}}.
+                                {% endif %}
+                                {% endfor %}
+                                </td>
+                                {% if usuariosPointer.permiso == 'MI'  %}
+                                <td><button  class="btn btn-primary" id="promover"  data-id-persona="{{usuariosPointer.usuario.username}}">Promover</button>
+                                    <button  class="btn btn-primary" id="eliminar"  data-id-persona="{{usuariosPointer.usuario.username}}">Eliminar</button> </td>
+                                {% endif %}
+                                {% if usuariosPointer.permiso == 'AD'  %}
+                                <td><button  class="btn btn-primary" id="revocar"  data-id-persona="{{usuariosPointer.usuario.username}}">Revocar</button>
+                                    <button  class="btn btn-primary" id="eliminar"  data-id-persona="{{usuariosPointer.usuario.username}}">Eliminar</button></td>
+                                {% endif %}
+                                {% if usuariosPointer.permiso == 'MA'  %}
+                                <td> N/A. </td>
+                                {% endif %}
+                            </tr>
+                            {% endfor %}
+                    </tbody>
+                </table>            
+            </div>
+            
+    </div>   
 </body>
+
+
+
+
+
+                {{ users | json_script:"users" }}
+                <script id="users" type="text/javascript" >
+                    const userList = document.getElementById('usuarios');
+                    const searchBar = document.getElementById('searchBar');
+                    let characters = [];
+
+
+                    searchBar.addEventListener('keyup', (e) => {
+                        const searchString = e.target.value.toLowerCase();
+
+                        const filteredCharacters = characters.filter((character) => {
+                            return (
+                                character.username.toLowerCase().includes(searchString)
+                                
+                            );
+                        });
+                        if(e.target.value != ""){
+                            displayCharacters(filteredCharacters);
+                        }
+                        
+                    });
+
+                    const loadCharacters = async () => {
+                        try {
+                        // const value = JSON.parse(document.getElementById('users').textContent);
+                        //const res = await fetch('https://hp-api.herokuapp.com/api/characters');
+                        const res = {{ users | safe }};
+                        
+                        characters = res;
+                        for(var x in res){ 
+                            console.log(x); 
+                            } 
+                            console.log(res);
+                        // displayCharacters(characters);
+                        
+                        } catch (err) {
+                            console.error(err);
+                        }
+                    };
+
+                    const displayCharacters = (characters) => {
+                        const htmlString = characters
+                            .map((character) => {
+                                return `
+                                <li class="character">
+                                    
+                                    <label class="form-check-label" for="exampleRadios1">
+                                        <input class="form-check-input" type="radio" name="usuarioB" id="exampleRadios1" value="${character.username}" checked>
+                                            \"     ${character.username}
+                                    </label>
+                                </li>
+
+                            `;
+                            })
+                            .join('');
+                        userList.innerHTML = htmlString;
+                    };
+                    loadCharacters();
+
+                    document.addEventListener('DOMContentLoaded', function () {
+                        const proyecto = document.querySelector('#nombre-proyecto').innerHTML;
+                        var botonesPromover = document.querySelectorAll('#promover');
+                        var botonesEliminar = document.querySelectorAll('#eliminar');
+                        var botonesRevocar = document.querySelectorAll('#revocar');
+                        for (var i = 0; i<botonesPromover.length; i++){
+                            const id = botonesPromover[i].getAttribute("data-id-persona");
+                            botonesPromover[i].addEventListener('click', () => {
+                            promover(id, proyecto);
+                            location.reload();
+                            });
+                        } 
+                        for (var i = 0; i<botonesEliminar.length; i++){
+                            const id = botonesEliminar[i].getAttribute("data-id-persona");
+                            botonesEliminar[i].addEventListener('click', () => {
+                            eliminar(id, proyecto);
+                            location.reload();
+                            });
+                        } 
+                        for (var i = 0; i<botonesRevocar.length; i++){
+                            const id = botonesRevocar[i].getAttribute("data-id-persona");
+                            botonesRevocar[i].addEventListener('click', () => {
+                            revocar(id, proyecto);
+                            location.reload();
+                            });
+                        }    
+
+
+                    });
+                    //funcion que llama promover en el back-end 
+                    function promover(id, proyecto){
+                        let csrftoken = getCookie('csrftoken');
+                    fetch(`/proyectos/promover/${proyecto}`, {
+                        method: 'PUT',
+                        body: JSON.stringify({
+                        id: id}),
+                        headers: { "X-CSRFToken": csrftoken }
+                    });
+                    }
+
+                    function eliminar(id, proyecto){
+                        let csrftoken = getCookie('csrftoken');
+                    fetch(`/proyectos/eliminar/${proyecto}`, {
+                        method: 'PUT',
+                        body: JSON.stringify({
+                        id: id}),
+                        headers: { "X-CSRFToken": csrftoken }
+                    });
+                    }
+
+                    function revocar(id, proyecto){
+                        let csrftoken = getCookie('csrftoken');
+                    fetch(`/proyectos/revocar/${proyecto}`, {
+                        method: 'PUT',
+                        body: JSON.stringify({
+                        id: id}),
+                        headers: { "X-CSRFToken": csrftoken }
+                    });
+                    }
+
+                    function getCookie(name) {
+                    var cookieValue = null;
+                    if (document.cookie && document.cookie !== '') {
+                        var cookies = document.cookie.split(';');
+                        for (var i = 0; i < cookies.length; i++) {
+                            var cookie = cookies[i].trim();
+                            // Does this cookie string begin with the name we want?
+                            if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                                cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                                break;
+                            }
+                        }
+                    }
+                    return cookieValue;
+                    }   
+                </script>
+
+
+
 {% endblock %}
 
 {% block script %}

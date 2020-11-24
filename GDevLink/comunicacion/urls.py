@@ -4,5 +4,5 @@ from django.conf.urls import include
 
 urlpatterns = [
     path("conversaciones", views.conversaciones, name="conversaciones"),
-    path("chat/<str:room_name>/", views.chat, name="chat")
+    path("conversaciones/<str:room_name>/chat/", views.chat, name="chat")
 ]

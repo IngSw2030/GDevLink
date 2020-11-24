@@ -15,7 +15,7 @@ def preguntas(request):
     return render(request,"preguntas/preguntas.html",{"preguntas":preguntas})
 
 #Vista del formulario para crear una pregunta. El usuario debe edtar autentificado.
-@login_required(login_url='/usuarios/login')
+@login_required(login_url='/usuarios/inicio-sesion')
 def crearPregunta(request):
     preguntas=Pregunta.objects.all().order_by('-puntosPositivos')
     if request.method == "POST":
@@ -86,7 +86,7 @@ def verPregunta(request,ids):
         "autor":autor})
 
 #Vista para crear una respuesta a una pregunta. El usuari
-@login_required(login_url='/usuarios/login')
+@login_required(login_url='/usuarios/inicio-sesion')
 def crearRespuesta(request,ids):
     #Datos principales de la vista
     pregunta=Pregunta.objects.get(id=ids)
@@ -152,7 +152,7 @@ def crearRespuesta(request,ids):
         "autor":autor})
     
 #Vista para Puntuar Positivamente una Pregunta
-@login_required(login_url='/usuarios/login')
+@login_required(login_url='/usuarios/inicio-sesion')
 def puntuarPreguntaPos(request,ids):
     if request.method == 'PUT':
         resultado=ManejadorPreguntas.puntuarPreguntaPos(ids,request.user.get_username())
@@ -161,7 +161,7 @@ def puntuarPreguntaPos(request,ids):
     return HttpResponse(status=200)
 
 #Vista para Puntuar Negativamente una Pregunta
-@login_required(login_url='/usuarios/login')
+@login_required(login_url='/usuarios/inicio-sesion')
 def puntuarPreguntaNeg(request,ids):
     if request.method == 'PUT':
         resultado=ManejadorPreguntas.puntuarPreguntaNeg(ids,request.user.get_username())
@@ -170,7 +170,7 @@ def puntuarPreguntaNeg(request,ids):
     return HttpResponse(status=200)
 
 #Vista para Seleccionar la mejor respuesta
-@login_required(login_url='/usuarios/login')
+@login_required(login_url='/usuarios/inicio-sesion')
 def seleccionarMejorRespuesta(request,ids):
     if request.method == 'PUT':
         resultado=ManejadorPreguntas.escogerRespuesta(ids)
@@ -179,7 +179,7 @@ def seleccionarMejorRespuesta(request,ids):
     return HttpResponse(status=200)
     
 #Vista para Puntuar Positivamente una Respuesta
-@login_required(login_url='/usuarios/login')
+@login_required(login_url='/usuarios/inicio-sesion')
 def puntuarRespuestaPos(request,ids):
     if request.method == 'PUT':
         resultado=ManejadorPreguntas.puntuarRespuestaPos(ids,request.user.get_username())
@@ -188,7 +188,7 @@ def puntuarRespuestaPos(request,ids):
     return HttpResponse(status=200)
     
 #Vista para Puntuar Negativamente una Respuesta
-@login_required(login_url='/usuarios/login')
+@login_required(login_url='/usuarios/inicio-sesion')
 def puntuarRespuestaNeg(request,ids):
     if request.method == 'PUT':
         resultado=ManejadorPreguntas.puntuarRespuestaNeg(ids,request.user.get_username())

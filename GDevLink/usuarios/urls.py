@@ -2,12 +2,12 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path("login", views.vista_login, name="login"),
-    path("logout", views.vista_logout, name="logout"),
-    path("registrar", views.registrar, name="registrar"),
-    path("perfil/<str:nombre_usuario>", views.perfil, name="perfil"),
-    path("editar/<str:nombre_usuario>", views.editar, name="editar"),
+    path("inicio-sesion", views.inicio_sesion, name="inicio-sesion"),
+    path("cierre-sesion", views.cierre_sesion, name="cierre-sesion"),
+    path("registro", views.registro, name="registro"),
+    path("<str:nombre_usuario>/perfil", views.perfil, name="perfil"),
+    path("<str:nombre_usuario>/perfil/edicion", views.edicion, name="edicion"),
     path('accounts/', include('allauth.urls')),
-    path("cambiarClave", views.cambiarClave, name="cambiarClave"),
+    path("cambio-clave", views.cambio_clave, name="cambio-clave"),
 
 ]

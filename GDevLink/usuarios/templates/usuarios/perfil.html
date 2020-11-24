@@ -53,7 +53,9 @@
             {% endfor %}
         </ul>
     </div>
-    <a href="/usuarios/editar/{{user.username}}">Editar Mi Perfil</a>
+    {% if usuario.username == autenticado.username %}
+    <a href="/usuarios/{{user.username}}/perfil/edicion" class="btn btn-primary" >Editar Mi Perfil</a>
+    {% endif %}
 </div>
     
 

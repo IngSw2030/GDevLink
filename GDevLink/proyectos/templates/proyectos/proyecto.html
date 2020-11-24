@@ -83,14 +83,14 @@
             {% if administrador %}
                 <div class="card-body">
                     <a  href="/proyectos/gestionMiembros/{{proyecto.nombre}}" class="btn btn-primary">Editar miembros</a>
-                    <a href="/posicionVacante/gestionarVacantes/{{proyecto.nombre}}" class="btn btn-primary">Gestionar Vacantes</a>
+                    <a href="/vacantes/{{proyecto.nombre}}/gestion-vacantes" class="btn btn-primary">Gestionar Vacantes</a>
                 </div>
             {% endif %}
             <div class="elemento">
                 <label for="exampleFormControlInput1">Miembros:</label>
                 <div class="list-group"> 
                     {% for key,value in miembros.items %}       
-                    <li><a href="/usuarios/perfil/{{key}}">{{key}} - {{value}}</a></li>
+                    <li><a href="/usuarios/{{key}}/perfil">{{key}} - {{value}}</a></li>
                     {% endfor %}
                 </div>
             </div> 
