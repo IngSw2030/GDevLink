@@ -7,12 +7,11 @@ urlpatterns = [
     path("proyecto/<str:nombre>",views.proyecto,name="proyecto"),
     path("editarProyecto/<str:nombre>", views.editarProyecto, name="editarProyecto"),
     path("gestionMiembros/<str:nombre>", views.gestionMiembros, name="gestionMiembros"),
-    path("agregarMiembros/<str:nombre>", views.agregarMiembros, name="agregarMiembros"),
-    path("eliminarMiembros/<str:nombre>", views.eliminarMiembros, name="eliminarMiembros"),
-    path("agregarAdministrador/<str:nombre>", views.agregarAdministrador, name="agregarAdministrador"),
-    path("eliminarAdministrador/<str:nombre>", views.eliminarAdministrador, name="eliminarAdministrador"),
     path("nuevaActualizacion/<str:nombre>", views.nuevaActualizacion, name="nuevaActualizacion"),
     path("seguir/<str:nombre>", views.seguir, name="seguir"),
-    path("explorarProyectos", views.explorarProyectos, name="explorarProyectos")
+    path("promover/<str:nombre>", views.promover, name="promover"),
+    path("eliminar/<str:nombre>", views.eliminar, name="eliminar"),
+    path("revocar/<str:nombre>", views.revocar, name="revocar"),
+    path("explorarProyectos", views.explorarProyectos, name="explorarProyectos"),
     
 ]
