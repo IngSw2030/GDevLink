@@ -14,11 +14,11 @@ class ManejadorProyectos(IManejadorProyectos):
         #Se verifica si ya existe un proyecto con el nombre especificado
         existente = Proyecto.objects.filter(nombre=nombreProyecto).count()
         #Si ya existe el proyecto, se retorna None
-        if existente.count() > 0:
+        if existente > 0:
             return existente.all()[0]
         try:
             #Se crea el proyecto con los atributos pasados por parametro
-            proyecto = Proyecto(nombre=nombreProyecto,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlace_video,enlace_juego=enlace_juego,imagen=imagen)
+            proyecto = Proyecto(nombre=nombreProyecto,generos=generos,fase=fase,descripcion=descripcion,frameworks=frameworks,enlace_video=enlaceVideo,enlace_juego=enlaceDescarga,imagen=imagen)
             proyecto.save()
         except IntegrityError as e:
             print(e)

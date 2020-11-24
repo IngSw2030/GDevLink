@@ -9,11 +9,6 @@ from django.db import IntegrityError
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 
-def vacantes(request):
-    if request.method == "GET":
-        #Mostrar página de vacantes
-        pass
-
 @login_required(login_url='/usuarios/inicio-sesion')
 def gestion_vacantes(request,nombre):
     if request.method == "GET":
@@ -76,9 +71,23 @@ def vacante(request, ids):
             pass
 
 def aplicantes(request, ids):
-    if request.method == "POST":
-        #Código para agregar aplicante
-        pass
+    if request.method == "PUT":
+        try:
+            
+            vacante = PosicionVacante.objects.get(id=ids)
+            proyecto = vacante.proyecto
+            print(proyecto.nombre)
+            usuario = Usuario.objects.get(username=request.user)
+            print(usuario.username)
+            vacante.aplicantes.add(usuario)
+            vacante.save()
+            print(vacante)
+            for aplic in vacante.aplicantes.all():
+                print(aplic)
+            return HttpResponse(status=200)
+        except IntegrityError as e:
+            return -1
+        
 
 def explorarVacantes(request):
     if request.method == "POST":
