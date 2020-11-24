@@ -164,7 +164,7 @@ def editarProyecto(request, nombre):
 
         if request.user in ManejadorProyectos.obtenerAdministradores(nombre):
             #Se llama al controlador de proyecto para que lo edite
-            result = ManejadorProyectos.editarProyecto(nombre, generos, fase, descripcion, frameworks, enlace_video, enlace_juego, roles, imagen)          
+            result = ManejadorProyectos.editarProyecto(nombre, generos, fase, descripcion, frameworks, enlace_video, enlace_descargar, imagen)          
          
         #Si result es -1, el proyecto no pudo ser editado correctamente
         if result == -1:
@@ -349,28 +349,61 @@ def seguir(request,nombre):
 def explorarProyectos(request):
 
     if request.method == "POST":
-        return render(request,"proyectos/explorarProyectos.html",{
-                "generos":PosiblesGeneros,
-                "fases":PosiblesFases,
-                "frameworks":PosiblesFrameworks
-            } )
+        nombre_busqueda = request.POST['barraBusqueda']
+        generos = request.POST.getlist("generos")
+        print(generos)
+        fase = request.POST.getlist('fase')
+        frameworks = request.POST.getlist('frameworks')
+
+        proyectos = Proyecto.objects.all().order_by('seguidores')
+
+        if len(fase) > 0:
+            fase = fase[0]
+            proyectos = Proyecto.objects.filter(
+        
+            generos__contains =  generos,
+        
+            frameworks__contains =  frameworks,
+            
+            fase__icontains = fase,
+        
+            nombre__icontains=nombre_busqueda
+            )   
+        else:
+                proyectos = Proyecto.objects.filter(
+		    
+                generos__contains =  generos,
+			
+		        frameworks__contains =  frameworks,
+            
+                nombre__icontains=nombre_busqueda
+            ).order_by('seguidores')   
+        
+        
+    
+
+        return render(request, "proyectos/explorarProyectos.html", {
+            "generos": PosiblesGeneros,
+            "fases": PosiblesFases,
+            "frameworks": PosiblesFrameworks,
+            "populares": proyectos
+        })
 
     else:
         proyectos = []
         proyectos = Proyecto.objects.all()
         todos = Proyecto.objects.all().order_by('seguidores')
         populares = [None] * 4
-        i=0
+        i = 0
         for pop in todos:
             populares[i] = pop
             if i == 3:
                 break
             i = i+1
 
-        return render(request,"proyectos/explorarProyectos.html",{
-                "generos":PosiblesGeneros,
-                "fases":PosiblesFases,
-                "frameworks":PosiblesFrameworks,
-                "proyectos":proyectos,
-                "populares": populares
-            } ) 
+        return render(request, "proyectos/explorarProyectos.html", {
+            "generos": PosiblesGeneros,
+            "fases": PosiblesFases,
+            "frameworks": PosiblesFrameworks,
+            "populares": populares
+        })

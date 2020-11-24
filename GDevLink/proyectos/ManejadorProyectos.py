@@ -31,7 +31,7 @@ class ManejadorProyectos(IManejadorProyectos):
             return -1
         return 1
 
-    def editarProyecto(nombreProyecto, generos, fase, descripcion, frameworks, enlaceVideo, enlaceDescarga, roles, imagen):
+    def editarProyecto(nombreProyecto, generos, fase, descripcion, frameworks, enlaceVideo, enlaceDescarga, imagen):
 
         proyecto = Proyecto.objects.get(nombre=nombreProyecto)
         #Si no existe un proyecto con el nombre especificado, se retorna None
@@ -43,8 +43,8 @@ class ManejadorProyectos(IManejadorProyectos):
             proyecto.fase = fase
             proyecto.descripcion = descripcion
             proyecto.frameworks = frameworks
-            proyecto.enlace_video = enlace_video
-            proyecto.enlace_juego = enlace_descargar
+            proyecto.enlace_video = enlaceVideo
+            proyecto.enlace_juego = enlaceDescarga
             proyecto.imagen = imagen
             #Se guarda el proyecto en la base de datos
             proyecto.save()
@@ -74,7 +74,7 @@ class ManejadorProyectos(IManejadorProyectos):
             #Se obtiene el usuario
             usuario = ManejadorUsuarios.obtenerUsuario(nombreUsuario)
             #Se obtiene el proyeto
-            proyecto = ManejadorProyectos.obtenerProyecto(nombre=nombreProyecto)
+            proyecto = ManejadorProyectos.obtenerProyecto(nombreProyecto)
             #Se obtiene la parcicipación entre el usuario y el proyecto
             participacion = Participacion.objects.get(usuario = usuario)
             #Se elimina la participacion
@@ -100,7 +100,7 @@ class ManejadorProyectos(IManejadorProyectos):
         try:
             usuario = ManejadorUsuarios.obtenerUsuario(nombreUsuario)
             proyecto = Proyecto.objects.get(nombre=nombreProyecto)
-            participacion = Participacion.objects.get(usuario=nuevo_usuario)
+            participacion = Participacion.objects.get(usuario=usuario)
             #Se establece que la participación entre un proyecto y un usuario sera solo
             #con permisos de miembro
             participacion.permiso = PosiblesPermisos.MIEMBRO
