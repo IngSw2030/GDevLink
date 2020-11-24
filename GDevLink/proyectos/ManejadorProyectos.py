@@ -11,7 +11,7 @@ class ManejadorProyectos(IManejadorProyectos):
     
     def crearProyecto(usuario, nombreProyecto, generos, fase, descripcion, frameworks, enlaceVideo, enlaceDescarga, roles, imagen):
         
-        #Se verifica si ya existe un proyecto con el nombre
+        #Se verifica si ya existe un proyecto con el nombre especificado
         existente = Proyecto.objects.filter(nombre=nombreProyecto).count()
         #Si ya existe el proyecto, se retorna None
         if existente.count() > 0:

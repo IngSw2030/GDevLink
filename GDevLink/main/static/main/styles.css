@@ -29,15 +29,16 @@ html, body
 		background-attachment: fixed;
 		background-size: cover;*/
 
-		background-color: #2a2e39;
+		/*background-color: #2a2e39;*/
+		background-color: #212121;
 
-		font: inherit;
+		font-family: 'Roboto', sans-serif;
 		font-size: 11pt;
 		font-weight: 300;
 		
 		padding-top: 60px;
 		color: #ebebeb;
-		background-color: #2a2e39;
+		
 		
 	}
 	
@@ -89,7 +90,8 @@ html, body
 		width: 100%; height:auto;  margin:0px;
 	   
 		/*background: #ebebeb;*/
-		background: #303642;
+		/*background: #303642;*/
+		background: #2e2e2e;
 		border-radius: 8px;
 		padding: 10px;
 		box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -113,7 +115,7 @@ html, body
 	/*background: #1B262C;*/
 	border-collapse: separate;
 	border-radius: 25px;
-	background: #2a2e39;
+	background: #212121;;
     overflow: hidden;
 	margin: 0em auto;
 	width: 1000px;
@@ -188,6 +190,16 @@ html, body
 /*********************************************************************************/
 /* Button Style                                                                  */
 /*********************************************************************************/
+	button{
+		background: #b885fa;
+		border-color: transparent;
+		color: black;
+		padding-left: 10px;
+		padding-right: 10px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		border-radius: 8px 8px 8px 8px;
+	}
 
 	.button
 	{
@@ -200,7 +212,7 @@ html, body
 		text-transform: uppercase;
 		font-weight: 400;
 		font-size: 1em;
-		color: #FFF;
+		color: black;
 	}
 	
 	.button:before
@@ -253,8 +265,8 @@ html, body
 	
 	#barra{
 		padding: 0px;
-		border-color: #23232e;
-		background-color: #23232e;
+		border-color: #2e2e2e;
+		background-color: #2e2e2e;
 	}
 
 	#backgroundimage {
@@ -418,13 +430,6 @@ html, body
 
 
 
-
-
-
-
-
-
-
 	
 
 	.center {
@@ -471,7 +476,7 @@ html, body
 	  
 	  .navbarp {
 		position: fixed;
-		background-color: var(--bg-primary);
+		background-color: #2e2e2e;
 		transition: width 600ms ease;
 		
 	  }

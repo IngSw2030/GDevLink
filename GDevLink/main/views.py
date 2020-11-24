@@ -4,6 +4,7 @@ from django.http import HttpResponse
 from proyectos.models import Proyecto, Usuario, Actualizacion
 from django.core.paginator import Paginator
 from posicionVacante.models import PosicionVacante
+from main.enum import PosiblesFrameworks, PosiblesGeneros, PosiblesRoles, PosiblesPermisos, PosiblesFases
 
 # Vista para la página principal
 def index(request):
@@ -34,10 +35,25 @@ def index(request):
                if pagina.has_next():
                     pagina_siguiente = numero_pagina + 1
                rolesUser = request.user.roles
-               vacantes = []
+     
+               vacantesRepetidas = []
                #fase = PosiblesFases.labels[PosiblesFases.values.index(proyecto.fase)]
                for r in rolesUser:
-                    vacantes = vacantes + list(PosicionVacante.objects.filter(roles__contains=[r])) 
+                    vacantesRepetidas = vacantesRepetidas + list(PosicionVacante.objects.filter(roles__contains=[r]))
+                   
+               vacantesCodigo = list(dict.fromkeys(vacantesRepetidas))
+               vacantes = {}
+               
+               for vac in vacantesCodigo:
+                    roles_p = ""
+                    #Para cada participacion se recorren sus roles
+                    for rol in vac.roles:
+                         #Todos los roles son concatenados
+                         roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+                    
+                   
+                    #String es agregado a la lista de participaciones, en la posición del usuario
+                    vacantes[vac.proyecto.nombre] = roles_p
           except Actualizacion.DoesNotExist:
                actualizaciones = []
           return render(request,"main/index.html",{
