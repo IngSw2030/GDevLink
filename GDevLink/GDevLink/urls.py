@@ -27,7 +27,7 @@ urlpatterns = [
     path('comunicacion/', include('comunicacion.urls')),
     path('accounts/', include('allauth.urls')),
     path('preguntas/', include('preguntas.urls')),
-    path('posicionVacante/', include('posicionVacante.urls')),
+    path('vacantes/', include('posicionVacante.urls')),
 ]
 
 if settings.DEBUG:

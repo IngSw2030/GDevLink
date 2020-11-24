@@ -2,8 +2,10 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
-    path("gestionarVacantes/<str:nombre>", views.gestionarVacantes, name="gestionarVacantes"),
-    path("nuevaVacante/<str:nombre>", views.nuevaVacante, name="nuevaVacante"),
-    path("editarVacante/<int:ids>", views.editarVacante, name="editarVacante"),
-    path("eliminarVacante/<int:ids>", views.eliminarVacante, name="eliminarVacante"),
+    path("", views.vacantes, name="vacantes"),
+    path("<str:nombre>/gestion-vacantes", views.gestion_vacantes, name="gestion-vacantes"),
+    path("<str:nombre>/gestion-vacantes/creacion", views.nueva_vacante, name="nueva_vacante"),
+    path("gestion-vacante/<int:ids>", views.editarVacante, name="editarVacante"),
+    path("vacante/<int:ids>", views.vacante, name="vacante"),
+    path("gestion-vacante/<int:ids>/aplicantes", views.aplicantes, name="aplicantes")
 ]

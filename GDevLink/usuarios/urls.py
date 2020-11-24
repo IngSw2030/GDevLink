@@ -9,5 +9,4 @@ urlpatterns = [
     path("<str:nombre_usuario>/perfil/edicion", views.edicion, name="edicion"),
     path('accounts/', include('allauth.urls')),
     path("cambio-clave", views.cambio_clave, name="cambio-clave"),
-
 ]

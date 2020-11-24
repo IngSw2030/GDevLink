@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="{% static 'comunicacion/styles.css' %}">  
 
     <div class="contenido">
-        <form action="{% url 'conversaciones' %}" method="post">
+        <form action="{% url 'nueva_vacante' %}" method="post">
             {% csrf_token %}
             <nav class=" busqueda">
                 <div class="usuarios">
