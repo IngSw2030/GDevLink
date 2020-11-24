@@ -8,6 +8,7 @@ from django.db import IntegrityError
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from proyectos.ManejadorProyectos import ManejadorProyectos
+from usuarios.ManejadorUsuarios import  ManejadorUsuarios
 # Create your views here.
 
     
@@ -39,54 +40,69 @@ def crearProyecto(request):
             imagen = request.FILES['imagen']
         else:
             imagen=None
-
+        #Se llama al manejador de proyectos para que cree un nuevo proyecto
         result = ManejadorProyectos.crearProyecto(request.user, nombre, generos, fase, descripcion, frameworks, enlace_video, enlace_juego, roles, imagen)
         
+        #Si el resultado de la creacion es None, entonces ya existe un proyecto con el nombre especificado
         if result is None:
             return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
              "message": "Nombre de proyecto ya registrado"})
-
+        #Si el resultado es -1, hubo un error inesperado al crear el proyecto
         if result = -1:
             return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
              "message": "Error al crear el proyecto"})
-        
+        #Si no hubieron errores, el usuario es redireccionado a la página del proyecto creado
         return HttpResponseRedirect(reverse("proyecto", kwargs={"nombre": nombre}))
                 
     return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles})
 
 def proyecto(request,nombre):
     try:
-        proyecto = Proyecto.objects.get(nombre=nombre)
+        #Se obtiene el proyecto
+        proyecto = ManejadorProyectos.obtenerProyecto(nombre)
+        #Se declaran variables para los datos del proyecto
         generos = []
         frameworks = []
         participaciones = {}
         actualizaciones = {}
         fase = PosiblesFases.labels[PosiblesFases.values.index(proyecto.fase)]
+        #Como los generos son enumerados, la lista de generos de proyectos es rellenada con los valores
+        #obtenidos por el codigo de cada genero
         for genero in proyecto.generos:
             generos.append((PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
+        #Igual que con los generos
         for framework in proyecto.frameworks:
             frameworks.append((PosiblesFrameworks.labels[PosiblesFrameworks.values.index(framework)]))
-        for participacion in proyecto.participaciones.all():
+        #Las participaciones que muestra views es una lista de strings, en el que cada uno es el nombre del usuario
+        #más los roles que desempeña en el proyecto
+        #Se recorren todas las participaciones del proyecto
+        participacionesAll = ManejadorProyectos.obtenerParticipaciones(nombre)
+        for participacion in participacionesAll:
             roles_p = ""
+            #Para cada participacion se recorren sus roles
             for rol in participacion.roles:
+                #Todos los roles son concatenados
                 roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+            #Despues de concatenar todos los roles, se agrega el tipo de participacion del usuario
+            #al final del string
             roles_p = roles_p + " - " + str(PosiblesPermisos.labels[PosiblesPermisos.values.index(participacion.permiso)])
+            #String es agregado a la lista de participaciones, en la posición del usuario
             participaciones[participacion.usuario.username] = roles_p
-        actualizaciones = proyecto.actualizaciones.all()
-        for act in actualizaciones:
-            print(act.descripcion)
+        #Se obtienen las actualizaciones de un proyecto
+        actualizaciones = ManejadorProyectos.obtenerActualizaciones(nombre)
 
-        participacion = Participacion.objects.get(usuario=request.user, proyecto=proyecto)
-        if participacion.permiso == PosiblesPermisos.MASTER or participacion.permiso == PosiblesPermisos.ADMIN:
+        #Se verifica si el usuario que hace la petición es un administrador
+        if request.user in ManejadorProyectos.obtenerAdministradores(nombre):
             admin = True
         else:
             admin = False
         #Revisar si el usuario sigue el proyecto
-        usuario = Usuario.objects.get(username=request.user.get_username())
+        usuario = request.user
         if usuario.proyectos_seguidos.filter(nombre = nombre):
             siguiendo = True
         else:
             siguiendo = False
+        #Se envia al cliente toda la información del proyecto
         return render(request, "proyectos/proyecto.html", {
             "proyecto": proyecto,
             "generos": generos,
@@ -103,6 +119,7 @@ def proyecto(request,nombre):
             "mensaje": "Proyecto no encontrado."
         })
 
+@login_required
 def proyectosUsuario(request):
     if request.user.is_authenticated:
         proyectos = ManejadorProyectos.obtenerProyectosUsuario(request.user)
@@ -136,16 +153,15 @@ def editarProyecto(request, nombre):
             })
         fase = fase[0]
 
-        user = Usuario.objects.get(username=request.user)
 
         if 'imagen' in request.FILES:
             imagen = request.FILES['imagen']
         else:
-            imagen=user.imagen
+            imagen=None
 
-        #Se llama al controlador de proyecto para que lo edite
-        result = ManejadorProyectos.editarProyecto(nombre, generos, fase, descripcion, frameworks, enlace_video, enlace_juego, roles, imagen)
-        
+        if request.user in ManejadorProyectos.obtenerAdministradores(nombre):
+            #Se llama al controlador de proyecto para que lo edite
+            result = ManejadorProyectos.editarProyecto(nombre, generos, fase, descripcion, frameworks, enlace_video, enlace_juego, roles, imagen)          
          
         #Si result es -1, el proyecto no pudo ser editado correctamente
         if result = -1:
@@ -155,7 +171,7 @@ def editarProyecto(request, nombre):
         return HttpResponseRedirect(reverse("proyecto",kwargs={"nombre": nombre}))
     else:
         try:
-            proyecto = Proyecto.objects.get(nombre=nombre)
+            proyecto = ManejadorProyectos.obtenerProyecto(nombre)
             generos = []
             frameworks = []
             participaciones = {}
@@ -276,7 +292,7 @@ def eliminarMiembros (request, nombre):
             #Se renderiza la página de eliminar miembros   
             proyecto = ManejadorProyectos.obtenerProyecto(nombre=nombre)
             
-             usuarios = Usuario.objects.all()
+             
             return render(request,"proyectos/eliminarMiembros.html",{
                 "miembros": personas,
                 "proyecto": proyecto,
@@ -335,11 +351,10 @@ def eliminarAdministrador (request, nombre):
         try:
             #Se renderiza la página de remover administrador con los miembros que son administradores
             proyecto = ManejadorProyectos.obtenerProyecto(nombre)
-            personas = []
-            for auxPersonas in proyecto.participaciones.all():
-                if auxPersonas.permiso ==  PosiblesPermisos.ADMIN:
-                    personas.append(auxPersonas.usuario)
-            usuarios = Usuario.objects.all()
+            #Se obtienen los administradores del proyecto
+            personas = ManejadorProyectos.obtenerAdministradores(nombre)
+            #Se obtienen
+            usuarios = ManejadorUsuarios.obtenerUsuario(nom_us)
             return render(request,"proyectos/eliminarAdministrador.html",{
                 "miembros": personas,
                 "proyecto": proyecto,
@@ -355,7 +370,7 @@ def eliminarAdministrador (request, nombre):
 
 def nuevaActualizacion(request,nombre):
     if request.method == "POST":
-        proyecto = Proyecto.objects.get(nombre=nombre)
+        
         if 'imagenNueva' in request.FILES:
             imagen = request.FILES['imagenNueva']
         else:

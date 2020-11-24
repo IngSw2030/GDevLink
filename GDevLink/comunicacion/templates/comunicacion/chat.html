@@ -15,10 +15,6 @@
     </script>
     <link rel="stylesheet" href="{% static 'comunicacion/styles.css' %}">  
     
-    
-         
-   
-    
         <div class="conversacion contenido">
             
             <div> 
@@ -86,7 +82,7 @@
 
             const chatSocket = new WebSocket(
                 'ws://'
-                + window.location.host
+                + os.location.host
                 + '/ws/comunicacion/chat/'
                 + roomName
                 + '/'

@@ -73,3 +73,13 @@ class IManejadorProyectos:
     #Retorna una lista de participaciones si las encontro, si no, estará vacía
     def obtenerParticipaciones(nombreProyecto):
         pass
+
+    #Método para obtener todos los miembros de un proyecto que sean administradores
+    #Retorna una lista de usuarios    
+    def obtenerAdministradores(nombreProyecto):
+        pass
+    
+    #Método para obtener todas las actualizaciones de un proyecto
+    #Retorna una lista de actualizaciones
+    def obtenerActualizaciones(nombreProyecto):
+        pass

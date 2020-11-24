@@ -18,8 +18,7 @@ from comunicacion.ManejadorComunicacion import ManejadorComunicacion
 def conversaciones(request):
      if request.method == "POST":
           usuarioB = request.POST.getlist('usuarioB')
-          #codigo = randint(1000000000, 9999999999)
-          #conv = Conversacion(codigo = codigo)
+
           conv = ManejadorComunicacion.agregarConversacion(request.user.username, usuarioB[0])
           if conv is None:
                return render(request, "main/error.html", {
@@ -33,8 +32,7 @@ def conversaciones(request):
           dataJSON = dumps(result_list) 
           conversaciones = ManejadorComunicacion.obtenerConversaciones(request.user.username)
 
-          #print(conversaciones.Conversacion)
-          #participantes = conversaciones.participantes.objects.all()
+  
          
           return render(request,"comunicacion/conversaciones.html", {'users': dataJSON, 'conversaciones': conversaciones})
      
@@ -42,13 +40,7 @@ def conversaciones(request):
 
 @login_required
 def chat(request, room_name):
-     #conversacion = Conversacion.objects.get(id=room_name)
-     #if request.method == "POST":
-          #mensaje = Mensaje(Conversacion=conversacion, texto=request.POST["msg"],autor=request.user)
-          #mensaje.save()
-         # print("mensaje añadido")
-          
-          #return HttpResponse("Añadido")
+
      conversacion = ManejadorComunicacion.obtenerMensajes(request.user.username, room_name)
      return render(request, "comunicacion/chat.html", {
                "conversacion": conversacion, 'room_name': room_name})

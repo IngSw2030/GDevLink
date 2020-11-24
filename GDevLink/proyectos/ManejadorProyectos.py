@@ -1,9 +1,10 @@
 from proyectos.models import Proyecto, Participacion, Actualizacion
 from usuarios.models import Usuario
+from usuarios.ManejadorUsuarios import ManejadorUsuarios
 
 
 #clase que implementa IManjeadorProyectos
-class ManejadorProyectos(IManjeadorProyectos):
+class ManejadorProyectos(IManejadorProyectos):
     
     def crearProyecto(usuario, nombreProyecto, generos, fase, descripcion, frameworks, enlaceVideo, enlaceDescarga, roles, imagen):
         
@@ -51,7 +52,7 @@ class ManejadorProyectos(IManjeadorProyectos):
         
         try:
             proyecto = obtenerProyecto(nombreProyecto)
-            usuario = Usuario.objects.get(username=nombreUsuario) 
+            usuario = ManejadorUsuarios.obtenerUsuario(nombreUsuario)
             #Si el proyecto no existe se retorna None
             if proyecto is None:
                 return None
@@ -66,7 +67,7 @@ class ManejadorProyectos(IManjeadorProyectos):
     def quitarMiembro(nombreProyecto, nombreUsuario):
         try
         #Se obtiene el usuario
-        usuario = Usuario.objects.get(username=nombreUsuario) 
+        usuario = ManejadorUsuarios.obtenerUsuario(nombreUsuario)
         #Se obtiene el proyeto
         proyecto = obtenerProyecto(nombre=nombre)
         #Se obtiene la parcicipación entre el usuario y el proyecto
@@ -80,7 +81,7 @@ class ManejadorProyectos(IManjeadorProyectos):
     def promoverMiembro(nombreProyecto, nombreUsuario):
         try
             #Se obtiene el objeto proyecto y el objeto usuario al que se promovera
-            usuario = Usuario.objects.get(username=nombreUsuario)
+            usuario = ManejadorUsuarios.obtenerUsuario(nombreUsuario)
             proyecto = obtenerProyecto(nombreProyecto)
             participacion = Participacion.objects.get(usuario=usuario)
             #Se cambia los permisos de la participación del usuario a administrador
@@ -92,7 +93,7 @@ class ManejadorProyectos(IManjeadorProyectos):
 
     def revocarMiembro(nombreProyecto, nombreUsuario):
         try
-            usuario = Usuario.objects.get(username=nombreUsuario) 
+            usuario = ManejadorUsuarios.obtenerUsuario(nombreUsuario)
             proyecto = Proyecto.objects.get(nombre=nombreProyecto)
             participacion = Participacion.objects.get(usuario=nuevo_usuario)
             #Se establece que la participación entre un proyecto y un usuario sera solo
@@ -115,7 +116,7 @@ class ManejadorProyectos(IManjeadorProyectos):
 
     def seguirProyecto(usuario, nombreProyecto):
         proyecto = ManejadorProyectos.obtenerProyecto(nombreProyecto)
-        usuario = Usuario.objects.get(username=request.user.get_username())
+        usuario = ManejadorUsuarios.obtenerUsuario(nombreUsuario)
         #Si el usuario ya sigue al proyecto, entonces lo deja de seguir
         if usuario in proyecto.seguidores.all():
             proyecto.seguidores.remove(usuario)
@@ -126,24 +127,27 @@ class ManejadorProyectos(IManjeadorProyectos):
         proyecto.save()
 
     def obtenerProyecto(nombreProyecto):
-        return Proyecto.objects.get(nombre=nombreProyecto)
+        
+        try
+        #Se obtiene el proyecto que tenga el mismo nombre del parametro
+        proyecto = Proyecto.objects.get(nombre=nombreProyecto)
+        except Proyecto.DoesNotExist:
+            return -1
+        return proyecto
 
     def obtenerProyectosUsuario(usuario):
-        if request.user.participaciones:
-           proyectos = []
+        proyectos = []
+        #Se verifica si el usuario participa en un proyecto
+        if request.user.participaciones:   
+           #Se recorren todas las participaciones de un usuario
            for participacion in usuario.participaciones.all():
+               #Por cada participación, se añade el proyecto a la lista de proyectos
                proyectos.append(participacion.proyecto)
         return proyectos
 
     def obtenerProyectosPopulares():
-        todos = Proyecto.objects.all().order_by('seguidores')
-        populares = [None] * 4
-        i=0
-        for pop in todos:
-            populares[i] = pop
-              if i == 10:
-                   break
-            i = i+1
+        #Se obtienen los 20 proyectos mas populares, ordenados por seguidores
+        populares = Proyecto.objects.all().order_by('seguidores')[:10]
         return populares
 
     def obtenerActualizacionesSeguidos(nombreUsuario):
@@ -173,15 +177,54 @@ class ManejadorProyectos(IManjeadorProyectos):
                actualizaciones = []
 
     def buscarProyecto(nombre, genero, fase, framework):
-        pass
+        #Si la busqueda es solo por nombre, se retorna los proyecots
+        #que en su nombre contengan el string dado en el parametro nombre
+        if nombre != "":
+            return Proyecto.objects.filter(nombre__contains = nombre)
+        proyectos = []
+        #Si se especificaron generos, se procede a filtrar por genero
+        if len(genero) > 0:
+            #De la base de datos se obtienen todos los proyectos que contengan el o los generos especificados
+            proyectos = Proyecto.objects.filter(fase__contains = [genero] )
+        #Si se especifico una fase, se procede a filtrar por fase
+        if len(fase) > 0:
+            #Con los proyectos actuales se filtran los que esten en una fase especificada
+            proyectos = proyectos.filter(fase = fase)
+        #Si se especificaron frameworks, se procede a filtrar por framework
+        if len(framework) > 0:
+            #Con los proyectos actuales se filtran los que usen un framework especificado
+            proyectos = proyectos.filter(frameworks__contains = [framework]) 
+
+        return proyectos
 
     def obtenerMiembros(nombreProyecto):
             proyecto = ManejadorProyectos.obtenerProyecto(nombre=nombre)
             personas = []
-                for auxPersonas in proyecto.participaciones.all():
-                    personas.append(auxPersonas.usuario)
+            #Se obtienen todos los usuarios que participan en un proyecto
+            for auxPersonas in proyecto.participaciones.all():
+                personas.append(auxPersonas.usuario)
             return personas
 
     def obtenerParticipaciones(nombreProyecto):
         proyecto = ManejadorProyectos.obtenerProyecto(nombre=nombre)
+        #Se retorna todas las participaciones de un proyecto
         return proyecto.participaciones.all()
+
+    def obtenerAdministradores(nombreProyecto):
+       proyecto = ManejadorProyectos.obtenerProyecto(nombre=nombre)
+        personas = []
+        #Se obtienen todos los usuarios que administran un proyecto
+        for auxPersonas in proyecto.participaciones.all():
+            if auxPersonas.permiso ==  PosiblesPermisos.ADMIN or auxPersonas.permiso ==  PosiblesPermisos.MASTER:
+                    personas.append(auxPersonas.usuario)
+       return personas
+
+    def obtenerActualizaciones(nombreProyecto):
+        proyecto = obtenerProyecto(nombreProyecto)
+        actualizaciones = []
+        try
+        #Se obtiene el proyecto que tenga el mismo nombre del parametro
+        actualizaciones = proyecto.actualizaciones.all()
+        except Actualizacion.DoesNotExist:
+            return -1
+        return actualizaciones
