@@ -56,83 +56,73 @@ def crearProyecto(request):
              "message": "Error al crear el proyecto"})
         #Si no hubieron errores, el usuario es redireccionado a la página del proyecto creado
         return HttpResponseRedirect(reverse("proyecto", kwargs={"nombre": nombre}))
-                
-    return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles})
+    if request.method == "GET":            
+        return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles})
 
 def proyecto(request,nombre):
-    try:
-        #Se obtiene el proyecto
-        proyecto = ManejadorProyectos.obtenerProyecto(nombre)
-        #Se declaran variables para los datos del proyecto
-        generos = []
-        frameworks = []
-        participaciones = {}
-        actualizaciones = {}
-        fase = PosiblesFases.labels[PosiblesFases.values.index(proyecto.fase)]
-        #Como los generos son enumerados, la lista de generos de proyectos es rellenada con los valores
-        #obtenidos por el codigo de cada genero
-        for genero in proyecto.generos:
-            generos.append((PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
-        #Igual que con los generos
-        for framework in proyecto.frameworks:
-            frameworks.append((PosiblesFrameworks.labels[PosiblesFrameworks.values.index(framework)]))
-        #Las participaciones que muestra views es una lista de strings, en el que cada uno es el nombre del usuario
-        #más los roles que desempeña en el proyecto
-        #Se recorren todas las participaciones del proyecto
-        participacionesAll = ManejadorProyectos.obtenerParticipaciones(nombre)
-        for participacion in participacionesAll:
-            roles_p = ""
-            #Para cada participacion se recorren sus roles
-            for rol in participacion.roles:
-                #Todos los roles son concatenados
-                roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
-            #Despues de concatenar todos los roles, se agrega el tipo de participacion del usuario
-            #al final del string
-            roles_p = roles_p + " - " + str(PosiblesPermisos.labels[PosiblesPermisos.values.index(participacion.permiso)])
-            #String es agregado a la lista de participaciones, en la posición del usuario
-            participaciones[participacion.usuario.username] = roles_p
-        #Se obtienen las actualizaciones de un proyecto
-        actualizaciones = ManejadorProyectos.obtenerActualizaciones(nombre)
+    if request.method == "GET":
+        try:
+            #Se obtiene el proyecto
+            proyecto = ManejadorProyectos.obtenerProyecto(nombre)
+            #Se declaran variables para los datos del proyecto
+            generos = []
+            frameworks = []
+            participaciones = {}
+            actualizaciones = {}
+            fase = PosiblesFases.labels[PosiblesFases.values.index(proyecto.fase)]
+            #Como los generos son enumerados, la lista de generos de proyectos es rellenada con los valores
+            #obtenidos por el codigo de cada genero
+            for genero in proyecto.generos:
+                generos.append((PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
+            #Igual que con los generos
+            for framework in proyecto.frameworks:
+                frameworks.append((PosiblesFrameworks.labels[PosiblesFrameworks.values.index(framework)]))
+            #Las participaciones que muestra views es una lista de strings, en el que cada uno es el nombre del usuario
+            #más los roles que desempeña en el proyecto
+            #Se recorren todas las participaciones del proyecto
+            participacionesAll = ManejadorProyectos.obtenerParticipaciones(nombre)
+            for participacion in participacionesAll:
+                roles_p = ""
+                #Para cada participacion se recorren sus roles
+                for rol in participacion.roles:
+                    #Todos los roles son concatenados
+                    roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+                #Despues de concatenar todos los roles, se agrega el tipo de participacion del usuario
+                #al final del string
+                roles_p = roles_p + " - " + str(PosiblesPermisos.labels[PosiblesPermisos.values.index(participacion.permiso)])
+                #String es agregado a la lista de participaciones, en la posición del usuario
+                participaciones[participacion.usuario.username] = roles_p
+            #Se obtienen las actualizaciones de un proyecto
+            actualizaciones = ManejadorProyectos.obtenerActualizaciones(nombre)
 
-        #Se verifica si el usuario que hace la petición es un administrador
-        if request.user in ManejadorProyectos.obtenerAdministradores(nombre):
-            admin = True
-        else:
-            admin = False
-        #Revisar si el usuario sigue el proyecto
-        usuario = request.user
-        if usuario.proyectos_seguidos.filter(nombre = nombre):
-            siguiendo = True
-        else:
-            siguiendo = False
-        #Se envia al cliente toda la información del proyecto
-        return render(request, "proyectos/proyecto.html", {
-            "proyecto": proyecto,
-            "generos": generos,
-            "miembros": participaciones,
-            "frameworks": frameworks,
-            "fase": fase,
-            "actualizaciones": actualizaciones,
-            "seguidores": proyecto.numero_seguidores(),
-            "siguiendo": siguiendo,
-            "administrador":admin
-        })
-    except Proyecto.DoesNotExist:
-        return render(request, "main/error.html", {
-            "mensaje": "Proyecto no encontrado."
-        })
-
-@login_required
-def proyectosUsuario(request):
-    if request.user.is_authenticated:
-        proyectos = ManejadorProyectos.obtenerProyectosUsuario(request.user)
-        return render(request,"proyectos/proyectosUsuario.html",{"proyectos": proyectos})    
-    return render(request,"proyectos/proyectosUsuario.html")
-       #else
-    #else
-
-def editarProyecto(request, nombre):
-    if request.method == "POST" and 'Actualizar' in request.POST: 
+            #Se verifica si el usuario que hace la petición es un administrador
+            if request.user in ManejadorProyectos.obtenerAdministradores(nombre):
+                admin = True
+            else:
+                admin = False
+            #Revisar si el usuario sigue el proyecto
+            usuario = request.user
+            if usuario.proyectos_seguidos.filter(nombre = nombre):
+                siguiendo = True
+            else:
+                siguiendo = False
+            #Se envia al cliente toda la información del proyecto
+            return render(request, "proyectos/proyecto.html", {
+                "proyecto": proyecto,
+                "generos": generos,
+                "miembros": participaciones,
+                "frameworks": frameworks,
+                "fase": fase,
+                "actualizaciones": actualizaciones,
+                "seguidores": proyecto.numero_seguidores(),
+                "siguiendo": siguiendo,
+                "administrador":admin
+            })
+        except Proyecto.DoesNotExist:
+            return render(request, "main/error.html", {
+                "mensaje": "Proyecto no encontrado."
+            })
+    elif request.method == "POST" and 'Actualizar' in request.POST: 
         #Se obtienen los datos de los campos del formulario de edición de proyectos
         generos = request.POST.getlist("generos")
         fase = request.POST.getlist('fase')
@@ -172,7 +162,18 @@ def editarProyecto(request, nombre):
                 "mensaje": "Proyecto no encontrado."
             })
         return HttpResponseRedirect(reverse("proyecto",kwargs={"nombre": nombre}))
-    else:
+
+@login_required
+def proyectosUsuario(request):
+    if request.user.is_authenticated:
+        proyectos = ManejadorProyectos.obtenerProyectosUsuario(request.user)
+        return render(request,"proyectos/proyectosUsuario.html",{"proyectos": proyectos})    
+    return render(request,"proyectos/proyectosUsuario.html")
+       #else
+    #else
+
+def editarProyecto(request, nombre):
+    if request.method == "GET":
         try:
             proyecto = ManejadorProyectos.obtenerProyecto(nombre)
             generos = []
@@ -206,36 +207,7 @@ def editarProyecto(request, nombre):
             })
             
 def gestionMiembros (request, nombre):
-    if request.method == "POST": 
-        roles = request.POST.getlist("roles")
-        usuarioB = request.POST.getlist('usuarioB')
-        proyecto = ManejadorProyectos.obtenerProyecto(nombre)
-
-        
-        if(len(roles)==0):
-            return render(request, "main/error.html", {
-                "mensaje": "Debe seleccionar al menos (1) rol."
-            })
-        if(len(usuarioB)==0):
-            return render(request, "main/error.html", {
-                "mensaje": "Debe seleccionar un usuario."
-            })
-        #Se llama al manejador para que agrege el miembro al proyecto
-        result = ManejadorProyectos.agregarMiembro(nombre,usuarioB[0],roles)
-        #Si result es none, el proyecto no existe
-        if result is None:
-            return render(request, "main/error.html", {
-            "mensaje": "El proyecto no existe."
-        })
-        #Si result es -1, hubo un error inesperado
-        if result == -1:
-            return render(request, "main/error.html", {
-                "mensaje": "Se produjo un error en agregar nuevo miembro"
-            })
-        
-        #Se retorna la página de gestión con los datos actualizados
-        return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
-    else:
+    if request.method == "GET":
         try:
             #Si el request no es POST, entonces se renderiza la página
         
@@ -277,10 +249,35 @@ def gestionMiembros (request, nombre):
             })
 
 
-
-
-def eliminar (request, nombre):
-    if request.method == "PUT": 
+def miembros(request, nombre):
+    if request.method == "POST": 
+        roles = request.POST.getlist("roles")
+        usuarioB = request.POST.getlist('usuarioB')
+        proyecto = ManejadorProyectos.obtenerProyecto(nombre)    
+        if(len(roles)==0):
+            return render(request, "main/error.html", {
+                "mensaje": "Debe seleccionar al menos (1) rol."
+            })
+        if(len(usuarioB)==0):
+            return render(request, "main/error.html", {
+                "mensaje": "Debe seleccionar un usuario."
+            })
+        #Se llama al manejador para que agrege el miembro al proyecto
+        result = ManejadorProyectos.agregarMiembro(nombre,usuarioB[0],roles)
+        #Si result es none, el proyecto no existe
+        if result is None:
+            return render(request, "main/error.html", {
+            "mensaje": "El proyecto no existe."
+        })
+        #Si result es -1, hubo un error inesperado
+        if result == -1:
+            return render(request, "main/error.html", {
+                "mensaje": "Se produjo un error en agregar nuevo miembro"
+            })
+        #Se retorna la página de gestión con los datos actualizados
+        return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
+    
+    elif request.method == "DELETE": 
         informacion = json.loads(request.body)
         usuario = informacion.get("id")
         #Se llama al manejador para que elimine al miembro del proyecto
@@ -291,27 +288,19 @@ def eliminar (request, nombre):
                 "mensaje": "El Usuario no participa en el proyecto."
             })
         #Se carga la página de gestión con el usuario ya eliminado
-        return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
-        
+        return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre}))  
 
-
-def promover (request, nombre):
-   if request.method == 'PUT':    
+def administradores (request, nombre):
+    if request.method == 'POST':    
         informacion = json.loads(request.body)
-        nuevo_usuario = informacion.get("id")
-
-        
+        nuevo_usuario = informacion.get("id")  
         #Se llama al manejador para que promueva un miembro de un proyecto a administrador       
         result = ManejadorProyectos.promoverMiembro(nombre, nuevo_usuario)
-        
         if result == -1:
             return render(request, "main/error.html", {
                 "mensaje": "Se produjo un error al agregar un administrador"})
-        return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
-    
-
-def revocar (request, nombre):
-   if request.method == "PUT":
+        return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre}))
+    elif request.method == 'DELETE':
         informacion = json.loads(request.body)
         usuario = informacion.get("id")
         #Se llama al manejador de proyectos para que revoque los permisos de administrador de un miembro
@@ -320,14 +309,11 @@ def revocar (request, nombre):
             return render(request, "main/error.html", {
                 "mensaje": "El Usuario no participa en el proyecto."
             })
-        return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
-        
-    
-           
+        return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre}))     
+   
 
 def nuevaActualizacion(request,nombre):
     if request.method == "POST":
-        
         if 'imagenNueva' in request.FILES:
             imagen = request.FILES['imagenNueva']
         else:

@@ -12,7 +12,7 @@
      <div><span style="color: red">{{ message }}</span></div>
     {% endif %}
 
-    <form action="{{proyecto.nombre}}"  enctype="multipart/form-data" method="post" action="/foo/">
+    <form action="/proyectos/{{proyecto.nombre}}/proyecto"  enctype="multipart/form-data" method="post" action="/foo/">
         {% csrf_token %}
             <div class="form-group">
                 <label for="exampleFormControlTextarea1">Descripción</label>

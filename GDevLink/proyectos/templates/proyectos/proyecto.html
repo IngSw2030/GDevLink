@@ -71,7 +71,7 @@
 
             </div>
             {% if administrador %}
-            <a  href="/proyectos/editarProyecto/{{proyecto.nombre}}" class="btn btn-primary">Editar el proyecto</a>
+            <a  href="/proyectos/{{proyecto.nombre}}/edicion" class="btn btn-primary">Editar el proyecto</a>
             {% endif %}
         </div>
         <div class="space">
@@ -82,7 +82,7 @@
             <h3>Miembros del proyecto</h3>
             {% if administrador %}
                 <div class="card-body">
-                    <a  href="/proyectos/gestionMiembros/{{proyecto.nombre}}" class="btn btn-primary">Editar miembros</a>
+                    <a  href="/proyectos/{{proyecto.nombre}}/gestion-miembros" class="btn btn-primary">Editar miembros</a>
                     <a href="/vacantes/{{proyecto.nombre}}/gestion-vacantes" class="btn btn-primary">Gestionar Vacantes</a>
                 </div>
             {% endif %}
@@ -131,7 +131,7 @@
             <input type="button" id="cancelarActualizacion" style="background-color:red; margin: 5px; display: none;" value="Cancelar"></button>
             <br>
             <h3 style="text-align: center;">Actualizaciones</h3>
-            <form id="actualizacion" action="/proyectos/nuevaActualizacion/{{proyecto.nombre}}" enctype="multipart/form-data" method="post" action="/foo/">
+            <form id="actualizacion" action="/proyectos/{{proyecto.nombre}}/actualizaciones" enctype="multipart/form-data" method="post" action="/foo/">
                 {% csrf_token %}
                 <div class="overflow-auto" id="agregarActualizacion" style="display:none; margin-left: 10px; border-collapse: separate; border-spacing: 5 5px;">
                     <table width="95%" cellpadding="0" cellspacing="0" style="border: 0px;">
@@ -184,7 +184,7 @@
                         botonSeguir.innerHTML = "Seguir";
                     }
                     let csrftoken = getCookie('csrftoken');
-                    fetch(`/proyectos/seguir/${proyecto}`, {
+                    fetch(`/proyectos/${proyecto}/seguidores`, {
                         method: 'PUT',
                         headers: { "X-CSRFToken": csrftoken }
                     });

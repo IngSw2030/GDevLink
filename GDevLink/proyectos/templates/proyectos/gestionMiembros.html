@@ -35,7 +35,7 @@
         </div>
         <div class="space"></div>
         <div class="contenido"> 
-                <form action="/proyectos/gestionMiembros/{{proyecto.nombre}}" method="post"> {% csrf_token %}
+                <form action="/proyectos/{{proyecto.nombre}}/miembros" method="post"> {% csrf_token %}
                     <nav class=" busqueda">
                         <div class="usuarios" align="center">
                                 <div id="searchWrapper">
@@ -206,8 +206,8 @@
                     //funcion que llama promover en el back-end 
                     function promover(id, proyecto){
                         let csrftoken = getCookie('csrftoken');
-                    fetch(`/proyectos/promover/${proyecto}`, {
-                        method: 'PUT',
+                    fetch(`/proyectos/${proyecto}/administradores`, {
+                        method: 'POST',
                         body: JSON.stringify({
                         id: id}),
                         headers: { "X-CSRFToken": csrftoken }
@@ -216,8 +216,8 @@
 
                     function eliminar(id, proyecto){
                         let csrftoken = getCookie('csrftoken');
-                    fetch(`/proyectos/eliminar/${proyecto}`, {
-                        method: 'PUT',
+                    fetch(`/proyectos/${proyecto}/miembros`, {
+                        method: 'DELETE',
                         body: JSON.stringify({
                         id: id}),
                         headers: { "X-CSRFToken": csrftoken }
@@ -226,8 +226,8 @@
 
                     function revocar(id, proyecto){
                         let csrftoken = getCookie('csrftoken');
-                    fetch(`/proyectos/revocar/${proyecto}`, {
-                        method: 'PUT',
+                    fetch(`/proyectos/${proyecto}/administradores`, {
+                        method: 'DELETE',
                         body: JSON.stringify({
                         id: id}),
                         headers: { "X-CSRFToken": csrftoken }
