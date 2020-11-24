@@ -10,9 +10,10 @@ from django.db.models import Count
 
 #Vista principal de las preguntas. 
 def preguntas(request):
-    #Se obtienen las preuntas populares
-    preguntas=ManejadorPreguntas.obtenerPreguntasPopulares()
-    return render(request,"preguntas/preguntas.html",{"preguntas":preguntas})
+    if request.method == "GET":
+        #Se obtienen las preuntas populares
+        preguntas=ManejadorPreguntas.obtenerPreguntasPopulares()
+        return render(request,"preguntas/preguntas.html",{"preguntas":preguntas})
 
 #Vista del formulario para crear una pregunta. El usuario debe edtar autentificado.
 @login_required(login_url='/usuarios/inicio-sesion')
@@ -50,79 +51,82 @@ def crearPregunta(request):
         "puntosPregunta":pregunta.puntos_positivos()-pregunta.puntos_negativos(),
         "preguntaPos":preguntaPos, "preguntaNeg":preguntaNeg,
         "autor":autor})
-    #Renderizacion de formulario para crear pregunta
-    return render(request, "preguntas/crearPregunta.html",{"preguntas":preguntas})
+    elif request.method == "GET":
+        #Renderizacion de formulario para crear pregunta
+        return render(request, "preguntas/crearPregunta.html",{"preguntas":preguntas})
 
 #Ver la informacion de una Pregunta. Se recibe el id de la pregunta
 def verPregunta(request,ids):
-    #Se busca la pregunta seleccionada
-    pregunta=ManejadorPreguntas.verPregunta(ids)
-    if  pregunta is None:
-        #Si no se encuentra la pregunta se regresa a la pagina inicial de preguntas
-        return HttpResponseRedirect(reverse("preguntas"))
-    usuario = Usuario.objects.get(username=request.user.get_username())
-    respuestasOrdenadas=pregunta.respuestas.annotate(puntos=Count('puntosPositivos') - Count('puntosNegativos')).order_by('-puntos')
-    #Se obtienen las respuestas de la pregunta
-    respuestas=obtenerRespuestas(respuestasOrdenadas,pregunta,usuario)
-    #Se verifica si la pregunta esta puntuada por el usuario
-    if usuario.preguntasPuntosPositivos.filter(id = ids):
-        preguntaPos = True
-        preguntaNeg = False
-    else:
-        preguntaPos = False
-        if usuario.preguntasPuntosNegativos.filter(id = ids):
-            preguntaNeg = True
-        else:
+    if request.method == "GET":
+        #Se busca la pregunta seleccionada
+        pregunta=ManejadorPreguntas.verPregunta(ids)
+        if  pregunta is None:
+            #Si no se encuentra la pregunta se regresa a la pagina inicial de preguntas
+            return HttpResponseRedirect(reverse("preguntas"))
+        usuario = Usuario.objects.get(username=request.user.get_username())
+        respuestasOrdenadas=pregunta.respuestas.annotate(puntos=Count('puntosPositivos') - Count('puntosNegativos')).order_by('-puntos')
+        #Se obtienen las respuestas de la pregunta
+        respuestas=obtenerRespuestas(respuestasOrdenadas,pregunta,usuario)
+        #Se verifica si la pregunta esta puntuada por el usuario
+        if usuario.preguntasPuntosPositivos.filter(id = ids):
+            preguntaPos = True
             preguntaNeg = False
-    #Se verifica si el usuario es el autor de la pregunta
-    if usuario == pregunta.autor:
-        autor=True
-    else:
-        autor=False
-    return render(request,"preguntas/verPregunta.html",{
-        "pregunta":pregunta, "respuestas":respuestas,
-        "puntosPregunta":pregunta.puntos_positivos()-pregunta.puntos_negativos(),
-        "preguntaPos":preguntaPos, "preguntaNeg":preguntaNeg,
-        "autor":autor})
+        else:
+            preguntaPos = False
+            if usuario.preguntasPuntosNegativos.filter(id = ids):
+                preguntaNeg = True
+            else:
+                preguntaNeg = False
+        #Se verifica si el usuario es el autor de la pregunta
+        if usuario == pregunta.autor:
+            autor=True
+        else:
+            autor=False
+        return render(request,"preguntas/verPregunta.html",{
+            "pregunta":pregunta, "respuestas":respuestas,
+            "puntosPregunta":pregunta.puntos_positivos()-pregunta.puntos_negativos(),
+            "preguntaPos":preguntaPos, "preguntaNeg":preguntaNeg,
+            "autor":autor})
 
 #Vista para crear una respuesta a una pregunta. El usuari
 @login_required(login_url='/usuarios/inicio-sesion')
 def crearRespuesta(request,ids):
-    #Datos principales de la vista
-    pregunta=Pregunta.objects.get(id=ids)
-    respuestas=pregunta.respuestas.all()
-    usuario = Usuario.objects.get(username=request.user.get_username())
-    #Recuperacion del texto de la respuesta
     if request.method == "POST":
-        texto = request.POST['texto']
-        #Creacion de la respuesta
-        respuesta=ManejadorPreguntas.responderPregunta(ids,texto,request.user.get_username())
-        if respuesta == 1:
-            pregunta=Pregunta.objects.get(id=ids)
-            usuario = Usuario.objects.get(username=request.user.get_username())
-            respuestasOrdenadas=pregunta.respuestas.annotate(puntos=Count('puntosPositivos') - Count('puntosNegativos')).order_by('-puntos')
-            #Se obtienen las respuestas de la pregunta
-            respuestas=obtenerRespuestas(respuestasOrdenadas,pregunta,usuario)
-            #Se verifica si la pregunta esta puntuada por el usuario
-            if usuario.preguntasPuntosPositivos.filter(id = ids):
-                preguntaPos = True
-                preguntaNeg = False
-            else:
-                preguntaPos = False
-                if usuario.preguntasPuntosNegativos.filter(id = ids):
-                    preguntaNeg = True
-                else:
+        #Datos principales de la vista
+        pregunta=Pregunta.objects.get(id=ids)
+        respuestas=pregunta.respuestas.all()
+        usuario = Usuario.objects.get(username=request.user.get_username())
+        #Recuperacion del texto de la respuesta
+        if request.method == "POST":
+            texto = request.POST['texto']
+            #Creacion de la respuesta
+            respuesta=ManejadorPreguntas.responderPregunta(ids,texto,request.user.get_username())
+            if respuesta == 1:
+                pregunta=Pregunta.objects.get(id=ids)
+                usuario = Usuario.objects.get(username=request.user.get_username())
+                respuestasOrdenadas=pregunta.respuestas.annotate(puntos=Count('puntosPositivos') - Count('puntosNegativos')).order_by('-puntos')
+                #Se obtienen las respuestas de la pregunta
+                respuestas=obtenerRespuestas(respuestasOrdenadas,pregunta,usuario)
+                #Se verifica si la pregunta esta puntuada por el usuario
+                if usuario.preguntasPuntosPositivos.filter(id = ids):
+                    preguntaPos = True
                     preguntaNeg = False
-            #Se verifica si el usuario es el autor de la pregunta
-            if usuario == pregunta.autor:
-                autor=True
-            else:
-                autor=False
-            return render(request,"preguntas/verPregunta.html",{
-                "pregunta":pregunta, "respuestas":respuestas,
-                "puntosPregunta":pregunta.puntos_positivos()-pregunta.puntos_negativos(),
-                "preguntaPos":preguntaPos, "preguntaNeg":preguntaNeg,
-                "autor":autor})
+                else:
+                    preguntaPos = False
+                    if usuario.preguntasPuntosNegativos.filter(id = ids):
+                        preguntaNeg = True
+                    else:
+                        preguntaNeg = False
+                #Se verifica si el usuario es el autor de la pregunta
+                if usuario == pregunta.autor:
+                    autor=True
+                else:
+                    autor=False
+                return render(request,"preguntas/verPregunta.html",{
+                    "pregunta":pregunta, "respuestas":respuestas,
+                    "puntosPregunta":pregunta.puntos_positivos()-pregunta.puntos_negativos(),
+                    "preguntaPos":preguntaPos, "preguntaNeg":preguntaNeg,
+                    "autor":autor})
 
     #Recuperaciona de datos para la pagina de la pregunta
     pregunta=Pregunta.objects.get(id=ids)
