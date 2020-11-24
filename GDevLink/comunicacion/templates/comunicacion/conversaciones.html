@@ -16,12 +16,10 @@
     <link rel="stylesheet" href="{% static 'comunicacion/styles.css' %}">  
 
     <div class="contenido">
-        <form action="{% url 'nueva_vacante' %}" method="post">
+        <form action="{% url 'conversaciones' %}" method="post">
             {% csrf_token %}
             <nav class=" busqueda">
-                <div class="usuarios">
-                    
-                        
+                <div class="usuarios">        
                         <div id="searchWrapper">
                             <input
                                 type="text"
@@ -32,8 +30,6 @@
                             <input class="btn btn-primary" type="submit" value="crear">
                             <ul id="usuarios"></ul>
                         </div>
-    
-                    
                 </div>
         
             </nav>
