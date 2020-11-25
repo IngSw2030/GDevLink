@@ -23,6 +23,11 @@
             {% for actualizacion in actualizaciones%}
                 <div class="contenido">
                     <h4> 
+                        {% if actualizacion.proyecto.imagen %}
+                            <img src="{{ actualizacion.proyecto.imagen.url }}" class="avatar imagePerfil" id="fondoTransparente" alt="My Image" />
+                        {% else %}
+                            <img src="/usuarios/defaultUser.png" class="avatar imagePerfil" id="fondoTransparente" alt="Imagen" />
+                        {% endif %} 
                         <a href="/proyectos/{{actualizacion.proyecto.nombre}}/proyecto"> {{actualizacion.proyecto.nombre}} </a>
                     </h4>
                     <p class="timestamp"> {{actualizacion.fecha}} </p>
@@ -89,7 +94,19 @@
         <br>
             {% for keyp,valuep in proyectoKey.items %}
                 {% if keyp == key %}
-                    <a href="/proyectos/{{valuep}}/proyecto"> <h3>{{valuep}}</h3> </a>
+                <span>
+                    
+                    <a href="/proyectos/{{valuep.nombre}}/proyecto"> 
+                    <h3>
+                        {% if valuep.imagen %}
+                            <img src="{{ valuep.imagen.url }}" class="avatar imagePerfil" id="fondoTransparente" alt="My Image" />
+                        {% else %}
+                            <img src="/usuarios/defaultUser.png" class="avatar imagePerfil" id="fondoTransparente" alt="Imagen" />
+                        {% endif %} 
+                        {{valuep.nombre}}
+                    </h3> 
+                    </a>
+                </span>
                 {% endif %}
             {% endfor %}
             

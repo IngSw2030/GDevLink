@@ -263,6 +263,7 @@ html, body
 		background: #9452f3;
 		border-color: transparent;
 		color: #ececec;;
+		
 	}
 
 	button:hover{
@@ -585,13 +586,21 @@ html, body
 		min-width: 2rem;
 		margin: 0 1.5rem;
 	  }
+
+	  .btn svg, button svg {
+		width: 1rem;
+		width: 10px;
+		margin: 0 rem;
+	  }
 	  
 	  .fa-primary {
 		color: #ff7eee;
+		/*color: #b885fa;*/
 	  }
 	  
 	  .fa-secondary {
 		color: #df49a6;
+		/*color: #9452f3;*/
 	  }
 	  
 	  .fa-primary,

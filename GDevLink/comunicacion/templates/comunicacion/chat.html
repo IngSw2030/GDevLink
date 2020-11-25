@@ -17,8 +17,18 @@
     
         <div class="contenido container">
             
-           
-                <div class="con overflow-auto">
+                {% for part in conversacion.participantes.all %}
+                {% if part != user %}
+                    {% if part.imagen %}
+                             <img src="{{ part.imagen.url }}" class="avatar imagePerfil" id="fondoTransparente" alt="My Image" />
+                    {% else %}
+                           <img src="/usuarios/defaultUser.png" class="avatar imagePerfil" id="fondoTransparente" alt="Imagen" />
+                     {% endif %}
+                <a href="/usuarios/{{part.username}}/perfil">{{part.username}}</a>
+                {% endif %}
+                
+                {% endfor %}
+                <div class="con overflow-auto container">
                 
                     {% if conversacion.mensajes %}
                         {% for mensaje in conversacion.mensajes.all %}

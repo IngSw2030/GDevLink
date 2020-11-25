@@ -56,7 +56,7 @@ def index(request):
                               roles_p= roles_p + " " + str(Rol.labels[Rol.values.index(rol)])  
                          #String es agregado a la lista de vacantes, en la posición del usuario
                          vacantes[vac.id] = roles_p
-                         proyectoKey[vac.id] = vac.proyecto.nombre
+                         proyectoKey[vac.id] = vac.proyecto
                
           except Actualizacion.DoesNotExist:
                actualizaciones = []

@@ -90,7 +90,14 @@
                 <label for="exampleFormControlInput1">Miembros:</label>
                 <div class="list-group"> 
                     {% for key,value in miembros.items %}       
-                    <li><a href="/usuarios/{{key}}/perfil">{{key}} - {{value}}</a></li>
+                    <li>
+                        {% if user.imagen %}
+                            <img src="{{ user.imagen.url }}" class="avatar imagePerfil" id="fondoTransparente" alt="My Image" />
+                            {% else %}
+                            <img src="/usuarios/defaultUser.png" class="avatar imagePerfil" id="fondoTransparente" alt="Imagen" />
+                          {% endif %}
+                        <a href="/usuarios/{{key}}/perfil">{{key}} - {{value}}</a>
+                    </li>
                     {% endfor %}
                 </div>
             </div> 
@@ -126,9 +133,9 @@
         </div>
         <div class="contenido">
             {% if administrador %}
-                <input type="button" id="nuevaActualizacion" style="background-color:#008CBA; margin: 5px;" value="Nueva Actualizacion"></button>
+                <button type="button" id="nuevaActualizacion" style="background-color:#008CBA; margin: 5px;" value="Nueva Actualizacion">Nueva Actualizacion</button>
             {% endif %}
-            <input type="button" id="cancelarActualizacion" style="background-color:red; margin: 5px; display: none;" value="Cancelar"></button>
+            <button type="button" id="cancelarActualizacion" style="background-color:red; margin: 5px; display: none;" value="Cancelar">Cancelar</button>
             <br>
             <h3 style="text-align: center;">Actualizaciones</h3>
             <form id="actualizacion" action="/proyectos/{{proyecto.nombre}}/actualizaciones" enctype="multipart/form-data" method="post" action="/foo/">
