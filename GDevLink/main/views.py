@@ -6,10 +6,10 @@ from django.core.paginator import Paginator
 from posicionVacante.models import PosicionVacante
 from main.enum import Framework, Genero, Rol, Permiso, Fases
 from proyectos.ManejadorProyectos import ManejadorProyectos
+from posicionVacante.ManejadorVacantes import ManejadorVacantes
 
 # Vista para la página principal
 def index(request):
-     
      #Si el usuario está autenticado, se le muestran las actualizaciones de los proyectos a los que sigue
      if request.user.is_authenticated:
           #Se obtiene el número de página solicitado
@@ -68,7 +68,6 @@ def index(request):
                "proyectoKey": proyectoKey
           })
      else:
-          
           populares = ManejadorProyectos.obtenerProyectosPopulares()
           vacantesCodigo = list(PosicionVacante.objects.all())
           vacantes = {}

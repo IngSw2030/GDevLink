@@ -7,7 +7,5 @@ urlpatterns = [
     path("<str:nombre>/gestion-vacantes/creacion", views.nueva_vacante, name="nueva_vacante"),
     path("gestion-vacante/<int:ids>", views.editarVacante, name="editarVacante"),
     path("vacante/<int:ids>", views.vacante, name="vacante"),
-    path("gestion-vacante/<int:ids>/aplicantes", views.aplicantes, name="aplicantes"),
-    path("listaAplicantes/<int:ids>", views.listaAplicantes, name="listaAplicantes"),
-    path("editarVacante/<int:ids>", views.editarVacante, name="editarVacante"),
+    path("vacante/<int:ids>/aplicantes", views.aplicantes, name="aplicantes")
 ]

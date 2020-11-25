@@ -13,8 +13,9 @@
             
                 
                     <br>
-                    <form id="vacante" action="/vacantes/editarVacante/{{vacante.id}}" enctype="multipart/form-data" method="POST" action="/foo/" >
+                    <form id="vacante" action="/vacantes/vacante/{{vacante.id}}" enctype="multipart/form-data" method="POST" action="/foo/" >
                         {% csrf_token %}
+                        <input name="request" type="hidden" value="PUT">
                     <table width="95%" cellpadding="0" cellspacing="0" style="border: 0px; margin: auto;">
                         <tr>
                             <td>

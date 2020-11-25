@@ -156,9 +156,9 @@
         </div>
         <div class="contenido">
             {% if administrador %}
-                <button type="button" id="nuevaActualizacion" style="background-color:#008CBA; margin: 5px;" value="Nueva Actualizacion">Nueva Actualizacion</button>
+                <button type="btn btn-primary" id="nuevaActualizacion" style="margin: 5px;" value="Nueva Actualizacion">Nueva Actualizacion</button>
             {% endif %}
-            <button type="button" id="cancelarActualizacion" style="background-color:red; margin: 5px; display: none;" value="Cancelar">Cancelar</button>
+            <button type="button" id="cancelarActualizacion" style="background-color:rgb(139, 23, 23); margin: 5px; display: none;" value="Cancelar">Cancelar</button>
             <br>
             <h3 style="text-align: center;">Actualizaciones</h3>
             <form id="actualizacion" action="/proyectos/{{proyecto.nombre}}/actualizaciones" enctype="multipart/form-data" method="post" action="/foo/">
@@ -168,7 +168,6 @@
                         <tr style="padding-bottom: 1em;">
                             <td style="width: 30%;"><input type="file" class="form-control-file" name="imagenNueva" id="imagenNueva"></td>
                             <td style="width: 70%;"><textarea class="form-control" name="descripcionActualizacion" id="descripcionActualizacion" rows="3"></textarea></td>
-                            
                         </tr>
                         <tr>
                             <td></td>

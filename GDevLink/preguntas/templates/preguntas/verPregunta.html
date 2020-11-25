@@ -28,6 +28,11 @@
                 <!-- Seccion Titulo de la pregunta -->
                 <h1 id="" style="display: inline-block; margin-left: 15px;">{{pregunta.titulo}}</h1>
                 <p id="preguntaId" data-id="{{pregunta.id}}" style="font-size: 10px;display: none;">{{pregunta.id}}</p>
+                {% if pregunta.autor.imagen %}
+                    <img src="{{ pregunta.autor.imagen.url }}" class="avatar imagePerfil" id="fondoTransparente" alt="My Image" style="vertical-align:middle ;" />
+                {% else %}
+                    <img src="/usuarios/defaultUser.png" class="avatar imagePerfil" id="fondoTransparente" alt="Imagen" />
+                {% endif %}
                 <a style="font-size: 10px;display:inline; text-align: left;"href="/usuarios/{{pregunta.autor}}/perfil">{{pregunta.autor}}</a>
             </div>
         
@@ -301,7 +306,12 @@
                             {% if autor %}
                                 <div class="mejorRespuesta" id="mejorRespuesta" style="display: block; color:goldenrod;" data-mejor="True">&#10004;</div>
                             {% endif %}
-                            <a style="font-size: 10px;display:inline; text-align: left;"href="/usuarios/{{respuesta.autor}}/perfil">{{respuesta.autor}}</a>
+                            {% if respuesta.autor.imagen %}
+                                <img src="{{ respuesta.autor.imagen.url }}" class="avatar imagePerfil" id="fondoTransparente" alt="My Image" align="right" style="display: inline;" />
+                            {% else %}
+                                <img src="/usuarios/defaultUser.png" class="avatar imagePerfil" id="fondoTransparente" alt="Imagen" align="right" style="display: inline;"/>
+                            {% endif %}
+                            <a style="font-size: 10px;display:block; text-align: right;"href="/usuarios/{{respuesta.autor}}/perfil">{{respuesta.autor}}</a>
                             <hr>
                         </div>
                     {% endif %}
@@ -326,6 +336,12 @@
                             {% if autor %}
                                 <div class="mejorRespuesta" id="mejorRespuesta" style="display: block;" data-mejor="False">&#10004;</div>
                             {% endif %}
+                            {% if respuesta.autor.imagen %}
+                                <img src="{{ respuesta.autor.imagen.url }}" class="avatar imagePerfil" id="fondoTransparente" alt="My Image" align="right" style="display: inline;" />
+                            {% else %}
+                                <img src="/usuarios/defaultUser.png" class="avatar imagePerfil" id="fondoTransparente" alt="Imagen" align="right" style="display: inline;"/>
+                            {% endif %}
+                            <br>
                             <a style="font-size: 10px;display:block; text-align: right;"href="/usuarios/{{respuesta.autor}}/perfil">{{respuesta.autor}}</a>
                             <hr>
                         </div>
