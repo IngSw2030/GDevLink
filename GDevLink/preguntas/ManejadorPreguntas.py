@@ -12,7 +12,10 @@ class ManejadorPreguntas(IManejadorPreguntas):
 
     def crearPregunta(tituloPregunta, textoPregunta, autor):
         #Se recupera el usuario
-        usuario=Usuario.objects.get(username=autor)
+        try:
+            usuario=Usuario.objects.get(username=autor)
+        except Usuario.DoesNotExist:
+            return None
         try:
             #Se crea la pregunta con sus valores iniciales
             pregunta=Pregunta(titulo=tituloPregunta,texto=textoPregunta,autor=usuario)
@@ -49,7 +52,10 @@ class ManejadorPreguntas(IManejadorPreguntas):
 
     def escogerRespuesta(idRespuesta):
         #Busqueda de pregunta y usuario
-        respuesta=Respuesta.objects.get(id=idRespuesta)
+        try:
+            respuesta=Respuesta.objects.get(id=idRespuesta)
+        except Respuesta.DoesNotExist:
+            return 1
         pregunta=respuesta.pregunta
         #Se selecciona la mejor respuesta
         #Si la pregunta ya estaba seleccionada, se le desselecciona
@@ -65,7 +71,10 @@ class ManejadorPreguntas(IManejadorPreguntas):
 
     def puntuarPreguntaPos(idPregunta, nombreUsuaro):
         #Busqueda de pregunta y usuario
-        pregunta=Pregunta.objects.get(id=idPregunta)
+        try:
+            pregunta=Pregunta.objects.get(id=idPregunta)
+        except Pregunta.DoesNotExist:
+            return 1
         if pregunta is None:
             return 1
         usuario = Usuario.objects.get(username=nombreUsuaro)
@@ -85,7 +94,10 @@ class ManejadorPreguntas(IManejadorPreguntas):
 
     def puntuarPreguntaNeg(idPregunta, nombreUsuaro):
         #Busqueda de pregunta y usuario
-        pregunta=Pregunta.objects.get(id=idPregunta)
+        try:
+            pregunta=Pregunta.objects.get(id=idPregunta)
+        except Pregunta.DoesNotExist:
+            return 1
         if pregunta is None:
             return 1
         usuario = Usuario.objects.get(username=nombreUsuaro)
@@ -105,7 +117,10 @@ class ManejadorPreguntas(IManejadorPreguntas):
 
     def puntuarRespuestaPos(idRespuesta, nombreUsuaro):
         #Busqueda de pregunta y usuario
-        respuesta=Respuesta.objects.get(id=idRespuesta)
+        try:
+            pregunta=Pregunta.objects.get(id=idPregunta)
+        except Pregunta.DoesNotExist:
+            return 1
         if respuesta is None:
             return 1
         usuario = Usuario.objects.get(username=nombreUsuaro)
@@ -125,7 +140,10 @@ class ManejadorPreguntas(IManejadorPreguntas):
 
     def puntuarRespuestaNeg(idRespuesta, nombreUsuaro):
         #Busqueda de pregunta y usuario
-        respuesta=Respuesta.objects.get(id=idRespuesta)
+        try:
+            pregunta=Pregunta.objects.get(id=idPregunta)
+        except Pregunta.DoesNotExist:
+            return 1
         if respuesta is None:
             return 1
         usuario = Usuario.objects.get(username=nombreUsuaro)
