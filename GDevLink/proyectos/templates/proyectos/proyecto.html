@@ -60,14 +60,14 @@
             
             <div class="elemento">
                 <label for="exampleFormControlInput1">Video del proyecto:</label>
-
-                    <span>{{proyecto.enlace_video}}</span>             
+                    
+                    <a href="{{proyecto.enlace_video}}">{{proyecto.enlace_video}}</a>             
 
             </div>
             <div class="elemento" id="gris">
                 <label for="exampleFormControlInput1">Link de descarga:</label>
 
-                    <span>{{proyecto.enlace_juego}}</span>             
+                    <a href="{{proyecto.enlace_juego}}">{{proyecto.enlace_juego}}</a>             
 
             </div>
             {% if administrador %}

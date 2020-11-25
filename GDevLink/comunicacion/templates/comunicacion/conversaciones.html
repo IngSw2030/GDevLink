@@ -15,8 +15,8 @@
     </script>
     <link rel="stylesheet" href="{% static 'comunicacion/styles.css' %}">  
 
-    <div class="contenido container overflow-hidden">
-        <div class="panel ">
+    <div class="contenido container">
+        <div class="panel overflow-auto">
             <form action="{% url 'conversaciones' %}" method="post">
                 {% csrf_token %}
                 <nav class=" busqueda">
@@ -32,7 +32,7 @@
                                 <div class="dropdown-menu" id="" aria-labelledby="dropdownMenuLink">
                                     
                                 </div>
-                                <div class="overflow-auto">
+                                <div class="overflow-hidden">
                                     <ul class="select" name="usuarioB" id="usuarios">
     
                                     </ul>
@@ -59,8 +59,13 @@
                         {% if participacion.username != request.user.username %}
                             <div class="list-group">
                                 <a href="conversaciones/{{conversacion.id}}/chat/" class="list-group-item list-group-item-action active" id="conv">
-                                {{participacion.username}}
+                                {{participacion.username}}  
+                                    {% if conversacion.mensajes.all%}
+                                        <p>{{conversacion.mensajes.all.last.texto}}</p>
+                                    {% endif %}
                                 </a>
+                                
+                                
                             </div>
                             
                         {% endif %}

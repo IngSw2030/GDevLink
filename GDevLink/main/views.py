@@ -44,24 +44,28 @@ def index(request):
     
                vacantesCodigo = list(dict.fromkeys(vacantesRepetidas))
                vacantes = {}
+               proyectoKey = {}
                
                for vac in vacantesCodigo:
-                    roles_p = ""
-                    #Para cada participacion se recorren sus roles
-                    for rol in vac.roles:
-                         #Todos los roles son concatenados
-                         roles_p= roles_p + " " + str(Rol.labels[Rol.values.index(rol)])
                     
-                   
-                    #String es agregado a la lista de participaciones, en la posición del usuario
-                    vacantes[vac.proyecto.nombre] = roles_p
+                    if request.user not in vac.aplicantes.all():
+                         roles_p = ""
+                         #Para cada vacante se recorren sus roles
+                         for rol in vac.roles:
+                              #Todos los roles son concatenados
+                              roles_p= roles_p + " " + str(Rol.labels[Rol.values.index(rol)])  
+                         #String es agregado a la lista de vacantes, en la posición del usuario
+                         vacantes[vac.id] = roles_p
+                         proyectoKey[vac.id] = vac.proyecto.nombre
+               
           except Actualizacion.DoesNotExist:
                actualizaciones = []
           return render(request,"main/index.html",{
                "actualizaciones": pagina,
                "pagina_anterior": pagina_anterior,
                "pagina_siguiente": pagina_siguiente,
-               "vacantes": vacantes
+               "vacantes": vacantes,
+               "proyectoKey": proyectoKey
           })
      else:
           
