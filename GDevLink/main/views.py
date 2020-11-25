@@ -4,7 +4,7 @@ from django.http import HttpResponse
 from proyectos.models import Proyecto, Usuario, Actualizacion
 from django.core.paginator import Paginator
 from posicionVacante.models import PosicionVacante
-from main.enum import PosiblesFrameworks, PosiblesGeneros, PosiblesRoles, PosiblesPermisos, PosiblesFases
+from main.enum import Framework, Genero, Rol, Permiso, Fases
 from proyectos.ManejadorProyectos import ManejadorProyectos
 
 # Vista para la página principal
@@ -38,7 +38,7 @@ def index(request):
                rolesUser = request.user.roles
      
                vacantesRepetidas = []
-               #fase = PosiblesFases.labels[PosiblesFases.values.index(proyecto.fase)]
+               #fase = Fases.labels[Fases.values.index(proyecto.fase)]
                for r in rolesUser:
                     vacantesRepetidas = vacantesRepetidas + list(PosicionVacante.objects.filter(roles__contains=[r]))
     
@@ -50,7 +50,7 @@ def index(request):
                     #Para cada participacion se recorren sus roles
                     for rol in vac.roles:
                          #Todos los roles son concatenados
-                         roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+                         roles_p= roles_p + " " + str(Rol.labels[Rol.values.index(rol)])
                     
                    
                     #String es agregado a la lista de participaciones, en la posición del usuario
@@ -74,7 +74,7 @@ def index(request):
                #Para cada participacion se recorren sus roles
                for rol in vac.roles:
                     #Todos los roles son concatenados
-                    roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+                    roles_p= roles_p + " " + str(Rol.labels[Rol.values.index(rol)])
                         
                     #String es agregado a la lista de participaciones, en la posición del usuario
                vacantes[vac.proyecto.nombre] = roles_p

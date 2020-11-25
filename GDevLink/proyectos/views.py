@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from main.enum import PosiblesFrameworks, PosiblesGeneros, PosiblesRoles, PosiblesPermisos, PosiblesFases
+from main.enum import Framework, Genero, Rol, Permiso, Fases
 from proyectos.models import Proyecto, Participacion, Usuario, Actualizacion
 from datetime import datetime
 from django.contrib.auth.decorators import login_required
@@ -30,13 +30,13 @@ def crearProyecto(request):
 
         #Se verifica que se hallan rellenado los campos obligatorios
         if(nombre == ""):
-            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
+            return render(request,"proyectos/crearProyecto.html",{"generos":Genero ,"fases":Fases ,"frameworks":Framework,"roles":Rol,
              "message": "Por favor ingresar un nombre"})
         if(len(fase)!=1):
-            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
+            return render(request,"proyectos/crearProyecto.html",{"generos":Genero ,"fases":Fases ,"frameworks":Framework,"roles":Rol,
              "message": "Seleccione una (1) fase"})
         if(len(frameworks)==0):
-            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
+            return render(request,"proyectos/crearProyecto.html",{"generos":Genero ,"fases":Fases ,"frameworks":Framework,"roles":Rol,
              "message": "Seleccione al menos un (1) framework"})
         fase = fase[0]
         if 'imagen' in request.FILES:
@@ -48,16 +48,16 @@ def crearProyecto(request):
         
         #Si el resultado de la creacion es None, entonces ya existe un proyecto con el nombre especificado
         if result is None:
-            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
+            return render(request,"proyectos/crearProyecto.html",{"generos":Genero ,"fases":Fases ,"frameworks":Framework,"roles":Rol,
              "message": "Nombre de proyecto ya registrado"})
         #Si el resultado es -1, hubo un error inesperado al crear el proyecto
         if result == -1:
-            return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles,
+            return render(request,"proyectos/crearProyecto.html",{"generos":Genero ,"fases":Fases ,"frameworks":Framework,"roles":Rol,
              "message": "Error al crear el proyecto"})
         #Si no hubieron errores, el usuario es redireccionado a la página del proyecto creado
         return HttpResponseRedirect(reverse("proyecto", kwargs={"nombre": nombre}))
     if request.method == "GET":            
-        return render(request,"proyectos/crearProyecto.html",{"generos":PosiblesGeneros ,"fases":PosiblesFases ,"frameworks":PosiblesFrameworks,"roles":PosiblesRoles})
+        return render(request,"proyectos/crearProyecto.html",{"generos":Genero ,"fases":Fases ,"frameworks":Framework,"roles":Rol})
 
 def proyecto(request,nombre):
     if request.method == "GET":
@@ -69,14 +69,14 @@ def proyecto(request,nombre):
             frameworks = []
             participaciones = {}
             actualizaciones = {}
-            fase = PosiblesFases.labels[PosiblesFases.values.index(proyecto.fase)]
+            fase = Fases.labels[Fases.values.index(proyecto.fase)]
             #Como los generos son enumerados, la lista de generos de proyectos es rellenada con los valores
             #obtenidos por el codigo de cada genero
             for genero in proyecto.generos:
-                generos.append((PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
+                generos.append((Genero.labels[Genero.values.index(genero)]))
             #Igual que con los generos
             for framework in proyecto.frameworks:
-                frameworks.append((PosiblesFrameworks.labels[PosiblesFrameworks.values.index(framework)]))
+                frameworks.append((Framework.labels[Framework.values.index(framework)]))
             #Las participaciones que muestra views es una lista de strings, en el que cada uno es el nombre del usuario
             #más los roles que desempeña en el proyecto
             #Se recorren todas las participaciones del proyecto
@@ -86,10 +86,10 @@ def proyecto(request,nombre):
                 #Para cada participacion se recorren sus roles
                 for rol in participacion.roles:
                     #Todos los roles son concatenados
-                    roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+                    roles_p= roles_p + " " + str(Rol.labels[Rol.values.index(rol)])
                 #Despues de concatenar todos los roles, se agrega el tipo de participacion del usuario
                 #al final del string
-                roles_p = roles_p + " - " + str(PosiblesPermisos.labels[PosiblesPermisos.values.index(participacion.permiso)])
+                roles_p = roles_p + " - " + str(Permiso.labels[Permiso.values.index(participacion.permiso)])
                 #String es agregado a la lista de participaciones, en la posición del usuario
                 participaciones[participacion.usuario.username] = roles_p
             #Se obtienen las actualizaciones de un proyecto
@@ -177,15 +177,15 @@ def editarProyecto(request, nombre):
             generos = []
             frameworks = []
             participaciones = {}
-            fase = PosiblesFases.labels[PosiblesFases.values.index(proyecto.fase)]
+            fase = Fases.labels[Fases.values.index(proyecto.fase)]
             for genero in proyecto.generos:
-                generos.append((PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
+                generos.append((Genero.labels[Genero.values.index(genero)]))
             for framework in proyecto.frameworks:
-                frameworks.append((PosiblesFrameworks.labels[PosiblesFrameworks.values.index(framework)]))
+                frameworks.append((Framework.labels[Framework.values.index(framework)]))
             for participacion in proyecto.participaciones.all():
                 roles_p = ""
                 for rol in participacion.roles:
-                    roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+                    roles_p= roles_p + " " + str(Rol.labels[Rol.values.index(rol)])
                 participaciones[participacion.usuario.username] = roles_p
                 #Se renderiza la página de edición de proyecto, con sus atributos
             return render(request, "proyectos/editarProyecto.html", {
@@ -194,10 +194,10 @@ def editarProyecto(request, nombre):
                         "miembros": participaciones,
                         "frameworks": frameworks,
                         "fase": fase,
-                        "posiblesgeneros": PosiblesGeneros,
-                        "posiblesfases": PosiblesFases,
-                        "posiblesframeworks" : PosiblesFrameworks,
-                        "posiblesroles": PosiblesRoles
+                        "posiblesgeneros": Genero,
+                        "posiblesfases": Fases,
+                        "posiblesframeworks" : Framework,
+                        "posiblesroles": Rol
             })
         except Proyecto.DoesNotExist:
             return render(request, "main/error.html", {
@@ -236,8 +236,8 @@ def gestionMiembros (request, nombre):
                 "miembros": miembros,
                 "proyecto": proyecto,
                 "usuarios": usuarios,
-                "posiblesPermisos": PosiblesPermisos,
-                "posiblesRoles": PosiblesRoles,
+                "posiblesPermisos": Permiso,
+                "posiblesRoles": Rol,
                 "users": dataJSON
                 
             })
@@ -343,9 +343,9 @@ def explorarProyectos(request):
         proyectos = ManejadorProyectos.buscarProyecto(nombre_busqueda,generos,fase,frameworks)
 
         return render(request, "proyectos/explorarProyectos.html", {
-            "generos": PosiblesGeneros,
-            "fases": PosiblesFases,
-            "frameworks": PosiblesFrameworks,
+            "generos": Genero,
+            "fases": Fases,
+            "frameworks": Framework,
             "populares": proyectos
         })
 
@@ -361,8 +361,8 @@ def explorarProyectos(request):
             i = i+1
 
         return render(request, "proyectos/explorarProyectos.html", {
-            "generos": PosiblesGeneros,
-            "fases": PosiblesFases,
-            "frameworks": PosiblesFrameworks,
+            "generos": Genero,
+            "fases": Fases,
+            "frameworks": Framework,
             "populares": populares
         })
