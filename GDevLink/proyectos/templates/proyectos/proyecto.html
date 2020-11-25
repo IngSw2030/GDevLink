@@ -60,14 +60,14 @@
             
             <div class="elemento">
                 <label for="exampleFormControlInput1">Video del proyecto:</label>
-                    
-                    <a href="{{proyecto.enlace_video}}">{{proyecto.enlace_video}}</a>             
+
+                    <span>{{proyecto.enlace_video}}</span>             
 
             </div>
             <div class="elemento" id="gris">
                 <label for="exampleFormControlInput1">Link de descarga:</label>
 
-                    <a href="{{proyecto.enlace_juego}}">{{proyecto.enlace_juego}}</a>             
+                    <span>{{proyecto.enlace_juego}}</span>             
 
             </div>
             {% if administrador %}
@@ -118,13 +118,17 @@
                                 {% endfor %}
                             {% endif %}
                         {% else %}
-                            {% for i in actualizaciones %}
+                        <div class="active item">
+                            <img class="d-block w-100" style="object-fit: scale-down; max-height: 400px; align-self: center;" src="{% static 'proyectos/pic03.jpg' %}">
+                        </div>
+                            {% for actualizacion in actualizaciones %}
                                 {% if actualizacion.imagen %}
                                     <div class="item">
                                         <img class="d-block w-100" style="object-fit: scale-down; max-height: 400px; align-self: center;" src="{{ actualizacion.imagen.url }}">
                                     </div>
                                 {% endif %}
                             {% endfor %}
+                        
                         {% endif %} 
                     </div>
                     <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
