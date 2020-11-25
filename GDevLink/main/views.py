@@ -5,6 +5,7 @@ from proyectos.models import Proyecto, Usuario, Actualizacion
 from django.core.paginator import Paginator
 from posicionVacante.models import PosicionVacante
 from main.enum import PosiblesFrameworks, PosiblesGeneros, PosiblesRoles, PosiblesPermisos, PosiblesFases
+from proyectos.ManejadorProyectos import ManejadorProyectos
 
 # Vista para la página principal
 def index(request):
@@ -63,14 +64,19 @@ def index(request):
                "vacantes": vacantes
           })
      else:
-          todos = Proyecto.objects.all().order_by('seguidores')
-          vacantes = PosicionVacante.objects.all()
-          populares = [None] * 4
-          i=0
-          for pop in todos:
-               populares[i] = pop
-               if i == 3:
-                    break
-               i = i+1
+          
+          populares = ManejadorProyectos.obtenerProyectosPopulares()
+          vacantesCodigo = list(PosicionVacante.objects.all())
+          vacantes = {}
+               
+          for vac in vacantesCodigo:
+               roles_p = ""
+               #Para cada participacion se recorren sus roles
+               for rol in vac.roles:
+                    #Todos los roles son concatenados
+                    roles_p= roles_p + " " + str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+                        
+                    #String es agregado a la lista de participaciones, en la posición del usuario
+               vacantes[vac.proyecto.nombre] = roles_p
                 
           return render(request,"main/index.html",{"populares": populares, "vacantes": vacantes})

@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{% static 'preguntas/styles.css' %}">     
     {% csrf_token %}
     <body>
-        <div class="contenido">
+        <div class="">
             <!-- Seccion formulario para crear la pregunta -->
             <form action="{% url 'crearPregunta' %}" enctype="multipart/form-data" method="post" action="/foo/">
             {% csrf_token %}

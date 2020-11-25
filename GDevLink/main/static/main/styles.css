@@ -114,12 +114,12 @@ html, body
   {
 	/*background: #1B262C;*/
 	border-collapse: separate;
-	border-radius: 25px;
+	border-radius: 8px;
 	background: #212121;;
     overflow: hidden;
 	margin: 0em auto;
 	width: 1000px;
-	padding: 20px;
+	
 	/*width: 200px; height: 150px;*/
 	perspective: 1px;
 	position: center;
@@ -448,7 +448,12 @@ html, body
 
 	#footer
 	{
-		padding: 4em;
+		position: absolute;
+		left:0;
+  		bottom: 0;
+  		width: 90%;
+		margin-left: 6rem;
+	  	text-align: center;
 		background-color: #191F24;
 	}
 
@@ -620,6 +625,10 @@ html, body
 		margin-left: 0rem;
 		justify-content: flex-start;
 		
+	  }
+	
+	  #footer{
+		  display: none;
 	  }
 
   }

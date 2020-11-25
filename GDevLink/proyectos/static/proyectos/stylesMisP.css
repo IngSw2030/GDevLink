@@ -3,11 +3,9 @@ body{
 }
 
 #tbodyID{
-    /*width: 100%;
-    margin: 0;
-    padding: 0;   */
-    background-color: #3c4042;
-    color: #e6e6e6;
+    background: #2e2e2e;
+    
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
    }
 
 img{

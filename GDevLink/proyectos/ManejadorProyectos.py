@@ -153,7 +153,7 @@ class ManejadorProyectos(IManejadorProyectos):
 
     def obtenerProyectosPopulares():
         #Se obtienen los 20 proyectos mas populares, ordenados por seguidores
-        populares = Proyecto.objects.all().order_by('seguidores')[:10]
+        populares = Proyecto.objects.all().order_by('seguidores')[:20]
         return populares
 
     def obtenerActualizacionesSeguidos(nombreUsuario):
@@ -185,21 +185,46 @@ class ManejadorProyectos(IManejadorProyectos):
     def buscarProyecto(nombre, genero, fase, framework):
         #Si la busqueda es solo por nombre, se retorna los proyecots
         #que en su nombre contengan el string dado en el parametro nombre
-        if nombre != "":
-            return Proyecto.objects.filter(nombre__contains = nombre)
+        #if nombre != "":
+         #   return Proyecto.objects.filter(nombre__contains = nombre)
         proyectos = []
+        
         #Si se especificaron generos, se procede a filtrar por genero
-        if len(genero) > 0:
-            #De la base de datos se obtienen todos los proyectos que contengan el o los generos especificados
-            proyectos = Proyecto.objects.filter(fase__contains = [genero] )
+        #if len(genero) > 0:
+            
+         #   proyectos = Proyecto.objects.filter(fase__contains = [genero] )
         #Si se especifico una fase, se procede a filtrar por fase
-        if len(fase) > 0:
+        #if len(fase) > 0:
             #Con los proyectos actuales se filtran los que esten en una fase especificada
-            proyectos = proyectos.filter(fase = fase)
+         #   proyectos = proyectos.filter(fase = fase)
         #Si se especificaron frameworks, se procede a filtrar por framework
-        if len(framework) > 0:
+        #if len(framework) > 0:
             #Con los proyectos actuales se filtran los que usen un framework especificado
-            proyectos = proyectos.filter(frameworks__contains = [framework]) 
+         #   proyectos = proyectos.filter(frameworks__contains = [framework]) 
+
+        if len(fase) > 0:
+            fase = fase[0]
+            proyectos = Proyecto.objects.filter(
+        
+            
+            #De la base de datos se obtienen todos los proyectos que contengan el o los generos especificados
+            generos__contains =  genero,
+        
+            frameworks__contains =  framework,
+            
+            fase__icontains = fase,
+        
+            nombre__icontains=nombre
+            )   
+        else:
+                proyectos = Proyecto.objects.filter(
+		    
+                generos__contains =  genero,
+			
+		        frameworks__contains =  framework,
+            
+                nombre__icontains=nombre
+            ).order_by('seguidores')  
 
         return proyectos
 

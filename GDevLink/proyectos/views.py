@@ -164,13 +164,11 @@ def proyecto(request,nombre):
         return HttpResponseRedirect(reverse("proyecto",kwargs={"nombre": nombre}))
 
 @login_required
-def proyectosUsuario(request):
-    if request.user.is_authenticated:
-        proyectos = ManejadorProyectos.obtenerProyectosUsuario(request.user)
-        return render(request,"proyectos/proyectosUsuario.html",{"proyectos": proyectos})    
-    return render(request,"proyectos/proyectosUsuario.html")
-       #else
-    #else
+def proyectosUsuario(request): 
+    proyectos = ManejadorProyectos.obtenerProyectosUsuario(request.user)
+    return render(request,"proyectos/proyectosUsuario.html",{"proyectos": proyectos})    
+    
+   
 
 def editarProyecto(request, nombre):
     if request.method == "GET":
@@ -337,36 +335,12 @@ def explorarProyectos(request):
     if request.method == "POST":
         nombre_busqueda = request.POST['barraBusqueda']
         generos = request.POST.getlist("generos")
-        print(generos)
         fase = request.POST.getlist('fase')
         frameworks = request.POST.getlist('frameworks')
 
-        proyectos = Proyecto.objects.all().order_by('seguidores')
+        proyectos = []
 
-        if len(fase) > 0:
-            fase = fase[0]
-            proyectos = Proyecto.objects.filter(
-        
-            generos__contains =  generos,
-        
-            frameworks__contains =  frameworks,
-            
-            fase__icontains = fase,
-        
-            nombre__icontains=nombre_busqueda
-            )   
-        else:
-                proyectos = Proyecto.objects.filter(
-		    
-                generos__contains =  generos,
-			
-		        frameworks__contains =  frameworks,
-            
-                nombre__icontains=nombre_busqueda
-            ).order_by('seguidores')   
-        
-        
-    
+        proyectos = ManejadorProyectos.buscarProyecto(nombre_busqueda,generos,fase,frameworks)
 
         return render(request, "proyectos/explorarProyectos.html", {
             "generos": PosiblesGeneros,
@@ -376,9 +350,8 @@ def explorarProyectos(request):
         })
 
     else:
-        proyectos = []
-        proyectos = Proyecto.objects.all()
-        todos = Proyecto.objects.all().order_by('seguidores')
+        
+        todos = ManejadorProyectos.obtenerProyectosPopulares()
         populares = [None] * 4
         i = 0
         for pop in todos:
