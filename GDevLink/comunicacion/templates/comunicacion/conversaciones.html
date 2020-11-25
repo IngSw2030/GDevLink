@@ -15,8 +15,8 @@
     </script>
     <link rel="stylesheet" href="{% static 'comunicacion/styles.css' %}">  
 
-    <div class="contenido container overflow-hidden">
-        <div class="panel ">
+    <div class="contenido container">
+        <div class="panel overflow-auto">
             <form action="{% url 'conversaciones' %}" method="post">
                 {% csrf_token %}
                 <nav class=" busqueda">
@@ -28,11 +28,12 @@
                                     id="searchBar"
                                     placeholder="Busca un usuario"
                                 />
-                                <button class="" type="submit" value="crear">Crear</button>
+                                <button class="" type="submit" value="crear"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" class="svg-inline--fa fa-plus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
+                                    Crear</button>
                                 <div class="dropdown-menu" id="" aria-labelledby="dropdownMenuLink">
                                     
                                 </div>
-                                <div class="overflow-auto">
+                                <div class="overflow-hidden">
                                     <ul class="select" name="usuarioB" id="usuarios">
     
                                     </ul>
@@ -59,8 +60,18 @@
                         {% if participacion.username != request.user.username %}
                             <div class="list-group">
                                 <a href="conversaciones/{{conversacion.id}}/chat/" class="list-group-item list-group-item-action active" id="conv">
-                                {{participacion.username}}
+                                    {% if participacion.imagen %}
+                                    <img src="{{ participacion.imagen.url }}" class="avatar imagePerfil" id="fondoTransparente" alt="My Image" />
+                                    {% else %}
+                                    <img src="/usuarios/defaultUser.png" class="avatar imagePerfil" id="fondoTransparente" alt="Imagen" />
+                                    {% endif %}
+                                    {{participacion.username}}  
+                                    {% if conversacion.mensajes.all%}
+                                        <p>{{conversacion.mensajes.all.last.texto}}</p>
+                                    {% endif %}
                                 </a>
+                                
+                                
                             </div>
                             
                         {% endif %}

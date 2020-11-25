@@ -37,7 +37,8 @@ def index(request):
                "actualizaciones": pagina,
                "pagina_anterior": pagina_anterior,
                "pagina_siguiente": pagina_siguiente,
-               "vacantes": vacantes
+               "vacantes": vacantes,
+               "proyectoKey": proyectoKey
           })
      else:
           populares = ManejadorProyectos.obtenerProyectosPopulares()

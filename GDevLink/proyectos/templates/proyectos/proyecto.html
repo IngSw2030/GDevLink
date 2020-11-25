@@ -90,7 +90,14 @@
                 <label for="exampleFormControlInput1">Miembros:</label>
                 <div class="list-group"> 
                     {% for key,value in miembros.items %}       
-                    <li><a href="/usuarios/{{key}}/perfil">{{key}} - {{value}}</a></li>
+                    <li>
+                        {% if user.imagen %}
+                            <img src="{{ user.imagen.url }}" class="avatar imagePerfil" id="fondoTransparente" alt="My Image" />
+                            {% else %}
+                            <img src="/usuarios/defaultUser.png" class="avatar imagePerfil" id="fondoTransparente" alt="Imagen" />
+                          {% endif %}
+                        <a href="/usuarios/{{key}}/perfil">{{key}} - {{value}}</a>
+                    </li>
                     {% endfor %}
                 </div>
             </div> 
@@ -99,36 +106,59 @@
         <div class="contenido">
             <h3>Galería del proyecto</h3>
             <hr>
-            <div style ="margin:5; padding:5; white-space: nowrap; overflow-x: auto">
-                <div >
-                    {% if proyecto.imagen %}
-                        <li style="display: inline-block; width: 200px ">
-                            <img src="{{ proyecto.imagen.url }}"class="" id="" alt="My Image" style="width: 200px;"/>
-                        </li>
-                    {% endif %}
-                    {% if actualizaciones %}
-                        {% for actualizacion in actualizaciones %}
-                            {% if actualizacion.imagen %}
-                                <li style="display: inline-block; width: 200px ">
-                                    <img src="{{ actualizacion.imagen.url }}" class="" id="" alt="My Image" style="width: 200px;" />
-                                </li>
+            {% if proyecto.imagen or actualizaciones %}
+                <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators">    
+                    </ol>
+                    <div class="carousel-inner">
+                        {% if proyecto.imagen %}
+                            <div class="active item">
+                                <img class="d-block w-100" style="object-fit: scale-down; max-height: 400px; align-self: center;" src="{{ proyecto.imagen.url }}">
+                            </div>
+                            {% if actualizaciones %}
+                                {% for actualizacion in actualizaciones %}
+                                    {% if actualizacion.imagen %}
+                                        <div class="item">
+                                            <img class="d-block w-100" style="object-fit: scale-down; max-height: 400px; align-self: center;" src="{{ actualizacion.imagen.url }}">
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
                             {% endif %}
-                        {% endfor %}
-                    {% endif %}
-
-                            
-
+                        {% else %}
+                        <div class="active item">
+                            <img class="d-block w-100" style="object-fit: scale-down; max-height: 400px; align-self: center;" src="{% static 'proyectos/pic03.jpg' %}">
+                        </div>
+                            {% for actualizacion in actualizaciones %}
+                                {% if actualizacion.imagen %}
+                                    <div class="item">
+                                        <img class="d-block w-100" style="object-fit: scale-down; max-height: 400px; align-self: center;" src="{{ actualizacion.imagen.url }}">
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        
+                        {% endif %} 
+                    </div>
+                    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Previous</span>
+                    </a>
+                    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="sr-only">Next</span>
+                    </a>
                 </div>
-            </div>
+            {% else  %}
+                <p>No hay imagenes</p>
+            {% endif %}
         </div>
         <div class="space">
             
         </div>
         <div class="contenido">
             {% if administrador %}
-                <input type="button" id="nuevaActualizacion" style="background-color:#008CBA; margin: 5px;" value="Nueva Actualizacion"></button>
+                <button type="btn btn-primary" id="nuevaActualizacion" style="margin: 5px;" value="Nueva Actualizacion">Nueva Actualizacion</button>
             {% endif %}
-            <input type="button" id="cancelarActualizacion" style="background-color:red; margin: 5px; display: none;" value="Cancelar"></button>
+            <button type="button" id="cancelarActualizacion" style="background-color:rgb(139, 23, 23); margin: 5px; display: none;" value="Cancelar">Cancelar</button>
             <br>
             <h3 style="text-align: center;">Actualizaciones</h3>
             <form id="actualizacion" action="/proyectos/{{proyecto.nombre}}/actualizaciones" enctype="multipart/form-data" method="post" action="/foo/">
@@ -138,7 +168,6 @@
                         <tr style="padding-bottom: 1em;">
                             <td style="width: 30%;"><input type="file" class="form-control-file" name="imagenNueva" id="imagenNueva"></td>
                             <td style="width: 70%;"><textarea class="form-control" name="descripcionActualizacion" id="descripcionActualizacion" rows="3"></textarea></td>
-                            
                         </tr>
                         <tr>
                             <td></td>
@@ -149,9 +178,18 @@
                 </div>
             </form>
             <script type="text/javascript">
-                
-
                 document.addEventListener('DOMContentLoaded', function () {
+                    const imagenes=document.querySelectorAll(".item");
+                    const indicadores=document.querySelector(".carousel-indicators");
+                    for (var i = 0; i < imagenes.length; i++){
+                        const indicador=document.createElement("li");
+                        indicador.datatarget="#carouselExampleIndicators";
+                        indicador.dataslideto=i;
+                        if(i==0){
+                            indicador.class="active";
+                        }
+                        indicadores.append(indicador);
+                    }
                     var x=document.getElementById("nuevaActualizacion")
                     x.addEventListener("click",
                     cambiarActualizacion);
@@ -238,15 +276,20 @@
                 {% if not actualizaciones %}
                     <p>No hay Actualizaciones</p>
                 {% else %}
-                    {% for actualizacion in actualizaciones %}
+                    {% for actualizacion in actualizaciones%}
                     <div>
+                        {% if actualizacion.proyecto.imagen %}
+                            <img src="{{ actualizacion.proyecto.imagen.url }}" class="avatar imagePerfil" id="fondoTransparente" alt="My Image" />
+                        {% endif %} 
+                        <p class="timestamp"> {{actualizacion.fecha}} </p>
+                        <p> {{actualizacion.descripcion}} </p>   
                         {% if actualizacion.imagen %}
-                        <img src="{{ actualizacion.imagen.url }}" class="" id="" alt="My Image" />
-                        
+                            <div class="logop">
+                                <img src="{{ actualizacion.imagen.url }}" class="" id="limage" alt="My Image" style="object-fit: scale-down; max-height: 400px; align-self: center;" />
+                            </div>
                         {% endif %}
-                        <p>{{ actualizacion.descripcion }}</p>
                     </div>
-                    <hr>
+                    <hr>     
                     {% endfor %}
                 {% endif %}
 

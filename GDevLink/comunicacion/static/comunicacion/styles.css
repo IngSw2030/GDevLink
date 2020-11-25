@@ -1,6 +1,6 @@
 .tbody{
     width: 1200px;
-    height: 400px;
+    height: 600px;
     background: transparent;
 }
 
@@ -12,17 +12,18 @@
 
 .busqueda {
 	  
-    width: 20rem;
+    width: 280px;
 	  
     }
-    
+
+ 
 .con{
     background: #202124;
     margin-left: 10%;
     margin-right: 10%;
     max-width: 90%;
     
-    height: 90%;;
+    height: 84%;;
 }
 
 .conversaciones{
@@ -47,7 +48,7 @@
 #conv{
   background-color: #02d9c5;
   border: transparent;
-  max-width: 60%;
+  width: 60%;
   
 }
 
@@ -103,6 +104,7 @@
   
   .yours .message {
     margin-right: 25%;
+    background: linear-gradient(to bottom, #6200ee 0%, #6200ee 100%);
     
     position: relative;
   }
@@ -123,6 +125,7 @@
   #chat__form{
     position: absolute;
     bottom: 20px;
+    padding-top: 40px;
   }
 
 

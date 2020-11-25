@@ -30,12 +30,11 @@ def conversaciones(request):
      elif request.method == "GET":
           result_list = list(Usuario.objects.all().values('username'))
           dataJSON = dumps(result_list) 
-          conversaciones = ManejadorComunicacion.obtenerConversaciones(request.user.username)
-         
+          conversaciones = list(ManejadorComunicacion.obtenerConversaciones(request.user.username))
           usuarios = ManejadorUsuarios.obtenerUsuarios()
-
-  
-         
+          for con in conversaciones:
+               if list(con.mensajes.all()):
+                    print (list(con.mensajes.all())[-1].texto)
           return render(request,"comunicacion/conversaciones.html", {'users': dataJSON, 'conversaciones': conversaciones,"usuarios":usuarios})
      
   

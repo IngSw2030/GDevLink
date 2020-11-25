@@ -23,13 +23,18 @@
             {% for actualizacion in actualizaciones%}
                 <div class="contenido">
                     <h4> 
+                        {% if actualizacion.proyecto.imagen %}
+                            <img src="{{ actualizacion.proyecto.imagen.url }}" class="avatar imagePerfil" id="fondoTransparente" alt="My Image" />
+                        {% else %}
+                            <img src="/usuarios/defaultUser.png" class="avatar imagePerfil" id="fondoTransparente" alt="Imagen" />
+                        {% endif %} 
                         <a href="/proyectos/{{actualizacion.proyecto.nombre}}/proyecto"> {{actualizacion.proyecto.nombre}} </a>
                     </h4>
                     <p class="timestamp"> {{actualizacion.fecha}} </p>
                     <p> {{actualizacion.descripcion}} </p>   
                     {% if actualizacion.imagen %}
                         <div class="logop">
-                            <img src="{{ actualizacion.imagen.url }}" class="" id="limage" alt="My Image" />
+                            <img src="{{ actualizacion.imagen.url }}" class="" id="limage" alt="My Image" style="object-fit: scale-down; max-height: 400px; align-self: center;" />
                         </div>
                     {% endif %}
                 </div>
@@ -87,11 +92,28 @@
         <h1>Interesantes</h1>
         {% for key,value in vacantes.items %}
         <br>
-            <a href="/proyectos/{{key}}/proyecto"> <h3>{{key}}</h3> </a>
+            {% for keyp,valuep in proyectoKey.items %}
+                {% if keyp == key %}
+                <span>
+                    
+                    <a href="/proyectos/{{valuep.nombre}}/proyecto"> 
+                    <h3>
+                        {% if valuep.imagen %}
+                            <img src="{{ valuep.imagen.url }}" class="avatar imagePerfil" id="fondoTransparente" alt="My Image" />
+                        {% else %}
+                            <img src="/usuarios/defaultUser.png" class="avatar imagePerfil" id="fondoTransparente" alt="Imagen" />
+                        {% endif %} 
+                        {{valuep.nombre}}
+                    </h3> 
+                    </a>
+                </span>
+                {% endif %}
+            {% endfor %}
+            
             <p class="">        
                 {{value}}
              </p>
-          <button >Aplicar</button>
+            <button >Aplicar</button>
         <br>
         {% endfor %}
     </div>

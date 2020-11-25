@@ -183,7 +183,7 @@ class ManejadorProyectos(IManejadorProyectos):
         #if len(framework) > 0:
             #Con los proyectos actuales se filtran los que usen un framework especificado
          #   proyectos = proyectos.filter(frameworks__contains = [framework]) 
-
+        
         if len(fase) > 0:
             fase = fase[0]
             proyectos = Proyecto.objects.filter(
