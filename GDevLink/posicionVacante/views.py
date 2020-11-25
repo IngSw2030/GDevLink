@@ -54,14 +54,6 @@ def nueva_vacante(request, nombre):
             "roles": PosiblesRoles})
 
 
-def editarVacante(request, ids):
-    if request.method == "GET":
-        vacante = PosicionVacante.objects.get(id=ids)
-        proyecto = vacante.proyecto
-        return render(request, "posicionVacante/editarVacante.html", {
-            "vacante": vacante,
-        })
-
 
 def vacante(request, ids):
     if request.method == "POST":
@@ -97,24 +89,28 @@ def explorarVacantes(request):
         nombre_busqueda = request.POST['barraBusqueda']
         roles = request.POST.getlist("roles")
         frameworks = request.POST.getlist('frameworks')
+        try:    
+            if nombre_busqueda != '':
+                vacantes = PosicionVacante.objects.filter(
 
-        if nombre_busqueda != '':
-            proyecto = Proyecto.objects.get(nombre=nombre_busqueda)
-            vacantes = PosicionVacante.objects.filter(
+                    roles__contains=roles,
 
-                roles__contains=roles,
+                    frameworks__contains=frameworks,
 
-		        frameworks__contains=frameworks,
+                    proyecto_icontains=nombre_busqueda
+                )
+            else:
+                vacantes = PosicionVacante.objects.filter(
 
-                proyecto=proyecto
-            )
-        else:
-            vacantes = PosicionVacante.objects.filter(
+                    roles__contains=roles,
 
-                roles__contains=roles,
+                    frameworks__contains=frameworks,
+                )
+        except:
+            return render(request, "main/error.html", {
+                "mensaje": "la busqueda no existe."})
 
-		        frameworks__contains=frameworks,
-            )
+
 
         return render(request, "posicionVacante/explorarVacantes.html", {
             "posicionesVacantes": vacantes,
@@ -147,3 +143,46 @@ def listaAplicantes(request, ids):
 
     })
      
+def editarVacante(request,ids):
+
+    if request.method == "POST" and 'Actualizar' in request.POST:
+        
+        vacante = PosicionVacante.objects.get(id=ids)
+        proyecto = vacante.proyecto
+        roles=[]
+        frameworks=[]
+
+
+        try:
+
+            roles = request.POST.getlist("roles")
+            frameworks = request.POST.getlist('frameworks')
+            descripcion = request.POST.get('descripcion')
+
+            if len(frameworks)==0:
+                return render(request, "main/error.html", {
+                "mensaje": "Debe seleccionar al menos (1) framework."
+            })
+            if len(roles)==0:
+                return render(request, "main/error.html", {
+                "mensaje": "Debe seleccionar al menos (1) rol."
+            })
+                  
+
+            vacante.roles=roles
+            vacante.frameworks=frameworks
+            vacante.descripcion=descripcion
+            vacante.save()
+            return HttpResponseRedirect(reverse("gestion-vacantes", kwargs={"nombre": proyecto.nombre}))
+
+        except IntegrityError as e:
+            return -1
+    else:
+        vacante = PosicionVacante.objects.get(id=ids)
+        proyecto = vacante.proyecto
+        return render(request, "posicionVacante/editarVacante.html", {
+        "proyecto": proyecto,
+        "vacante": vacante,
+        "posiblesFrameworks": PosiblesFrameworks,
+        "posiblesRoles": PosiblesRoles
+        })

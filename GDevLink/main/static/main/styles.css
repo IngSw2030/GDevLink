@@ -79,11 +79,15 @@ html, body
 	}
 	
 	.contenido2{
-		width: 100%; height:auto;  margin:0px;
-		box-shadow: 20mm;
-		background: #ebebeb;
+		width: 80%; height:auto;  margin:0px;
+	   
+		/*background: #ebebeb;*/
+		/*background: #303642;*/
+		background: #2e2e2e;
 		border-radius: 8px;
 		padding: 10px;
+		box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+		transition: 0.3s;
 	}
 	
 	.contenido{

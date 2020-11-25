@@ -50,11 +50,10 @@
             </label>
             {% endfor %}
         </div>
-        <button type="submit" class="btn btn-primary">Buscar</button>
-    
-      
-    
+        <button type="submit" class="btn btn-primary">Buscar</button><br><br><br>
+        <p><a class="btn btn-primary " href="/proyectos/mis-proyectos">Mis Proyectos</a></p>
     </form>
+    
 </div>
 
 
@@ -66,59 +65,69 @@
 <div class="" align="center">
 
     {% for pop in populares %}
-    <div class="contenido">
-        <div class="logop">
+    <div class="contenido2">
+        
             {% if not pop.imagen %}
-            <a href="" class="image fit" id="limage"><img src="{% static 'proyectos/pic03.jpg' %}" alt="My Image" /></a>
+            <img  src="{% static 'proyectos/pic03.jpg' %}"  width="700"  alt="My Image"/>
             {% else %}
-            <img src="{{ pop.imagen.url }}" class="" id="limage" alt="My Image" width="500" />
+            <img src="{{ pop.imagen.url }}"  width="700" alt="My Image"/>
             {% endif %}
-        </div>
-        <h2 style="color: black;">{{pop.nombre}}</h2>
+            <br><br>
+        <a href="/proyectos/{{pop.nombre}}/proyecto"> <h3>{{pop.nombre}}</h3> </a>
         <div>
             <p>{{pop.descripcion}}</p>
         </div>
-        <div align="center">
-            <br>
-            <h3> Generos </h3>
-            <hr>
-            <ul>
-                {% for genero in generos %}
-                {% if genero in pop.generos%}
-                <li>{{genero.label}}</li>
-                {% endif %}
-                {% endfor %}
-                <br>
-            </ul>
-            <h3> FrameWorks </h3>
-            <hr>
-            <ul>
-                {% for framework in frameworks %}
-                {% if framework in pop.frameworks%}
-                <li>{{framework.label}}</li>
-                {% endif %}
-                {% endfor %}
-                <br>
-            </ul>
-            <br>
-            <hr>
-            <h3> Fase de Desarrollo </h3>
-            <hr>
-            <ul>
-                {% for fase in fases %}
-                {% if fase in pop.fase%}
-                <li>{{fase.label}}</li>
-                {% endif %}
-                {% endfor %}
-                <br>
-            </ul>
+        <br>
+        <table style="border: 0px; margin: auto;" width="80%">
+            <thead>
+                <tr>
+                    <th>Generos: </th>
+                    <th>Frameworks: </th>   
+                    <th>Fase Desarrollo: </th>
+                    <th>Numero Seguidores: </th>                  
+                </tr>
+            </thead>
 
-            <h3>  Numero de seguidores: {{pop.numero_seguidores}} </h3>
-
-        </div>
-
-        <hr style="color: black;">
-        <br><br>
+            <body>
+                <tr>
+                    <td>
+                        <ul>
+                            {% for genero in generos %}
+                            {% if genero in pop.generos%}
+                            <li>{{genero.label}}</li>
+                            {% endif %}
+                            {% endfor %}
+                            <br>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            {% for framework in frameworks %}
+                            {% if framework in pop.frameworks%}
+                            <li>{{framework.label}}</li>
+                            {% endif %}
+                            {% endfor %}
+                            <br>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            {% for fase in fases %}
+                            {% if fase in pop.fase%}
+                            <li>{{fase.label}}</li>
+                            {% endif %}
+                            {% endfor %}
+                            <br>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul>
+                            {{pop.numero_seguidores}}
+                        </ul>
+                    </td>
+                </tr>
+        </table>
+        <hr>
     </div>
     <div class="space"></div>
     {% endfor %}

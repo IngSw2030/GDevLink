@@ -33,7 +33,7 @@
         <br>
         <div class="form-group col-md-6">
             <div class="tbodyNegro">
-                <label for="exampleFormControlInput1">Generos</label>
+                <label for="exampleFormControlInput1">Roles</label>
                 <hr>
                 {% for rol in posiblesRoles %}
                 <label class="checkbox" for="defaultCheck1">
@@ -84,8 +84,9 @@
                     <h3>Descripcion:</h3>
                 </td>
             </tr>
-            <tr style="width: auto;">
-                <td>
+            
+            <tr >
+                <td><br><br><br>
                     {% for rol in posiblesRoles%}
                     {% if rol in vacante.roles%}
                     <span>{{rol.label}}</span>
@@ -119,10 +120,12 @@
             </tr>
 
         </table>
+
         <hr>
 
         {% endfor %}
     </div>
+
 </div>
 <div class="space"></div>
 </body>

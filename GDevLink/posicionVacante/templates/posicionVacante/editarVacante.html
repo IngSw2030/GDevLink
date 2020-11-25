@@ -1,0 +1,78 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+
+
+{% block body %}
+    <body>
+        <div class="contenido">
+            <div class="header" id="center"><h1>Posiciones Vacantes</h1></div>
+            <br>
+            
+                
+                    <br>
+                    <form id="vacante" action="/vacantes/editarVacante/{{vacante.id}}" enctype="multipart/form-data" method="POST" action="/foo/" >
+                        {% csrf_token %}
+                    <table width="95%" cellpadding="0" cellspacing="0" style="border: 0px; margin: auto;">
+                        <tr>
+                            <td>
+                                <h3>Roles:</h3>
+                            </td>
+                            <td>
+                                <h3>Frameworks:</h3>
+                            </td>
+                            <td>
+                                <h3>Descripcion:</h3>
+                            </td>
+                        </tr>
+                        <tr style="width: auto;">
+                            <td>
+                                {% for rol in posiblesRoles %}
+                                    {% if rol in vacante.roles %}
+                                        <label class="checkbox" for="defaultCheck1">
+                                        <input class="form-check-input"  name="roles" type="checkbox" id="defaultCheck1" value="{{rol}}" checked = "true" > 
+                                        {{rol.label}}
+                                    {% else %}
+                                        <label class="checkbox" for="defaultCheck1">
+                                        <input class="form-check-input"  name="roles" type="checkbox" id="defaultCheck1" value="{{rol}}" >    
+                                        {{rol.label}}
+                                    {% endif %}
+                                        </label>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for framework in posiblesFrameworks %}
+                                    {% if framework in vacante.frameworks %}
+                                        <label class="checkbox" for="defaultCheck1">
+                                        <input class="form-check-input"  name="frameworks" type="checkbox" id="defaultCheck1" value="{{framework}}" checked = "true" > 
+                                        {{framework.label}}
+                                    {% else %}
+                                        <label class="checkbox" for="defaultCheck1">
+                                        <input class="form-check-input"  name="frameworks" type="checkbox" id="defaultCheck1" value="{{framework}}" >    
+                                        {{framework.label}}
+                                    {% endif %}
+                                        </label>
+                                {% endfor %}
+                            </td>
+                            <td style="width: 50%;">
+                                <div class="form-group">
+                                    <textarea class="form-control" name="descripcion" id="exampleFormControlTextarea1" rows="5" >{{vacante.descripcion}}</textarea>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align: right;">
+                                <input class="btn btn-primary" type="submit" id="Actualizar" name="Actualizar" value="Actualizar">
+                            </td>
+                        </tr>
+                    </table>
+                </form>
+                <hr>
+            <p><a class="btn btn-primary topbtn" href="/vacantes/{{proyecto.nombre}}/gestion-vacantes">Volver</a></p>
+        </div>
+    </body>
+{% endblock %}

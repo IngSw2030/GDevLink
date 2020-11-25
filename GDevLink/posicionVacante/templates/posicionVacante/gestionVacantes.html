@@ -31,7 +31,8 @@
                         </tr>
                         <tr style="width: auto;">
                             <td>
-                                {% for rol in roles %}
+                                {% for rol in posiblesRoles %}
+
                                     <label class="checkbox" for="checkbox">
                                         <input class="form-check-input" name="roles"  type="checkbox" id="defaultCheck4" value="{{rol}}">     
                                         {{rol.label}}
@@ -39,7 +40,7 @@
                                 {% endfor %}
                             </td>
                             <td>
-                                {% for framework in frameworks %}
+                                {% for framework in posiblesFrameworks %}
                                     <label class="checkbox" for="defaultCheck3">
                                         <input class="form-check-input" name="frameworks"  type="checkbox" id="defaultCheck3" value="{{framework}}">
                                         {{framework.label}}
@@ -100,7 +101,7 @@
                             <td></td>
                             <td></td>
                             <td style="text-align: right;">
-                                <form id="editar" style="display: inline;" action="gestion-vacante/{{vacante.id}}" enctype="multipart/form-data" method="post" action="/foo/">
+                                <form id="editar" style="display: inline;" action="/vacantes/editarVacante/{{vacante.id}}" enctype="multipart/form-data" method="post" action="/foo/">
                                     {% csrf_token %}
                                     <button class="btn btn-primary" name="editarVacante" style="display: none;">Editar</button>
                                 </form>
@@ -119,7 +120,7 @@
                     <hr>
                 {% endfor %}
             {% else %}
-                <h3>Noy hay vacantes disponibles</h3>
+                <h3>No hay vacantes disponibles</h3>
             {% endif %}
             <p><a class="btn btn-primary topbtn" href="/proyectos/{{proyecto.nombre}}/proyecto">Volver</a></p>
         </div>
