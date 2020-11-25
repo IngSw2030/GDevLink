@@ -4,7 +4,7 @@
 {% block body %}
 <div class="contenido">
     <h2  align="center">{{usuario.username}}</h2>
-     
+     <br>
     <link rel="stylesheet" href="{% static 'usuarios/styles.css' %}">
     {% csrf_token %}
     <div class="">
@@ -21,7 +21,7 @@
     <br>
     <div>
         <span > Roles: </span>
-        <ul style="list-style-type: circle">
+        <ul class="listas">
             {% for rol in roles %}
                 <li> {{rol}} </li>
             {% endfor %}
@@ -29,7 +29,7 @@
     </div>
     <div>
         <span > Géneros de interés: </span>
-        <ul style="list-style-type: circle">
+        <ul class="listas">
             {% for genero in generos %}
                 <li> {{genero}} </li>
             {% endfor %}
@@ -37,7 +37,7 @@
     </div>
     <div>
         <span > FrameWorks: </span>
-        <ul style="list-style-type: circle">
+        <ul class="listas">
             {% for framework in frameworks %}
                 <li> {{framework}} </li>
             {% endfor %}
@@ -45,7 +45,7 @@
     </div>
     <div>
         <span > Proyectos: </span>
-        <ul style="list-style-type: circle">
+        <ul class="listas">
             {% for key,value in participaciones.items %}
                 <li>
                     {{key}} - {{value}}

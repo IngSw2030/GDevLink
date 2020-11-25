@@ -1,0 +1,76 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{% block head %}
+
+{% endblock %}
+
+
+{% block body %}
+    <body>
+        <div class="contenido">
+            <div class="header" id="center"><h1>{{proyecto.nombre}}</h1></div><br>
+
+            
+                
+                    <table width="95%" cellpadding="0" cellspacing="0" style="border: 0px; margin: auto;">
+                        <tr>
+                            <td>
+                                <h3>Roles:</h3>
+                            </td>
+                            <td>
+                                <h3>Frameworks:</h3>
+                            </td>
+                            <td>
+                                <h3>Descripcion:</h3>
+                            </td>
+                        </tr>
+                        <tr style="width: auto;">
+                            <td>
+                                {% for rol in posiblesRoles %}
+                                    {% if rol in vacante.roles%}
+                                    <span>{{rol.label}}</span>
+                                    {% endif %}
+                                    <br>
+                                {% endfor %}
+                            </td>
+                            <td>
+                                {% for framework in posiblesFrameworks %}
+                                    {% if framework in vacante.frameworks%}
+                                    <span>{{framework.label}}</span>
+                                    {% endif %}
+                                    <br>
+                                {% endfor %}
+                            </td>
+                            <td style="width: 50%;">
+                                <p>{{vacante.descripcion}}</p>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td style="text-align: right;">
+                                
+                            </td>
+                        </tr>
+
+                    </table>
+                    <hr>
+                    <h3>Lista de aplicantes</h3><br>
+                    <ul class="listas"> 
+                    {% for aplicante in aplicantes%}
+                    <li><a href="/usuarios/{{aplicante.username}}/perfil">{{aplicante.username}}.</a></li>
+                    {% endfor%}
+                    </ul>
+                    <hr>
+            <p><a class="btn btn-primary topbtn" href="/vacantes/{{proyecto.nombre}}/gestion-vacantes">Volver</a></p>
+        </div>
+    </body>
+
+{% endblock %}
+
+{% block script %}
+
+{% endblock %}

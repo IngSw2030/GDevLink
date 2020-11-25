@@ -646,3 +646,11 @@ html, body
   .solar #solarIcon {
 	display: block;
   }
+/***************************/
+/* List                                                                          */
+/***************************/
+
+	.listas{
+		list-style-type: circle; 
+		padding-left:20px;
+	}
