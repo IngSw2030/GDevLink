@@ -8,117 +8,113 @@ from django.contrib.auth.decorators import login_required
 from django.db import IntegrityError
 from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
+from posicionVacante.ManejadorVacantes import ManejadorVacantes
+from proyectos.ManejadorProyectos import ManejadorProyectos
 
 
 @login_required(login_url='/usuarios/inicio-sesion')
 def gestion_vacantes(request, nombre):
     if request.method == "GET":
-        proyecto = Proyecto.objects.get(nombre=nombre)
-        vacantes = proyecto.vacantes.all()
+        vacantes = ManejadorVacantes.obtenerVacantesProyecto(nombre)
+        proyecto = ManejadorProyectos.obtenerProyecto(nombre)
         return render(request, "posicionVacante/gestionVacantes.html", {
             "proyecto": proyecto,
             "vacantes": vacantes,
             "posiblesFrameworks": Framework,
             "posiblesRoles": Rol})
 
-
 def nueva_vacante(request, nombre):
     if request.method == "POST":
-        proyecto = Proyecto.objects.get(nombre=nombre)
         roles = request.POST.getlist("roles")
         frameworks = request.POST.getlist('frameworks')
         descripcion = request.POST.get('descripcion', False)
-        try:
-            posicion = PosicionVacante(
-                roles=roles, frameworks=frameworks, descripcion=descripcion, proyecto=proyecto)
-            posicion.save()
-            vacantes = proyecto.vacantes.all()
-            return render(request, "posicionVacante/gestionVacantes.html", {
-                "proyecto": proyecto,
-                "vacantes": vacantes,
-                "frameworks": Framework,
-                "roles": Rol})
-        except IntegrityError as e:
-            vacantes = proyecto.vacantes.all()
-            return render(request, "posicionVacante/gestionVacantes.html", {
-                "proyecto": proyecto,
-                "vacantes": vacantes,
-                "frameworks": Framework,
-                "roles": Rol})
-    elif request.method == "GET":
-        vacantes = proyecto.vacantes.all()
-        return render(request, "posicionVacante/gestionVacantes.html", {
-            "proyecto": proyecto,
-            "vacantes": vacantes,
-            "frameworks": Framework,
-            "roles": Rol})
-
-
+        proyecto = ManejadorProyectos.obtenerProyecto(nombre)
+        vacante = ManejadorVacantes.crearVacante(nombre, roles, frameworks, descripcion)
+        if vacante is not None:
+            proyecto = vacante.proyecto
+            return HttpResponseRedirect(reverse("gestion-vacantes", kwargs={"nombre": proyecto.nombre}))
+        else:
+            return render(request, "main/error.html", {
+                        "mensaje": "Ocurrió un error."
+                })
 
 def vacante(request, ids):
     if request.method == "POST":
         if request.POST.get("request") == "DELETE":
-            vacante = PosicionVacante.objects.get(id=ids)
+            vacante = ManejadorVacantes.obtenerVacante(ids)
+            if vacante is None:
+                return render(request, "main/error.html", {
+                        "mensaje": "Ocurrió un error."
+                })
             proyecto = vacante.proyecto
-            vacante.delete()
-            vacantes = proyecto.vacantes.all()
+            if ManejadorVacantes.eliminarVacante(ids) == -1:
+                return render(request, "main/error.html", {
+                        "mensaje": "Ocurrió un error."
+                })
             return HttpResponseRedirect(reverse("gestion-vacantes", kwargs={"nombre": proyecto.nombre}))
         elif request.POST.get("request") == "PUT":
-            # Código para modificar vacante
-            pass
-
-
+            roles=[]
+            frameworks=[]
+            roles = request.POST.getlist("roles")
+            frameworks = request.POST.getlist('frameworks')
+            descripcion = request.POST.get('descripcion')
+            if len(frameworks)==0:
+                return render(request, "main/error.html", {
+                    "mensaje": "Debe seleccionar al menos (1) framework."
+                })
+            if len(roles)==0:
+                return render(request, "main/error.html", {
+                    "mensaje": "Debe seleccionar al menos (1) rol."
+                })
+            vacante = ManejadorVacantes.editarVacante(ids, roles, frameworks, descripcion)
+            if vacante is None:
+                return render(request, "main/error.html", {
+                    "mensaje": "Ocurrió un error."
+                })
+            else:
+                proyecto = vacante.proyecto
+                return HttpResponseRedirect(reverse("gestion-vacantes", kwargs={"nombre": proyecto.nombre}))
+            
 def aplicantes(request, ids):
     if request.method == "PUT":
-        try:
-
-            vacante = PosicionVacante.objects.get(id=ids)
-            proyecto = vacante.proyecto
-            usuario = Usuario.objects.get(username=request.user)
-            vacante.aplicantes.add(usuario)
-            vacante.save()
-            for aplic in vacante.aplicantes.all():
-                print(aplic)
+        if ManejadorVacantes.aplicarVacante(request.user.username, ids) == 0:
             return HttpResponse(status=200)
-        except IntegrityError as e:
-            return -1
-
+        else:
+            return render(request, "main/error.html", {
+                "mensaje": "Ocurrió un error."
+            })
+    elif request.method == "GET":
+        vacante = ManejadorVacantes.obtenerVacante(ids)
+        if vacante is None:
+            return render(request, "main/error.html", {
+                "mensaje": "Ocurrió un error."
+            })
+        proyecto = vacante.proyecto
+        aplicantes = ManejadorVacantes.obtenerAplicantes(ids)
+        if aplicantes is None:
+            return render(request, "main/error.html", {
+                "mensaje": "Ocurrió un error."
+            })
+        return render(request, "posicionVacante/listaAplicantes.html", {
+            "vacante": vacante,
+            "aplicantes": aplicantes,
+            "proyecto":proyecto,
+            "posiblesRoles": Rol,
+            "posiblesFrameworks": Framework
+        })
 
 def explorarVacantes(request):
     if request.method == "POST":
         nombre_busqueda = request.POST['barraBusqueda']
         roles = request.POST.getlist("roles")
         frameworks = request.POST.getlist('frameworks')
-        try:    
-            if nombre_busqueda != '':
-                vacantes = PosicionVacante.objects.filter(
-
-                    roles__contains=roles,
-
-                    frameworks__contains=frameworks,
-
-                    proyecto_icontains=nombre_busqueda
-                )
-            else:
-                vacantes = PosicionVacante.objects.filter(
-
-                    roles__contains=roles,
-
-                    frameworks__contains=frameworks,
-                )
-        except:
-            return render(request, "main/error.html", {
-                "mensaje": "la busqueda no existe."})
-
-
-
+        vacantes = ManejadorVacantes.buscarVacantes(nombre_busqueda, roles, frameworks)
         return render(request, "posicionVacante/explorarVacantes.html", {
             "posicionesVacantes": vacantes,
             "posiblesRoles": Rol,
             "posiblesFrameworks": Framework
         })
-
-    else:
+    elif request.method == "GET":
         vacantes = []
         vacantes = PosicionVacante.objects.all()
 
@@ -128,61 +124,16 @@ def explorarVacantes(request):
             "posiblesFrameworks": Framework
         })
 
-
-def listaAplicantes(request, ids):
-   
-    vacante = PosicionVacante.objects.get(id=ids)
-    proyecto = vacante.proyecto
-    aplicantes = vacante.aplicantes.all()
-    return render(request, "posicionVacante/listaAplicantes.html", {
-        "vacante": vacante,
-        "aplicantes": aplicantes,
-        "proyecto":proyecto,
-        "posiblesRoles": Rol,
-        "posiblesFrameworks": Framework
-
-    })
-     
 def editarVacante(request,ids):
-
-    if request.method == "POST" and 'Actualizar' in request.POST:
-        
-        vacante = PosicionVacante.objects.get(id=ids)
-        proyecto = vacante.proyecto
-        roles=[]
-        frameworks=[]
-
-
-        try:
-
-            roles = request.POST.getlist("roles")
-            frameworks = request.POST.getlist('frameworks')
-            descripcion = request.POST.get('descripcion')
-
-            if len(frameworks)==0:
-                return render(request, "main/error.html", {
-                "mensaje": "Debe seleccionar al menos (1) framework."
+    vacante = ManejadorVacantes.obtenerVacante(ids)
+    if vacante is None:
+        return render(request, "main/error.html", {
+                "mensaje": "Ocurrió un error."
             })
-            if len(roles)==0:
-                return render(request, "main/error.html", {
-                "mensaje": "Debe seleccionar al menos (1) rol."
-            })
-                  
-
-            vacante.roles=roles
-            vacante.frameworks=frameworks
-            vacante.descripcion=descripcion
-            vacante.save()
-            return HttpResponseRedirect(reverse("gestion-vacantes", kwargs={"nombre": proyecto.nombre}))
-
-        except IntegrityError as e:
-            return -1
-    else:
-        vacante = PosicionVacante.objects.get(id=ids)
-        proyecto = vacante.proyecto
-        return render(request, "posicionVacante/editarVacante.html", {
+    proyecto = vacante.proyecto
+    return render(request, "posicionVacante/editarVacante.html", {
         "proyecto": proyecto,
         "vacante": vacante,
         "posiblesFrameworks": Framework,
         "posiblesRoles": Rol
-        })
+    })

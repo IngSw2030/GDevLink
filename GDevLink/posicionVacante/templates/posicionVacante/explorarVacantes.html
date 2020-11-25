@@ -152,7 +152,7 @@
         }
 
         let csrftoken = getCookie('csrftoken');
-        fetch(`gestion-vacante/${ids}/aplicantes`, {
+        fetch(`/vacantes/vacante/${ids}/aplicantes`, {
             method: 'PUT',
             headers: { "X-CSRFToken": csrftoken }
         });

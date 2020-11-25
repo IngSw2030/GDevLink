@@ -101,7 +101,7 @@
                             <td></td>
                             <td></td>
                             <td style="text-align: right;">
-                                <form id="editar" style="display: inline;" action="/vacantes/editarVacante/{{vacante.id}}" enctype="multipart/form-data" method="post" action="/foo/">
+                                <form id="editar" style="display: inline;" action="/vacantes/gestion-vacante/{{vacante.id}}" enctype="multipart/form-data" method="get" action="/foo/">
                                     {% csrf_token %}
                                     <button class="btn btn-primary" name="editarVacante" style="display: none;">Editar</button>
                                 </form>
@@ -112,7 +112,7 @@
                                 </form>
                             </td>
                             <td>
-                                <a href="/vacantes/listaAplicantes/{{vacante.id}}" class="btn btn-primary" data-id-vacante="{{vacante.id}}">Ver lista aplicantes</a>
+                                <a href="/vacantes/vacante/{{vacante.id}}/aplicantes" class="btn btn-primary" data-id-vacante="{{vacante.id}}">Ver lista aplicantes</a>
                             </td>
                         </tr>
 
