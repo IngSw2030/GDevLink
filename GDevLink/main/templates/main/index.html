@@ -34,7 +34,7 @@
                     <p> {{actualizacion.descripcion}} </p>   
                     {% if actualizacion.imagen %}
                         <div class="logop">
-                            <img src="{{ actualizacion.imagen.url }}" class="" id="limage" alt="My Image" />
+                            <img src="{{ actualizacion.imagen.url }}" class="" id="limage" alt="My Image" style="object-fit: scale-down; max-height: 400px; align-self: center;" />
                         </div>
                     {% endif %}
                 </div>
