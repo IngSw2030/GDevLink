@@ -2,7 +2,7 @@ from proyectos.models import Proyecto, Participacion, Actualizacion
 from usuarios.models import Usuario
 from proyectos.IManejadorProyectos import IManejadorProyectos
 from usuarios.ManejadorUsuarios import ManejadorUsuarios
-from main.enum import PosiblesFrameworks, PosiblesGeneros, PosiblesRoles, PosiblesPermisos, PosiblesFases
+from main.enum import Framework, Genero, Rol, Permiso, Fases
 from django.db import IntegrityError
 
 
@@ -25,7 +25,7 @@ class ManejadorProyectos(IManejadorProyectos):
             return -1
         #Luego se crea la relación de participación maestro entre el usuario creador y el proyecto
         try:
-            participacion= Participacion(usuario=usuario,proyecto=proyecto,roles=roles,permiso=PosiblesPermisos.MASTER)
+            participacion= Participacion(usuario=usuario,proyecto=proyecto,roles=roles,permiso=Permiso.MASTER)
             participacion.save()
         except IntegrityError as e:
             return -1
@@ -63,7 +63,7 @@ class ManejadorProyectos(IManejadorProyectos):
                 return None
             #Se crea una relación de participación con permisos de miembro al usuario obtenido
             #con el proyecto obtenido
-            participacion = Participacion(usuario=usuario,proyecto=proyecto,roles=roles,permiso=PosiblesPermisos.MIEMBRO)
+            participacion = Participacion(usuario=usuario,proyecto=proyecto,roles=roles,permiso=Permiso.MIEMBRO)
             participacion.save()
             return 1
         except IntegrityError as e:
@@ -90,7 +90,7 @@ class ManejadorProyectos(IManejadorProyectos):
             proyecto = ManejadorProyectos.obtenerProyecto(nombreProyecto)
             participacion = Participacion.objects.get(usuario=usuario)
             #Se cambia los permisos de la participación del usuario a administrador
-            participacion.permiso = PosiblesPermisos.ADMIN
+            participacion.permiso = Permiso.ADMIN
             participacion.save()
             return 1
         except IntegrityError as e:
@@ -103,7 +103,7 @@ class ManejadorProyectos(IManejadorProyectos):
             participacion = Participacion.objects.get(usuario=usuario)
             #Se establece que la participación entre un proyecto y un usuario sera solo
             #con permisos de miembro
-            participacion.permiso = PosiblesPermisos.MIEMBRO
+            participacion.permiso = Permiso.MIEMBRO
             participacion.save()
             return 1
         except IntegrityError as e:
@@ -176,7 +176,7 @@ class ManejadorProyectos(IManejadorProyectos):
                     pagina_siguiente = numero_pagina + 1
                rolesUser = request.user.roles
                vacantes = []
-               #fase = PosiblesFases.labels[PosiblesFases.values.index(proyecto.fase)]
+               #fase = Fases.labels[Fases.values.index(proyecto.fase)]
                for r in rolesUser:
                     vacantes = vacantes + list(PosicionVacante.objects.filter(roles__contains=[r])) 
         except Actualizacion.DoesNotExist:
@@ -246,7 +246,7 @@ class ManejadorProyectos(IManejadorProyectos):
        personas = []
        #Se obtienen todos los usuarios que administran un proyecto
        for auxPersonas in proyecto.participaciones.all():
-            if auxPersonas.permiso ==  PosiblesPermisos.ADMIN or auxPersonas.permiso ==  PosiblesPermisos.MASTER:
+            if auxPersonas.permiso ==  Permiso.ADMIN or auxPersonas.permiso ==  Permiso.MASTER:
                     personas.append(auxPersonas.usuario)
        return personas
 

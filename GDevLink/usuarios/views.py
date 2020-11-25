@@ -3,7 +3,7 @@ from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.db import IntegrityError
 from usuarios.models import Usuario
-from main.enum import PosiblesFrameworks, PosiblesGeneros, PosiblesRoles
+from main.enum import Framework, Genero, Rol
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django import forms
@@ -56,17 +56,17 @@ def registro(request):
         if user is None:
             return render(request, "usuarios/registrar.html", {
                 "message": "Correo o nombre de usuario ya registrado.",
-                "roles": PosiblesRoles,
-                "generos": PosiblesGeneros,
-                "frameworks": PosiblesFrameworks
+                "roles": Rol,
+                "generos": Genero,
+                "frameworks": Framework
             })
         login(request, user, backend='django.contrib.auth.backends.ModelBackend')
         return HttpResponseRedirect(reverse("index"))
     elif request.method == "GET":
         return render(request, "usuarios/registrar.html", {
-            "roles": PosiblesRoles,
-            "generos": PosiblesGeneros,
-            "frameworks": PosiblesFrameworks
+            "roles": Rol,
+            "generos": Genero,
+            "frameworks": Framework
         })
 
 
@@ -88,18 +88,18 @@ def perfil(request, nombre_usuario):
             usuario.save()
         for rol in usuario.roles:
             roles.append(
-                (PosiblesRoles.labels[PosiblesRoles.values.index(rol)]))
+                (Rol.labels[Rol.values.index(rol)]))
         for genero in usuario.generos:
             generos.append(
-                (PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
+                (Genero.labels[Genero.values.index(genero)]))
         for framework in usuario.frameworks:
             frameworks.append(
-                (PosiblesFrameworks.labels[PosiblesFrameworks.values.index(framework)]))
+                (Framework.labels[Framework.values.index(framework)]))
         for participacion in usuario.participaciones.all():
             roles_p = ""
             for rol in participacion.roles:
                 roles_p = roles_p + " " + \
-                    str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+                    str(Rol.labels[Rol.values.index(rol)])
             participaciones[participacion.proyecto.nombre] = roles_p
         autenticado = request.user
         return render(request, "usuarios/perfil.html", {
@@ -161,28 +161,28 @@ def edicion(request, nombre_usuario):
         frameworks = []
         for rol in usuario.roles:
             roles.append(
-                (PosiblesRoles.labels[PosiblesRoles.values.index(rol)]))
+                (Rol.labels[Rol.values.index(rol)]))
         for genero in usuario.generos:
             generos.append(
-                (PosiblesGeneros.labels[PosiblesGeneros.values.index(genero)]))
+                (Genero.labels[Genero.values.index(genero)]))
         for framework in usuario.frameworks:
             frameworks.append(
-                (PosiblesFrameworks.labels[PosiblesFrameworks.values.index(framework)]))
+                (Framework.labels[Framework.values.index(framework)]))
         for participacion in usuario.participaciones.all():
             roles_p = ""
             for rol in participacion.roles:
                 roles_p = roles_p + " " + \
-                    str(PosiblesRoles.labels[PosiblesRoles.values.index(rol)])
+                    str(Rol.labels[Rol.values.index(rol)])
             participaciones[participacion.proyecto.nombre] = roles_p
         return render(request, "usuarios/editar.html", {
             "usuario": usuario,
             "participaciones": participaciones,
             "roles": roles,
-            "posiblesRoles": PosiblesRoles,
+            "posiblesRoles": Rol,
             "generos": generos,
-            "posiblesGeneros": PosiblesGeneros,
+            "posiblesGeneros": Genero,
             "frameworks": frameworks,
-            "posiblesFrameworks": PosiblesFrameworks
+            "posiblesFrameworks": Framework
         })
 
 

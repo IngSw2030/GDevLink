@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from main.enum import *
-from main.enum import PosiblesFrameworks, PosiblesGeneros, PosiblesRoles, PosiblesPermisos, PosiblesFases
+from main.enum import Framework, Genero, Rol, Permiso, Fases
 from proyectos.models import Proyecto, Participacion, Usuario, Actualizacion
 from posicionVacante.models import PosicionVacante
 from datetime import datetime
@@ -18,8 +18,8 @@ def gestion_vacantes(request, nombre):
         return render(request, "posicionVacante/gestionVacantes.html", {
             "proyecto": proyecto,
             "vacantes": vacantes,
-            "posiblesFrameworks": PosiblesFrameworks,
-            "posiblesRoles": PosiblesRoles})
+            "posiblesFrameworks": Framework,
+            "posiblesRoles": Rol})
 
 
 def nueva_vacante(request, nombre):
@@ -36,22 +36,22 @@ def nueva_vacante(request, nombre):
             return render(request, "posicionVacante/gestionVacantes.html", {
                 "proyecto": proyecto,
                 "vacantes": vacantes,
-                "frameworks": PosiblesFrameworks,
-                "roles": PosiblesRoles})
+                "frameworks": Framework,
+                "roles": Rol})
         except IntegrityError as e:
             vacantes = proyecto.vacantes.all()
             return render(request, "posicionVacante/gestionVacantes.html", {
                 "proyecto": proyecto,
                 "vacantes": vacantes,
-                "frameworks": PosiblesFrameworks,
-                "roles": PosiblesRoles})
+                "frameworks": Framework,
+                "roles": Rol})
     elif request.method == "GET":
         vacantes = proyecto.vacantes.all()
         return render(request, "posicionVacante/gestionVacantes.html", {
             "proyecto": proyecto,
             "vacantes": vacantes,
-            "frameworks": PosiblesFrameworks,
-            "roles": PosiblesRoles})
+            "frameworks": Framework,
+            "roles": Rol})
 
 
 
@@ -114,8 +114,8 @@ def explorarVacantes(request):
 
         return render(request, "posicionVacante/explorarVacantes.html", {
             "posicionesVacantes": vacantes,
-            "posiblesRoles": PosiblesRoles,
-            "posiblesFrameworks": PosiblesFrameworks
+            "posiblesRoles": Rol,
+            "posiblesFrameworks": Framework
         })
 
     else:
@@ -124,8 +124,8 @@ def explorarVacantes(request):
 
         return render(request, "posicionVacante/explorarVacantes.html", {
             "posicionesVacantes": vacantes,
-            "posiblesRoles": PosiblesRoles,
-            "posiblesFrameworks": PosiblesFrameworks
+            "posiblesRoles": Rol,
+            "posiblesFrameworks": Framework
         })
 
 
@@ -138,8 +138,8 @@ def listaAplicantes(request, ids):
         "vacante": vacante,
         "aplicantes": aplicantes,
         "proyecto":proyecto,
-        "posiblesRoles": PosiblesRoles,
-        "posiblesFrameworks": PosiblesFrameworks
+        "posiblesRoles": Rol,
+        "posiblesFrameworks": Framework
 
     })
      
@@ -183,6 +183,6 @@ def editarVacante(request,ids):
         return render(request, "posicionVacante/editarVacante.html", {
         "proyecto": proyecto,
         "vacante": vacante,
-        "posiblesFrameworks": PosiblesFrameworks,
-        "posiblesRoles": PosiblesRoles
+        "posiblesFrameworks": Framework,
+        "posiblesRoles": Rol
         })
