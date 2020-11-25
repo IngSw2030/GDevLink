@@ -169,7 +169,7 @@ def proyectosUsuario(request):
     return render(request,"proyectos/proyectosUsuario.html",{"proyectos": proyectos})    
     
    
-
+@login_required
 def editarProyecto(request, nombre):
     if request.method == "GET":
         try:
@@ -203,7 +203,8 @@ def editarProyecto(request, nombre):
             return render(request, "main/error.html", {
                 "mensaje": "Proyecto no encontrado."
             })
-            
+
+@login_required        
 def gestionMiembros (request, nombre):
     if request.method == "GET":
         try:

@@ -87,11 +87,16 @@
         <h1>Interesantes</h1>
         {% for key,value in vacantes.items %}
         <br>
-            <a href="/proyectos/{{key}}/proyecto"> <h3>{{key}}</h3> </a>
+            {% for keyp,valuep in proyectoKey.items %}
+                {% if keyp == key %}
+                    <a href="/proyectos/{{valuep}}/proyecto"> <h3>{{valuep}}</h3> </a>
+                {% endif %}
+            {% endfor %}
+            
             <p class="">        
                 {{value}}
              </p>
-          <button >Aplicar</button>
+            <button >Aplicar</button>
         <br>
         {% endfor %}
     </div>

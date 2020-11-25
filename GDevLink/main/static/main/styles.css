@@ -38,7 +38,7 @@ html, body
 		
 		padding-top: 60px;
 		color: #ebebeb;
-		
+		scrollbar-width: 0.5rem;
 		
 	}
 	
@@ -109,10 +109,24 @@ html, body
 		color: #E94560;
 	}
 	
-	.container
+	#fondoTransparente{
+		background-color: transparent !important;
+	}
+
+	#fondoTransparente:hover
 	{
-		
-  	}
+		background-color: transparent !important;	
+	}
+	
+	ul.nav a:hover { background-color: transparent !important; }
+	ul.nav a { background-color: transparent !important; }
+
+	.nav > li > a:hover{
+		background-color: transparent;
+	}
+	.nav > li > a{
+		background-color: transparent;
+	}
   
   .tbody
   {
@@ -186,7 +200,7 @@ html, body
 	}
 
 	.list-group {
-		margin-bottom: 0px;
+		margin-bottom: 2px;
 	}
 
 
@@ -203,6 +217,7 @@ html, body
 		padding-top: 5px;
 		padding-bottom: 5px;
 		border-radius: 8px 8px 8px 8px;
+		box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
 	}
 
 	.button
@@ -241,6 +256,19 @@ html, body
 		padding-top: 5px;
 		padding-bottom: 5px;
 		border-radius: 8px 8px 8px 8px;
+		box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+	}
+
+	.btn:hover{
+		background: #9452f3;
+		border-color: transparent;
+		color: #ececec;;
+	}
+
+	button:hover{
+		background: #9452f3;
+		border-color: transparent;
+		color: #ececec;;
 	}
 
 	.topbtn{
@@ -277,6 +305,7 @@ html, body
 		padding: 0px;
 		border-color: #2e2e2e;
 		background-color: #2e2e2e;
+		
 		max-height: 25px;
 	}
 
@@ -389,7 +418,7 @@ html, body
 		text-decoration: none;
 
 		font-size: 1em;
-		color: #FFF;
+		
 	}
 	
 	#menu li:hover a, #menu li.active a, #menu li.active span
@@ -425,7 +454,7 @@ html, body
 		color: black;
 		
 	}
-
+	
 
   
   
@@ -474,7 +503,9 @@ html, body
 		
 	  }
 
-	 
+	 input{
+		 color: black;
+	 }
 
 
 
@@ -490,7 +521,7 @@ html, body
 
 	  
 	  body::-webkit-scrollbar {
-		width: 0.25rem;
+		width: 0.5rem;
 	  }
 	  
 	  body::-webkit-scrollbar-track {

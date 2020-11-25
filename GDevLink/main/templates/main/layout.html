@@ -37,40 +37,38 @@
     </head>
 
     <body  id="mainBody">
-      <div class="">
+     
 
           <nav class="navbar navbar-expand-lg navbar-dark navbar-fixed-top" id="barra">
               <a class="navbar-brand" href="{% url 'index' %}">GDevLink</a>
               <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
               </button>
-              <div class="collapse navbar-collapse mr-auto" id="navbarNavDropdown">
-                <ul class="nav justify-content-end">
-                  <li class="nav-item active">
-                    
-                  </li>
+              <div class="nav collapse navbar-collapse ml-auto " id="navbarNavDropdown" id="fondoTransparente">
+                <ul class="nav justify-content-end" id="fondoTransparente">
+                 
 
                   {% if user.is_authenticated %}
-                      <li class="nav-item" id="">
-                      <a class="nav-link dropdown-toggle" href="#" id="itemAvatar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        {% if user.imagen %}
-                          <img src="{{ user.imagen.url }}" class="avatar imagePerfil" alt="My Image" />
-                          {% else %}
-                          <img src="/usuarios/defaultUser.png" class="avatar imagePerfil" alt="Imagen" />
-                        {% endif %}
-                        
+                      <li class="nav-item" id="fondoTransparente">
+                        <a class="nav-link dropdown-toggle" href="#" id="itemAvatar fondoTransparente" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          {% if user.imagen %}
+                            <img src="{{ user.imagen.url }}" class="avatar imagePerfil" id="fondoTransparente" alt="My Image" />
+                            {% else %}
+                            <img src="/usuarios/defaultUser.png" class="avatar imagePerfil" id="fondoTransparente" alt="Imagen" />
+                          {% endif %}
                           
-                      </a>
-                      <div class="dropdown-menu dropdown-menu-right text-left pull-right" aria-labelledby="navbarDropdownMenuLink">
-                          <a class="dropdown-item" href="/usuarios/{{user.username}}/perfil">Mi perfil</a>
-                          <a class="dropdown-item" href="{% url 'MisProyectos' %}">Mis proyectos</a>
-                          <a class="dropdown-item" href="{% url 'cierre-sesion' %}">Cerrar sesión</a>
-                          
-                      </div>
+                            
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right text-left pull-right" aria-labelledby="navbarDropdownMenuLink">
+                            <a class="dropdown-item" href="/usuarios/{{user.username}}/perfil">Mi perfil</a>
+                            <a class="dropdown-item" href="{% url 'MisProyectos' %}">Mis proyectos</a>
+                            <a class="dropdown-item" href="{% url 'cierre-sesion' %}">Cerrar sesión</a>
+                            
+                        </div>
                       </li>
                       {% else %}
-                      <li class="nav-item"><a class="nav-link" href="{% url 'inicio-sesion' %}" >Iniciar sesión</a></li>
-                      <li class="nav-item"><a class="nav-link" href="{% url 'registro' %}">Registrarse</a></li>
+                      <li class="nav-item"><a class="nav-link" id="fondoTransparente" href="{% url 'inicio-sesion' %}" >Iniciar sesión</a></li>
+                      <li class="nav-item"><a class="nav-link" id="fondoTransparente" href="{% url 'registro' %}">Registrarse</a></li>
                   {% endif %}   
                 </ul>
               </div>
@@ -293,7 +291,7 @@
           
           
           
-      </div>    
+         
                 
      
 
