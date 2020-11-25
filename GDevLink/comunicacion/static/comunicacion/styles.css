@@ -1,7 +1,13 @@
 .tbody{
     width: 1200px;
-    height: 500px;
+    height: 400px;
     background: transparent;
+}
+
+.contenido{
+  max-width: 90%;
+ 
+  height: 100%;
 }
 
 .busqueda {
@@ -15,13 +21,41 @@
     margin-left: 10%;
     margin-right: 10%;
     max-width: 90%;
-    justify-content: flex-end;
-    max-height: 300px;
+    
+    height: 90%;;
 }
 
 .conversaciones{
-  padding-left: 20em;
-  margin-top: 0rem;
+  margin-top: 2rem;
+  position: absolute;
+		right: 0px;
+    top: 5px;
+    width: 100%;
+    left: 30%;
+    height: 88%;
+    
+}
+
+.sdsdds{
+  overflow: auto;
+  max-height: 88%;
+  max-width: 90%;
+}
+
+
+
+#conv{
+  background-color: #02d9c5;
+  border: transparent;
+  max-width: 60%;
+  
+}
+
+.panel{
+  width: 300px;
+  background-color: transparent;
+  height: 88%;
+  
 }
 
 .actual{
@@ -85,17 +119,12 @@
     background-attachment: fixed;
     position: relative;
   }
-
-  #usuarios{
-    background-color: gray;
-    overflow: visible;
-  }
   
-  .panel{
-    max-width: 20%;
-    background-color: transparent;
-    margin-right: 0%;
+  #chat__form{
+    position: absolute;
+    bottom: 20px;
   }
+
 
   .form-check-input{
     margin-right: 25%;

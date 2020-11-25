@@ -15,13 +15,13 @@
     </script>
     <link rel="stylesheet" href="{% static 'comunicacion/styles.css' %}">  
 
-    <div class="contenido">
-        <div class="panel">
+    <div class="contenido container overflow-hidden">
+        <div class="panel ">
             <form action="{% url 'conversaciones' %}" method="post">
                 {% csrf_token %}
                 <nav class=" busqueda">
-                    <div class="usuarios">        
-                            <div id="searchWrapper">
+                          
+                            <div class="usuarios" id="searchWrapper">
                                 <input
                                     type="text"
                                     name="searchBar"
@@ -32,33 +32,42 @@
                                 <div class="dropdown-menu" id="" aria-labelledby="dropdownMenuLink">
                                     
                                 </div>
-                                
-                                <ul class="select" name="usuarioB" id="usuarios">
+                                <div class="overflow-auto">
+                                    <ul class="select" name="usuarioB" id="usuarios">
     
-                                </ul>
+                                    </ul>
+                                </div>
+                               
   
                                 
     
                             </div>
-                    </div>
+                    
             
                 </nav>
             </form>
-                    <div class="">
-                        {% for conversacion in conversaciones %}
-                            {% for participacion in conversacion.participantes.all %}
-        
-                                {% if participacion.username != request.user.username %}
-                                    <div class="list-group overflow-auto">
-                                        <a href="conversaciones/{{conversacion.id}}/chat/" class="list-group-item list-group-item-action active">
-                                        {{participacion.username}}
-                                        </a>
-                                    </div>
-                                    
-                                {% endif %}
-                            {% endfor %}
-                        {% endfor %}
-                    </div>
+                    
+        </div>
+        <div  class="conversaciones">
+            <h3>Conversaciones</h3>
+            <div class="sdsdds overflow-auto">
+                
+                
+                {% for conversacion in conversaciones %}
+                    {% for participacion in conversacion.participantes.all %}
+    
+                        {% if participacion.username != request.user.username %}
+                            <div class="list-group">
+                                <a href="conversaciones/{{conversacion.id}}/chat/" class="list-group-item list-group-item-action active" id="conv">
+                                {{participacion.username}}
+                                </a>
+                            </div>
+                            
+                        {% endif %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
+            
         </div>
         {% block chatbody %}
         {% endblock %}

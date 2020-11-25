@@ -229,8 +229,14 @@ html, body
 	}
 
 	.btn{
-		background: #2f002f;
-		border-color: #2f002f;
+		background: #b885fa;
+		border-color: transparent;
+		color: black;
+		padding-left: 10px;
+		padding-right: 10px;
+		padding-top: 5px;
+		padding-bottom: 5px;
+		border-radius: 8px 8px 8px 8px;
 	}
 
 	.topbtn{
