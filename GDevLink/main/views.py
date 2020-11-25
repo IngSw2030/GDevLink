@@ -41,7 +41,7 @@ def index(request):
                #fase = PosiblesFases.labels[PosiblesFases.values.index(proyecto.fase)]
                for r in rolesUser:
                     vacantesRepetidas = vacantesRepetidas + list(PosicionVacante.objects.filter(roles__contains=[r]))
-                   
+    
                vacantesCodigo = list(dict.fromkeys(vacantesRepetidas))
                vacantes = {}
                
