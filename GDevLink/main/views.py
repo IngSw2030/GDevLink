@@ -17,22 +17,49 @@ def index(request):
           #Los valores por defecto de la página anterior y la página siguiente son -1, que indican que no hay más páginas
           pagina_anterior = -1
           pagina_siguiente = -1
-          #Se obtienen las actualizaciones de los proyectos seguidos por el usuario, ordenadas descendentemente por fecha
-          actualizaciones = ManejadorProyectos.obtenerActualizacionesSeguidos(request.user.get_username())
-          #Se dividen los resultados en páginas de 5 actualizaciones
-          paginas = Paginator(actualizaciones, 5)
-          #Si el número de página solicitada no se encuentra en el rango, se utiliza la primera página
-          if numero_pagina not in paginas.page_range:
-               numero_pagina = 1
-          #Se obtiene la página
-          pagina = paginas.page(numero_pagina)
-          #Se revisa si hay página anterior
-          if pagina.has_previous():
-               pagina_anterior = numero_pagina - 1
-          #Se revisa si hay página siguiente
-          if pagina.has_next():
-               pagina_siguiente = numero_pagina + 1
-          vacantes = ManejadorVacantes.obtenerVacantesSugeridas(request.user.get_username())
+          #Se obtiene el usuario
+          usuario = Usuario.objects.get(username=request.user.get_username())
+          try:
+               #Se obtienen las actualizaciones de los proyectos seguidos por el usuario, ordenadas descendentemente por fecha
+               actualizaciones = Actualizacion.objects.order_by("-fecha").filter(proyecto__in = usuario.proyectos_seguidos.all())
+               #Se dividen los resultados en páginas de 5 actualizaciones
+               paginas = Paginator(actualizaciones, 5)
+               #Si el número de página solicitada no se encuentra en el rango, se utiliza la primera página
+               if numero_pagina not in paginas.page_range:
+                    numero_pagina = 1
+               #Se obtiene la página
+               pagina = paginas.page(numero_pagina)
+               #Se revisa si hay página anterior
+               if pagina.has_previous():
+                    pagina_anterior = numero_pagina - 1
+               #Se revisa si hay página siguiente
+               if pagina.has_next():
+                    pagina_siguiente = numero_pagina + 1
+               rolesUser = request.user.roles
+     
+               vacantesRepetidas = []
+               #fase = Fases.labels[Fases.values.index(proyecto.fase)]
+               for r in rolesUser:
+                    vacantesRepetidas = vacantesRepetidas + list(PosicionVacante.objects.filter(roles__contains=[r]))
+    
+               vacantesCodigo = list(dict.fromkeys(vacantesRepetidas))
+               vacantes = {}
+               proyectoKey = {}
+               
+               for vac in vacantesCodigo:
+                    
+                    if request.user not in vac.aplicantes.all():
+                         roles_p = ""
+                         #Para cada vacante se recorren sus roles
+                         for rol in vac.roles:
+                              #Todos los roles son concatenados
+                              roles_p= roles_p + " " + str(Rol.labels[Rol.values.index(rol)])  
+                         #String es agregado a la lista de vacantes, en la posición del usuario
+                         vacantes[vac.id] = roles_p
+                         proyectoKey[vac.id] = vac.proyecto
+               
+          except Actualizacion.DoesNotExist:
+               actualizaciones = []
           return render(request,"main/index.html",{
                "actualizaciones": pagina,
                "pagina_anterior": pagina_anterior,
