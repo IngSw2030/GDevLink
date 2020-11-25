@@ -20,13 +20,15 @@ from usuarios.ManejadorUsuarios import ManejadorUsuarios
 def conversaciones(request):
      if request.method == "POST":
           usuarioB = request.POST.getlist('usuarioB')
-          print(usuarioB)
-          conv = ManejadorComunicacion.agregarConversacion(request.user.username, usuarioB[0])
-          if conv is None:
-               return render(request, "main/error.html", {
-                    "mensaje": "Ocurrió un error."
-               })
-          return redirect('conversaciones/'+ str(conv.id) + '/chat/')
+          if usuarioB:
+               conv = ManejadorComunicacion.agregarConversacion(request.user.username, usuarioB[0])
+               if conv is None:
+                    return render(request, "main/error.html", {
+                         "mensaje": "Ocurrió un error."
+                    })
+               return redirect('conversaciones/'+ str(conv.id) + '/chat/')
+
+          return HttpResponseRedirect(reverse("conversaciones"))
      elif request.method == "GET":
           result_list = list(Usuario.objects.all().values('username'))
           dataJSON = dumps(result_list) 

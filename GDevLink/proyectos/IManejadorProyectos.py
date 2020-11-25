@@ -83,3 +83,8 @@ class IManejadorProyectos:
     #Retorna una lista de actualizaciones
     def obtenerActualizaciones(nombreProyecto):
         pass
+
+    #Método para obtener todas las participaciones de un usuario
+    #Retorna una lista de participaciones
+    def obtenerParticipacionesUsuario(usuario):
+        pass

@@ -259,3 +259,6 @@ class ManejadorProyectos(IManejadorProyectos):
         except Actualizacion.DoesNotExist:
             return -1
         return actualizaciones
+
+    def obtenerParticipacionesUsuario(usuario):
+        return usuario.participaciones.all()
