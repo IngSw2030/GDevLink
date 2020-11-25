@@ -51,9 +51,15 @@
                   </li>
 
                   {% if user.is_authenticated %}
-                      <li class="nav-item">
-                      <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                          {{user.username}}
+                      <li class="nav-item" id="">
+                      <a class="nav-link dropdown-toggle" href="#" id="itemAvatar" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {% if user.imagen %}
+                          <img src="{{ user.imagen.url }}" class="avatar imagePerfil" alt="My Image" />
+                          {% else %}
+                          <img src="/usuarios/defaultUser.png" class="avatar imagePerfil" alt="Imagen" />
+                        {% endif %}
+                        
+                          
                       </a>
                       <div class="dropdown-menu dropdown-menu-right text-left pull-right" aria-labelledby="navbarDropdownMenuLink">
                           <a class="dropdown-item" href="/usuarios/{{user.username}}/perfil">Mi perfil</a>
@@ -72,7 +78,7 @@
 
           <nav class="navbarp">
               <ul class="navbar-navp">
-                <li class="logo">
+                <li class="logop">
                   <a href="#" class="nav-link">
                     <span class="link-text logo-text"></span>
                     <svg
@@ -152,7 +158,7 @@
                         class="fa-primary"
                       ></path>
                     </svg>
-                    <span class="link-text"></span>
+                    <span class="link-text">Mensajes</span>
                   </a>
                 </li>
 

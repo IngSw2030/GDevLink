@@ -273,6 +273,24 @@ html, body
 		padding: 0px;
 		border-color: #2e2e2e;
 		background-color: #2e2e2e;
+		max-height: 25px;
+	}
+
+	.avatar {
+		display: inline-block;
+		overflow: hidden;
+		line-height: 1;
+		vertical-align: middle;
+		box-shadow: 0 0 0 1px var(--color-avatar-border);
+		height: 40px;
+		width: 40px;
+	}
+
+	#itemAvatar{
+		height: 40px;
+		width: 40px;
+		margin-right: 20px;
+		padding: 0px;
 	}
 
 	#backgroundimage {
@@ -474,11 +492,7 @@ html, body
 		background: #6649b8;
 	  }
 	  
-	  #contenidoPrincipal {
-		margin-left: 6rem;
-		justify-content: flex-start;
-		
-	  }
+	  
 	  
 	  .navbarp {
 		position: fixed;
@@ -597,6 +611,17 @@ html, body
 	main {
 	  margin: 0;
 	}
+
+	.tbody{
+		width: 90%;
+	}
+
+	#contenidoPrincipal {
+		margin-left: 0rem;
+		justify-content: flex-start;
+		
+	  }
+
   }
 
 	  /* Large screens */
@@ -607,7 +632,11 @@ html, body
 	  height: 100vh;
 	}
   
-
+	#contenidoPrincipal {
+		margin-left: 6rem;
+		justify-content: flex-start;
+		
+	  }
   
 	.navbar:hover .link-text {
 	  color: pink;
