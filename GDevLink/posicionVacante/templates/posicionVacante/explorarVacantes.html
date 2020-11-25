@@ -1,22 +1,35 @@
 {% extends "main/layout.html" %}
 {% load static %}
+{% block head %}
+
+{% endblock %}
 
 {% block body %}
 
 
 <div class="contenido">
-    
+
     <link rel="stylesheet" href="{% static 'proyectos/styles.css' %}">
+    {% csrf_token %}
+    <body>
+        
     
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+        </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+        </script>
     <h2 align="center">Exploración de Posiciones Vacantes</h2>
-    <br><hr>
+    <br>
+    <hr>
     <form action="/vacantes/explorarVacantes" method="POST">
         {% csrf_token %}
         <h3 class="titulo">Filtros de Busqueda</h3>
         <br>
         <label for="exampleFormControlInput1">Nombre proyecto de la posicion</label>
-        <input class="form-control"  type="text" name="barraBusqueda"><br>
-        
+        <input class="form-control" type="text" name="barraBusqueda"><br>
+
         <br>
         <div class="form-group col-md-6">
             <div class="tbodyNegro">
@@ -35,84 +48,128 @@
             <hr>
             {% for framework in posiblesFrameworks %}
             <label class="checkbox" for="defaultCheck3">
-                <input class="form-check-input" name="frameworks" type="checkbox" id="defaultCheck3" value="{{framework}}">
+                <input class="form-check-input" name="frameworks" type="checkbox" id="defaultCheck3"
+                    value="{{framework}}">
                 {{framework.label}}
             </label>
             {% endfor %}
         </div>
         <button type="submit" class="btn btn-primary">Buscar</button>
-    
-      
-    
+
+
+
     </form>
 
 
 
-<br>
+    <br>
 
 
 
-<div class="space"></div>
-<div class="" align="center">
+    <div class="space"></div>
+    <div class="" align="center">
 
-    {% for vacante in posicionesVacantes %}
-    <table width="95%" cellpadding="0" cellspacing="0" style="border: 0px; margin: auto;">
-        <tr>
-            <td>
-                <h3>Roles:</h3>
-            </td>
-            <td>
-                <h3>Frameworks:</h3>
-            </td>
-            <td>
-                <h3>Descripcion:</h3>
-            </td>
-        </tr>
-        <tr style="width: auto;">
-            <td>
-                {% for rol in posiblesRoles%}
+        {% for vacante in posicionesVacantes %}
+        <table width="95%" cellpadding="0" cellspacing="0" style="border: 0px; margin: auto;">
+            <tr>
+                <td>
+                    <h3>Roles:</h3>
+                </td>
+                <td>
+                    <h3>Frameworks:</h3>
+                </td>
+                <td>
+                    <h3>Descripcion:</h3>
+                </td>
+            </tr>
+            <tr style="width: auto;">
+                <td>
+                    {% for rol in posiblesRoles%}
                     {% if rol in vacante.roles%}
                     <span>{{rol.label}}</span>
-                {% endif %}
+                    {% endif %}
                     <br>
-                {% endfor %}
-            </td>
-            <td>
-                {% for framework in posiblesFrameworks %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for framework in posiblesFrameworks %}
                     {% if framework in vacante.frameworks%}
                     <span>{{framework.label}}</span>
                     {% endif %}
                     <br>
-                {% endfor %}
-            </td>
-            <td style="width: 50%;">
-                <p>{{vacante.descripcion}}</p>
-            </td>
-        </tr>
-        <tr>
-            <td></td>
-            <td></td>
-            <td style="text-align: right;">
-                <form id="editar" style="display: inline;" action="estion-vacante/{{vacante.id}}" enctype="multipart/form-data" method="post" action="/foo/">
-                    {% csrf_token %}
-                    <button class="btn btn-primary" name="editarVacante" style="display: none;">Editar</button>
-                </form>
-                <form id="eliminar" style="display: inline;" action="/vacantes/vacante/{{vacante.id}}" enctype="multipart/form-data" method="post" action="/foo/">
-                    {% csrf_token %}
-                    <input name="request" type="hidden" value="DELETE">
-                    <button class="btn btn-primary" name="eliminarVacante" style="display: none;">Eliminar</button>
-                </form>
-            </td>
-            <td >
-                <input class="btn btn-primary" type="submit" id="aplicar" name="aplicar" value="Aplicar">
-            </td>
-        </tr>
+                    {% endfor %}
+                </td>
+                <td style="width: 50%;">
+                    <p>{{vacante.descripcion}}</p>
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td></td>
+                <td style="text-align: right;">
+                    
+                </td>
+                <td>
+                <td><button class="btn btn-primary" id="aplicar" data-id-vacante="{{vacante.id}}" >Aplicar</button></td>
 
-    </table>
-    <hr>
 
-{% endfor %}
-</div>
+                </td>
+            </tr>
+
+        </table>
+        <hr>
+
+        {% endfor %}
+    </div>
 </div>
 <div class="space"></div>
+</body>
+<script type="text/javascript">
+
+    document.addEventListener('DOMContentLoaded', function () {
+        var id_vacante = document.querySelectorAll('#aplicar');
+        for (var i = 0; i < id_vacante.length; i++) {
+            const id = id_vacante[i].getAttribute("data-id-vacante");
+            id_vacante[i].addEventListener('click', () => {
+                aplicantes(id);
+
+            });
+        }
+
+
+    });
+    function aplicantes(ids) {
+        var id_vacante = document.querySelectorAll('#aplicar');
+        for (var i = 0; i < id_vacante.length; i++) {
+            if(id_vacante[i].getAttribute("data-id-vacante") == ids){
+                id_vacante[i].innerHTML = 'Aplicado';
+            }
+        }
+
+        let csrftoken = getCookie('csrftoken');
+        fetch(`gestion-vacante/${ids}/aplicantes`, {
+            method: 'PUT',
+            headers: { "X-CSRFToken": csrftoken }
+        });
+    }
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+</script>
+{% endblock %}
+{% block script %}
+
 {% endblock %}
