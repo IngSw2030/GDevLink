@@ -91,12 +91,12 @@
                 <div class="list-group"> 
                     {% for key,value in miembros.items %}       
                     <li>
-                        {% if user.imagen %}
-                            <img src="{{ user.imagen.url }}" class="avatar imagePerfil" id="fondoTransparente" alt="My Image" />
+                        {% if key.imagen %}
+                            <img src="{{ key.imagen.url }}" class="avatar imagePerfil" id="fondoTransparente" alt="My Image" />
                             {% else %}
-                            <img src="/usuarios/defaultUser.png" class="avatar imagePerfil" id="fondoTransparente" alt="Imagen" />
+                            <img src="media/usuarios/defaultUser.png" class="avatar imagePerfil" id="fondoTransparente" alt="Imagen" />
                           {% endif %}
-                        <a href="/usuarios/{{key}}/perfil">{{key}} - {{value}}</a>
+                        <a href="/usuarios/{{key.username}}/perfil">{{key.username}} - {{value}}</a>
                     </li>
                     {% endfor %}
                 </div>
@@ -273,24 +273,28 @@
                 }
             </script>
             <hr>
-            <div class="overflow-auto"> 
-                {% if not actualizaciones %}
-                    <p>No hay Actualizaciones</p>
+            
+                
+
+            
+        </div>
+        {% if not actualizaciones %}
+                <div class="contenido"><p>No hay Actualizaciones</p>
+                </div>
+                    
                 {% else %}
                     {% for actualizacion in actualizaciones %}
-                    <div>
+                    <div class="contenido">
+                    <p class="timestamp"> {{actualizacion.fecha}} </p>
+                    <p> {{actualizacion.descripcion}} </p>   
                         {% if actualizacion.imagen %}
-                        <img src="{{ actualizacion.imagen.url }}" class="" id="" alt="My Image" />
-                        
+                        <img src="{{ actualizacion.imagen.url }}" class="" id="limage" alt="My Image" />    
                         {% endif %}
-                        <p>{{ actualizacion.descripcion }}</p>
+                       
                     </div>
-                    <hr>
+                    <div class="spaceBox"></div> 
                     {% endfor %}
-                {% endif %}
-
-            </div>
-        </div>
+        {% endif %}
 
 
     </body>

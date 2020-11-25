@@ -91,7 +91,7 @@ def proyecto(request,nombre):
                 #al final del string
                 roles_p = roles_p + " - " + str(Permiso.labels[Permiso.values.index(participacion.permiso)])
                 #String es agregado a la lista de participaciones, en la posición del usuario
-                participaciones[participacion.usuario.username] = roles_p
+                participaciones[participacion.usuario] = roles_p
             #Se obtienen las actualizaciones de un proyecto
             actualizaciones = ManejadorProyectos.obtenerActualizaciones(nombre)
 
