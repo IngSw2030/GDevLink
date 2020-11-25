@@ -333,15 +333,15 @@ def seguir(request,nombre):
 
 def explorarProyectos(request):
 
-    if request.method == "POST":
-        nombre_busqueda = request.POST['barraBusqueda']
-        generos = request.POST.getlist("generos")
-        fase = request.POST.getlist('fase')
-        frameworks = request.POST.getlist('frameworks')
+    if request.method == "GET":
+        nombre_busqueda = request.GET.getlist('barraBusqueda')
+        generos = request.GET.getlist("generos")
+        fase = request.GET.getlist('fase')
+        frameworks = request.GET.getlist('frameworks')
 
         proyectos = []
-
-        proyectos = ManejadorProyectos.buscarProyecto(nombre_busqueda,generos,fase,frameworks)
+        Nombre_proyecto = ' '.join(map(str, nombre_busqueda))
+        proyectos = ManejadorProyectos.buscarProyecto(Nombre_proyecto,generos,fase,frameworks)
 
         return render(request, "proyectos/explorarProyectos.html", {
             "generos": Genero,

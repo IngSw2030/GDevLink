@@ -147,15 +147,23 @@
         var id_vacante = document.querySelectorAll('#aplicar');
         for (var i = 0; i < id_vacante.length; i++) {
             if(id_vacante[i].getAttribute("data-id-vacante") == ids){
-                id_vacante[i].innerHTML = 'Aplicado';
+                
+                if (id_vacante[i].innerHTML !='Aplicado'){
+                    id_vacante[i].innerHTML = 'Aplicado';
+                    let csrftoken = getCookie('csrftoken');
+                    fetch(`gestion-vacante/${ids}/aplicantes`, {
+                        method: 'PUT',
+                        headers: { "X-CSRFToken": csrftoken }
+                    });
+                }
+                else{
+                    alert('Usted ya aplico a esta vacante.')
+                }
+                    
             }
         }
 
-        let csrftoken = getCookie('csrftoken');
-        fetch(`gestion-vacante/${ids}/aplicantes`, {
-            method: 'PUT',
-            headers: { "X-CSRFToken": csrftoken }
-        });
+        
     }
     function getCookie(name) {
         var cookieValue = null;

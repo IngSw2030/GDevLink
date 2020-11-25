@@ -115,10 +115,6 @@ def perfil(request, nombre_usuario):
         roles = request.POST.getlist('roles')
         generos = request.POST.getlist('generos')
         frameworks = request.POST.getlist('frameworks')
-        if(len(roles) == 0):
-            return render(request, "main/error.html", {
-                "mensaje": "Debe seleccionar al menos (1) rol."
-            })
         user = ManejadorUsuarios.obtenerUsuario(nombre_usuario)
         # Se revisa que el usuario que va a modificar el perfil sea el dueño del perfil
         if user is None:
