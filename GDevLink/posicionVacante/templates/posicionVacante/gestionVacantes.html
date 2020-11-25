@@ -77,14 +77,18 @@
                         </tr>
                         <tr style="width: auto;">
                             <td>
-                                {% for rol in vacante.roles %}
-                                    <span>{{rol}}</span>
+                                {% for rol in posiblesRoles %}
+                                    {% if rol in vacante.roles%}
+                                    <span>{{rol.label}}</span>
+                                    {% endif %}
                                     <br>
                                 {% endfor %}
                             </td>
                             <td>
-                                {% for framework in vacante.frameworks %}
-                                    <span>{{framework}}</span>
+                                {% for framework in posiblesFrameworks %}
+                                    {% if framework in vacante.frameworks%}
+                                    <span>{{framework.label}}</span>
+                                    {% endif %}
                                     <br>
                                 {% endfor %}
                             </td>
@@ -106,7 +110,11 @@
                                     <button class="btn btn-primary" name="eliminarVacante" style="display: none;">Eliminar</button>
                                 </form>
                             </td>
+                            <td>
+                                <a href="/vacantes/listaAplicantes/{{vacante.id}}" class="btn btn-primary" data-id-vacante="{{vacante.id}}">Ver lista aplicantes</a>
+                            </td>
                         </tr>
+
                     </table>
                     <hr>
                 {% endfor %}

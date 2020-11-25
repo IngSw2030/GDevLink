@@ -11,6 +11,7 @@
 
             <link rel="stylesheet" href="{% static 'usuarios/styles.css' %}">
             {% csrf_token %}
+            <br>
             <div class="">
                 {% if not usuario.imagen %}
                 <img src="https://i.ibb.co/MNdStBT/foto-perfil.png" alt="foto-perfil" class="center" width="180">
@@ -35,14 +36,17 @@
                     <ul style="list-style-type: circle">
                         {% for rol in posiblesRoles %}
                         {% if rol.label in roles%}
-                        <label class="form-check-label" for="inlineCheckbox1">{{rol.label}}</label>
                         <input class="form-check-input" name="roles" type="checkbox" id="inlineCheckbox1" value="{{rol}}"
                             checked="true">&nbsp&nbsp&nbsp
-                        {% else %}
                         <label class="form-check-label" for="inlineCheckbox1">{{rol.label}}</label>
+                        
+                        {% else %}
                         <input class="form-check-input" name="roles" type="checkbox" id="inlineCheckbox1"
                             value="{{rol}}">&nbsp&nbsp&nbsp
+                        <label class="form-check-label" for="inlineCheckbox1">{{rol.label}}</label>
+                        
                         {% endif %}
+                        <br>
                         {% endfor %}
                     </ul>
                 </div>
@@ -51,14 +55,17 @@
                     <ul style="list-style-type: circle">
                         {% for genero in posiblesGeneros %}
                         {% if genero.label in generos%}
-                        <label class="form-check-label" for="inlineCheckbox1">{{genero.label}}</label>
                         <input class="form-check-input" name="generos" type="checkbox" id="inlineCheckbox1" value="{{genero}}"
                             checked="true">&nbsp&nbsp&nbsp
-                        {% else %}
                         <label class="form-check-label" for="inlineCheckbox1">{{genero.label}}</label>
+                        
+                        {% else %}
                         <input class="form-check-input" name="generos" type="checkbox" id="inlineCheckbox1"
                             value="{{genero}}">&nbsp&nbsp&nbsp
+                        <label class="form-check-label" for="inlineCheckbox1">{{genero.label}}</label>
+                        
                         {% endif %}
+                        <br>
                         {% endfor %}
                     </ul>
                 </div>
@@ -67,35 +74,52 @@
                     <ul style="list-style-type: circle">
                         {% for framework in posiblesFrameworks %}
                         {% if framework.label in frameworks%}
-                        <label class="form-check-label" for="inlineCheckbox1">{{framework.label}}</label>
                         <input class="form-check-input" name="frameworks" type="checkbox" id="inlineCheckbox1"
                             value="{{framework}}" checked="true">&nbsp&nbsp&nbsp
-                        {% else %}
                         <label class="form-check-label" for="inlineCheckbox1">{{framework.label}}</label>
+                        
+                        {% else %}
                         <input class="form-check-input" name="frameworks" type="checkbox" id="inlineCheckbox1"
                             value="{{framework}}">&nbsp&nbsp&nbsp
+                        <label class="form-check-label" for="inlineCheckbox1">{{framework.label}}</label>
+                        
                         {% endif %}
+                        <br>
                         {% endfor %}
                     </ul>
                 </div>
                 <div>
                     <span> Proyectos: </span>
-                    <ul style="list-style-type: circle">
+                    <ul class="listas">
                         {% for key,value in participaciones.items %}
                         <li>
                             {{key}} - {{value}}
                         </li>
                         {% endfor %}
                     </ul>
-                </div>   
+                </div>
                 <br>
                 <a href="/usuarios/cambio-clave">Cambiar Contraseña</a>
-                <br><br>
-                <input class="btn btn-primary" type="submit" value="Guardar">
+                <br>
+                <table style="width:189%">
+                    <thead>
+                        <tr>
+                            <th> </th>
+                            <th> </th>
+                        </tr>
+                    </thead>
+                    <br>
+                    <tbody>
+                        <tr>
+                      <td> <input class="btn btn-primary" type="submit" value="Guardar"> </td>
+                      <td> <a  class="btn btn-primary" href="/usuarios/{{user.username}}/perfil">Cancelar</a> </td>
+                        </tr>
+                    </tbody>                    
+                  </table>                
         </form>
         <br />
         <hr />
-        <a href="/usuarios/{{user.username}}/perfil">Cancelar</a>
+        
 </div>
 
 
