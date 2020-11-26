@@ -7,6 +7,7 @@ from posicionVacante.models import PosicionVacante
 from main.enum import Framework, Genero, Rol, Permiso, Fases
 from proyectos.ManejadorProyectos import ManejadorProyectos
 from posicionVacante.ManejadorVacantes import ManejadorVacantes
+from usuarios.ManejadorUsuarios import ManejadorUsuarios
 
 # Vista para la página principal
 def index(request):
@@ -18,7 +19,7 @@ def index(request):
           pagina_anterior = -1
           pagina_siguiente = -1
           #Se obtiene el usuario
-          usuario = Usuario.objects.get(username=request.user.get_username())
+          usuario = ManejadorUsuarios.obtenerUsuario(request.user.username)
           try:
                #Se obtienen las actualizaciones de los proyectos seguidos por el usuario, ordenadas descendentemente por fecha
                actualizaciones = Actualizacion.objects.order_by("-fecha").filter(proyecto__in = usuario.proyectos_seguidos.all())
@@ -35,7 +36,7 @@ def index(request):
                #Se revisa si hay página siguiente
                if pagina.has_next():
                     pagina_siguiente = numero_pagina + 1
-               rolesUser = request.user.roles
+               rolesUser = usuario.roles
      
                vacantesRepetidas = []
                #fase = Fases.labels[Fases.values.index(proyecto.fase)]
