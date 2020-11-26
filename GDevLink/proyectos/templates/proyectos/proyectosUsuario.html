@@ -16,31 +16,35 @@
     <link rel="stylesheet" href="{% static 'proyectos/stylesMisP.css' %}">
     <body>
         
-        <div class="withShadow">
+        <div class="container withShadow">
             
             <p><a class="btn btn-primary topbtn" href="{%url 'crearProyecto'%}"><svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="plus" class="svg-inline--fa fa-plus fa-w-14" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path fill="currentColor" d="M416 208H272V64c0-17.67-14.33-32-32-32h-32c-17.67 0-32 14.33-32 32v144H32c-17.67 0-32 14.33-32 32v32c0 17.67 14.33 32 32 32h144v144c0 17.67 14.33 32 32 32h32c17.67 0 32-14.33 32-32V304h144c17.67 0 32-14.33 32-32v-32c0-17.67-14.33-32-32-32z"></path></svg>
                 Crear Proyecto</a></p>
             <div class="row">
-            {% for proyecto in proyectos %}
+            {% for key,value in participaciones.items %}
                 <div class="col-sm">
                     <div class="card">
-                        {% if not proyecto.imagen %}
+                        {% if not key.imagen %}
                         <img class="card-img-top" src="{% static 'proyectos/pic03.jpg' %}" alt="Card image cap">
                         {% else %}
-                        <img class="card-img-top" src="{{ proyecto.imagen.url }}" alt="Card image cap">
+                        <img class="card-img-top" src="{{ key.imagen.url }}" alt="Card image cap">
                         {% endif %}
                         <div class="card-body">
-                            <h5 class="card-title">{{proyecto.nombre}}</h5>
-                            <p class="card-text">Rol: </p>
-                            <a href="/proyectos/{{proyecto.nombre}}/proyecto" class="btn btn-primary">Ir al proyecto</a>
+                            <h5 class="card-title">{{key.nombre}}</h5>
+                            <p class="card-text">Rol: {{value}}</p>
+                            <a href="/proyectos/{{key.nombre}}/proyecto" class="btn btn-primary">Ir al proyecto</a>
                         </div>
                     </div>
                 </div>
             {% endfor %}
+            
             </div>
         </div>
         
-        
+        {% if not participaciones %}
+            <h3>Parece que todavía no tienes proyectos</h3>
+            
+            {% endif %}
         
     </body>
 

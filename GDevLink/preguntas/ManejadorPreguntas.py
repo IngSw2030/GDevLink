@@ -116,14 +116,18 @@ class ManejadorPreguntas(IManejadorPreguntas):
         return 0
 
     def puntuarRespuestaPos(idRespuesta, nombreUsuaro):
+        print("pos")
         #Busqueda de pregunta y usuario
         try:
-            pregunta=Pregunta.objects.get(id=idPregunta)
+            respuesta=Respuesta.objects.get(id=idRespuesta)
         except Pregunta.DoesNotExist:
             return 1
         if respuesta is None:
             return 1
-        usuario = Usuario.objects.get(username=nombreUsuaro)
+        try:
+            usuario = Usuario.objects.get(username=nombreUsuaro)
+        except Usuario.DoesNotExist:
+            return 1
         if usuario is None:
             return 1
         #Se le agrega el punto positivo a la respuesta
@@ -139,14 +143,18 @@ class ManejadorPreguntas(IManejadorPreguntas):
         return 0
 
     def puntuarRespuestaNeg(idRespuesta, nombreUsuaro):
+        print("neg")
         #Busqueda de pregunta y usuario
         try:
-            pregunta=Pregunta.objects.get(id=idPregunta)
+            respuesta=Respuesta.objects.get(id=idRespuesta)
         except Pregunta.DoesNotExist:
             return 1
         if respuesta is None:
             return 1
-        usuario = Usuario.objects.get(username=nombreUsuaro)
+        try:
+            usuario = Usuario.objects.get(username=nombreUsuaro)
+        except Usuario.DoesNotExist:
+            return 1
         if usuario is None:
             return 1
         #Se le agrega el punto negativo a la pregunta

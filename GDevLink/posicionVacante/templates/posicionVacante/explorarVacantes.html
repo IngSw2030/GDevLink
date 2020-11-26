@@ -151,7 +151,7 @@
                 if (id_vacante[i].innerHTML !='Aplicado'){
                     id_vacante[i].innerHTML = 'Aplicado';
                     let csrftoken = getCookie('csrftoken');
-                    fetch(`gestion-vacante/${ids}/aplicantes`, {
+                    fetch(`/vacantes/vacante/${ids}/aplicantes`, {
                         method: 'PUT',
                         headers: { "X-CSRFToken": csrftoken }
                     });
@@ -163,15 +163,11 @@
             }
         }
 
-<<<<<<< HEAD
         let csrftoken = getCookie('csrftoken');
         fetch(`/vacantes/vacante/${ids}/aplicantes`, {
             method: 'PUT',
             headers: { "X-CSRFToken": csrftoken }
         });
-=======
-        
->>>>>>> 45d9f789baa4f7be1e44321d575b391512ff6451
     }
     function getCookie(name) {
         var cookieValue = null;

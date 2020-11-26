@@ -91,7 +91,7 @@ def proyecto(request,nombre):
                 #al final del string
                 roles_p = roles_p + " - " + str(Permiso.labels[Permiso.values.index(participacion.permiso)])
                 #String es agregado a la lista de participaciones, en la posición del usuario
-                participaciones[participacion.usuario.username] = roles_p
+                participaciones[participacion.usuario] = roles_p
             #Se obtienen las actualizaciones de un proyecto
             actualizaciones = ManejadorProyectos.obtenerActualizaciones(nombre)
 
@@ -165,8 +165,19 @@ def proyecto(request,nombre):
 
 @login_required
 def proyectosUsuario(request): 
-    proyectos = ManejadorProyectos.obtenerProyectosUsuario(request.user)
-    return render(request,"proyectos/proyectosUsuario.html",{"proyectos": proyectos})    
+    participacionesAll = ManejadorProyectos.obtenerParticipacionesUsuario(request.user)
+    participaciones = {}
+    for part in participacionesAll:          
+            roles_p = ""
+            #Para cada vacante se recorren sus roles
+            for rol in part.roles:
+                #Todos los roles son concatenados
+                roles_p= roles_p + " " + str(Rol.labels[Rol.values.index(rol)])  
+                #String es agregado a la lista de vacantes, en la posición del usuario
+            roles_p = roles_p + " - " + str(Permiso.labels[Permiso.values.index(part.permiso)])
+            participaciones[part.proyecto] = roles_p
+
+    return render(request,"proyectos/proyectosUsuario.html",{"participaciones": participaciones})    
     
    
 @login_required
