@@ -191,8 +191,9 @@
                         indicadores.append(indicador);
                     }
                     var x=document.getElementById("nuevaActualizacion")
-                    x.addEventListener("click",
-                    cambiarActualizacion);
+                    if(x != null){
+                        x.addEventListener("click", cambiarActualizacion);
+                    }
                     var y=document.getElementById("cancelarActualizacion");
                     y.addEventListener("click",cambiarActualizacion);
                     var z=document.getElementById("publicar");
