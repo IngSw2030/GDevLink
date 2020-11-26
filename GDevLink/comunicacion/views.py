@@ -16,7 +16,7 @@ from usuarios.ManejadorUsuarios import ManejadorUsuarios
 # Create your views here.
 
 
-@login_required
+@login_required(login_url='/usuarios/inicio-sesion')
 def conversaciones(request):
      if request.method == "POST":
           usuarioB = request.POST.getlist('usuarioB')
@@ -41,7 +41,7 @@ def conversaciones(request):
      
   
 
-@login_required
+@login_required(login_url='/usuarios/inicio-sesion')
 def chat(request, room_name):
      if request.method == "GET":
           conversacion = ManejadorComunicacion.obtenerMensajes(request.user.username, room_name)

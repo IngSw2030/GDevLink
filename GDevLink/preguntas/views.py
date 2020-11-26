@@ -63,24 +63,32 @@ def verPregunta(request,ids):
         if  pregunta is None:
             #Si no se encuentra la pregunta se regresa a la pagina inicial de preguntas
             return HttpResponseRedirect(reverse("preguntas"))
-        usuario = Usuario.objects.get(username=request.user.get_username())
         respuestasOrdenadas=pregunta.respuestas.annotate(puntos=Count('puntosPositivos') - Count('puntosNegativos')).order_by('-puntos')
-        #Se obtienen las respuestas de la pregunta
-        respuestas=obtenerRespuestas(respuestasOrdenadas,pregunta,usuario)
-        #Se verifica si la pregunta esta puntuada por el usuario
-        if usuario.preguntasPuntosPositivos.filter(id = ids):
-            preguntaPos = True
-            preguntaNeg = False
-        else:
-            preguntaPos = False
-            if usuario.preguntasPuntosNegativos.filter(id = ids):
-                preguntaNeg = True
-            else:
+        #Si el usuario esta autentificado se recupera sus datos
+        if request.user.is_authenticated:
+            usuario = Usuario.objects.get(username=request.user.get_username())
+            #Se obtienen las respuestas de la pregunta
+            respuestas=obtenerRespuestas(respuestasOrdenadas,pregunta,usuario)
+            #Se verifica si la pregunta esta puntuada por el usuario
+            if usuario.preguntasPuntosPositivos.filter(id = ids):
+                preguntaPos = True
                 preguntaNeg = False
-        #Se verifica si el usuario es el autor de la pregunta
-        if usuario == pregunta.autor:
-            autor=True
+            else:
+                preguntaPos = False
+                if usuario.preguntasPuntosNegativos.filter(id = ids):
+                    preguntaNeg = True
+                else:
+                    preguntaNeg = False
+            #Se verifica si el usuario es el autor de la pregunta
+            if usuario == pregunta.autor:
+                autor=True
+            else:
+                autor=False
+        #Si el usuario no esta autentificado se deja datos por defecto
         else:
+            respuestas=obtenerRespuestas(respuestasOrdenadas,pregunta,None)
+            preguntaPos = False
+            preguntaNeg = False
             autor=False
         return render(request,"preguntas/verPregunta.html",{
             "pregunta":pregunta, "respuestas":respuestas,
@@ -207,13 +215,17 @@ def obtenerRespuestas(respuestasOrdenadas,pregunta,usuario):
         mR=False
         if pregunta.mejorRespuesta == r:
                 mR=True
-        if usuario.respuestasPuntosPositivos.filter(id = r.id):
-            rp=True
+        if usuario is not None:
+            if usuario.respuestasPuntosPositivos.filter(id = r.id):
+                rp=True
+            else:
+                rp=False
+            if usuario.respuestasPuntosNegativos.filter(id = r.id):
+                rn=True
+            else:
+                rn=False
         else:
             rp=False
-        if usuario.respuestasPuntosNegativos.filter(id = r.id):
-            rn=True
-        else:
             rn=False
         respuesta={"respuesta":r,"mejorRespuesta":mR,"positivo":rp,"negativo":rn,"autor":r.autor.get_username()}
         respuestas.append(respuesta)
