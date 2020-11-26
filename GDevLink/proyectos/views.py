@@ -95,16 +95,21 @@ def proyecto(request,nombre):
             #Se obtienen las actualizaciones de un proyecto
             actualizaciones = ManejadorProyectos.obtenerActualizaciones(nombre)
 
-            #Se verifica si el usuario que hace la petición es un administrador
-            if request.user in ManejadorProyectos.obtenerAdministradores(nombre):
-                admin = True
+            #se verifica si el usuario esta atuentificado. SI no se dejan los valores por defecto
+            if request.user.is_authenticated:
+                #Se verifica si el usuario que hace la petición es un administrador
+                if request.user in ManejadorProyectos.obtenerAdministradores(nombre):
+                    admin = True
+                else:
+                    admin = False
+                #Revisar si el usuario sigue el proyecto
+                usuario = request.user
+                if usuario.proyectos_seguidos.filter(nombre = nombre):
+                    siguiendo = True
+                else:
+                    siguiendo = False
             else:
                 admin = False
-            #Revisar si el usuario sigue el proyecto
-            usuario = request.user
-            if usuario.proyectos_seguidos.filter(nombre = nombre):
-                siguiendo = True
-            else:
                 siguiendo = False
             #Se envia al cliente toda la información del proyecto
             return render(request, "proyectos/proyecto.html", {
@@ -163,7 +168,7 @@ def proyecto(request,nombre):
             })
         return HttpResponseRedirect(reverse("proyecto",kwargs={"nombre": nombre}))
 
-@login_required
+@login_required(login_url='/usuarios/inicio-sesion')
 def proyectosUsuario(request): 
     participacionesAll = ManejadorProyectos.obtenerParticipacionesUsuario(request.user)
     participaciones = {}
@@ -180,7 +185,7 @@ def proyectosUsuario(request):
     return render(request,"proyectos/proyectosUsuario.html",{"participaciones": participaciones})    
     
    
-@login_required
+@login_required(login_url='/usuarios/inicio-sesion')
 def editarProyecto(request, nombre):
     if request.method == "GET":
         try:
@@ -215,7 +220,7 @@ def editarProyecto(request, nombre):
                 "mensaje": "Proyecto no encontrado."
             })
 
-@login_required        
+@login_required(login_url='/usuarios/inicio-sesion')     
 def gestionMiembros (request, nombre):
     if request.method == "GET":
         try:
@@ -321,7 +326,7 @@ def administradores (request, nombre):
             })
         return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre}))     
    
-
+@login_required(login_url='/usuarios/inicio-sesion')
 def nuevaActualizacion(request,nombre):
     if request.method == "POST":
         if 'imagenNueva' in request.FILES:
@@ -337,13 +342,13 @@ def nuevaActualizacion(request,nombre):
 
     return HttpResponseRedirect(reverse("proyecto",kwargs={"nombre": nombre}))
 
+@login_required(login_url='/usuarios/inicio-sesion')
 def seguir(request,nombre):
     if request.method == 'PUT':
         ManejadorProyectos.seguirProyecto(request.user, nombre)    
     return HttpResponse(status=200)
 
 def explorarProyectos(request):
-
     if request.method == "GET":
         nombre_busqueda = request.GET.getlist('barraBusqueda')
         generos = request.GET.getlist("generos")
