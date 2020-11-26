@@ -5,6 +5,12 @@
  background-color: transparent;
  color: #e6e6e6;
  font-size: 18pt;
+ 
+}
+
+#contenidoPrincipal{
+  margin-right: 16rem;
+  margin-left: 10rem;
 }
 
 

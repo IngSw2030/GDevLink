@@ -91,9 +91,9 @@
       
             const roomName = JSON.parse(document.getElementById('room-name').textContent);
             const user_username = JSON.parse(document.getElementById('user_username').textContent);
-
+            var ws_scheme = window.location.protocol == "https:" ? "wss" : "ws";
             const chatSocket = new WebSocket(
-                'ws://'
+                ws_scheme+'://'
                 + window.location.host
                 + '/ws/comunicacion/conversaciones/'
                 + roomName

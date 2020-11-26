@@ -679,6 +679,10 @@ html, body
 		  display: none;
 	  }
 
+	  #limage{
+		object-fit: scale-down; max-height: 400px; align-self: center;
+	  }
+
   }
 
 	  /* Large screens */
