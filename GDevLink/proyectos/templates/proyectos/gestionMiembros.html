@@ -37,82 +37,89 @@
         <div class="contenido"> 
                 <form action="/proyectos/{{proyecto.nombre}}/miembros" method="post"> {% csrf_token %}
                     <nav class=" busqueda">
-                        <div class="usuarios" align="center">
-                                <div id="searchWrapper">
-                                    <input
-                                        type="text"
-                                        name="searchBar"
-                                        id="searchBar"
-                                        placeholder="Busca un usuario"
-                                    />
-                                    <ul id="usuarios"></ul>
+                        <nav class=" busqueda">
+                            <div class="usuarios" id="searchWrapper">
+                                <input
+                                    type="text"
+                                    name="searchBar"
+                                    id="searchBar"
+                                    placeholder="Busca un usuario"
+                                />
+                                <div class="dropdown-menu" id="" aria-labelledby="dropdownMenuLink"></div>
+                                <div class="overflow-hidden">
+                                    <ul class="select" name="usuarioB" id="usuarios">
+    
+                                    </ul>
+                                </div>
+                            </div>             
                                     <label> Roles: </label>
                                     {% for auxRol in posiblesRoles %}
-                                    <label class="checkbox" for="defaultCheck1">
-                                        <input class="form-check-input" name="roles" type="checkbox" id="defaultCheck1"
+                                    <label style="padding-left: 15px;" class="checkbox" for="defaultCheck1">
+                                        <input  class="form-check-input" name="roles" type="checkbox" id="defaultCheck1"
                                             value="{{auxRol}}">
                                         {{auxRol.label}}                        
                                     </label>
                                     {% endfor %}
                                     <input onClick="location.reload()" class="btn btn-primary" type="submit" value="Agregar Miembro">
-                                </div>           
-                        </div>
-                    </nav>
+                        </nav>     
                 </form>
+        </div>
+        <br>
+        <div class="contenido">
+                
+            <h1>Miembros del proyecto:</h1>
+            <table style="width:100%" >
+                <thead>
+                    <tr>
+                        <th>Usuario </th>
+                        <th>Rol </th>
+                        <th>Permiso </th>
+                        <th>Acciones </th>
+                    </tr>
+                </thead>
                 <br>
-                <br>
-                <h1>Miembros del proyecto:</h1>
-                <table style="width:100%" >
-                    <thead>
+                <tbody>
+                        {% for usuariosPointer in miembros %}
+                        
                         <tr>
-                            <th>Usuario </th>
-                            <th>Rol </th>
-                            <th>Permiso </th>
-                            <th>Acciones </th>
-                        </tr>
-                    </thead>
-                    <br>
-                    <tbody>
-                            {% for usuariosPointer in miembros %}
-                            
-                            <tr>
-                                <td><a href="/usuarios/{{usuariosPointer.usuario.username}}/perfil">{{usuariosPointer.usuario.username}}.</a></td>
-                                <td>
-                                {% for rolesPointer in posiblesRoles %}
-                                {% if rolesPointer in usuariosPointer.roles  %}
-                                {{rolesPointer.label}}.
-                                {% endif %}
-                                {% endfor %}
-                                </td>
-                                <td>
-                                {% for permisosPointer in posiblesPermisos %}
-                                {% if permisosPointer in usuariosPointer.permiso  %}
-                                {{permisosPointer.label}}.
-                                {% endif %}
-                                {% endfor %}
-                                </td>
-                                {% if usuariosPointer.permiso == 'MI'  %}
-                                <td><button  class="btn btn-primary" id="promover"  data-id-persona="{{usuariosPointer.usuario.username}}">Promover</button>
-                                    <button  class="btn btn-primary" id="eliminar"  data-id-persona="{{usuariosPointer.usuario.username}}">Eliminar</button> </td>
-                                {% endif %}
-                                {% if usuariosPointer.permiso == 'AD'  %}
-                                <td><button  class="btn btn-primary" id="revocar"  data-id-persona="{{usuariosPointer.usuario.username}}">Revocar</button>
-                                    <button  class="btn btn-primary" id="eliminar"  data-id-persona="{{usuariosPointer.usuario.username}}">Eliminar</button></td>
-                                {% endif %}
-                                {% if usuariosPointer.permiso == 'MA'  %}
-                                <td> N/A. </td>
-                                {% endif %}
-                            </tr>
+                            <td><a href="/usuarios/{{usuariosPointer.usuario.username}}/perfil">{{usuariosPointer.usuario.username}}.</a></td>
+                            <td>
+                            {% for rolesPointer in posiblesRoles %}
+                            {% if rolesPointer in usuariosPointer.roles  %}
+                            {{rolesPointer.label}}.
+                            {% endif %}
                             {% endfor %}
-                            
-                    </tbody>
+                            </td>
+                            <td>
+                            {% for permisosPointer in posiblesPermisos %}
+                            {% if permisosPointer in usuariosPointer.permiso  %}
+                            {{permisosPointer.label}}.
+                            {% endif %}
+                            {% endfor %}
+                            </td>
+                            {% if usuariosPointer.permiso == 'MI'  %}
+                            <td><button  class="btn btn-primary" id="promover"  data-id-persona="{{usuariosPointer.usuario.username}}">Promover</button>
+                                <button  class="btn btn-primary" id="eliminar"  data-id-persona="{{usuariosPointer.usuario.username}}">Eliminar</button> </td>
+                            {% endif %}
+                            {% if usuariosPointer.permiso == 'AD'  %}
+                            <td><button  class="btn btn-primary" id="revocar"  data-id-persona="{{usuariosPointer.usuario.username}}">Revocar</button>
+                                <button  class="btn btn-primary" id="eliminar"  data-id-persona="{{usuariosPointer.usuario.username}}">Eliminar</button></td>
+                            {% endif %}
+                            {% if usuariosPointer.permiso == 'MA'  %}
+                            <td> N/A. </td>
+                            {% endif %}
+                        </tr>
+                        {% endfor %}
+                        
+                </tbody>
 
-                </table>  
-                          
-            </div>
-            <div>  
-                <p align="center" ><a class="btn btn-primary" href="/proyectos/{{proyecto.nombre}}/proyecto"  >Volver</a></p>
-            </div> 
+            </table>  
+                      
+            <br> 
+            <p align="center" ><a class="btn btn-primary" href="/proyectos/{{proyecto.nombre}}/proyecto"  >Volver</a></p>
+
+        </div>    
+                 
     </div>
 
 </body>
