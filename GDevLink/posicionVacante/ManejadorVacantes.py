@@ -4,6 +4,7 @@ from proyectos.ManejadorProyectos import ManejadorProyectos
 from usuarios.ManejadorUsuarios import ManejadorUsuarios
 from django.db import IntegrityError
 from main.enum import Framework, Genero, Rol, Permiso, Fases
+import re
 
 #Clase que implementa la interfaz IManejadorVacantes
 class ManejadorVacantes(IManejadorVacantes):
@@ -54,15 +55,28 @@ class ManejadorVacantes(IManejadorVacantes):
             return -1
     
     def buscarVacantes(nombreProyecto, roles, frameworks):  
+        #print(nombreProyecto)
+        vacantesEnviar =[]
+
         if nombreProyecto != '':
-            return PosicionVacante.objects.filter(
+
+            vacantes = PosicionVacante.objects.filter(
 
                 roles__contains=roles,
 
                 frameworks__contains=frameworks,
 
-                proyecto__icontains=nombreProyecto
+                #proyecto=nombreProyecto
             )
+            
+            for vacante in vacantes:
+                nombre_pro = vacante.proyecto.nombre
+                if nombre_pro.find(nombreProyecto):
+                    pass
+                else:
+                    vacantesEnviar.append(vacante)
+
+            return vacantesEnviar
         else:
             return PosicionVacante.objects.filter(
 
