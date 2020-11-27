@@ -68,9 +68,9 @@
     <div class="contenido2">
         
             {% if not pop.imagen %}
-            <img  src="{% static 'proyectos/pic03.jpg' %}"  width="700"  alt="My Image"/>
+            <img  src="{% static 'proyectos/pic03.jpg' %}"  class="imagen"  alt="My Image"/>
             {% else %}
-            <img src="{{ pop.imagen.url }}"  width="700" alt="My Image"/>
+            <img src="{{ pop.imagen.url }}"  class="imagen" alt="My Image"/>
             {% endif %}
             <br><br>
         <a href="/proyectos/{{pop.nombre}}/proyecto"> <h3>{{pop.nombre}}</h3> </a>
