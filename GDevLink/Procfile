@@ -1,2 +1,2 @@
-web: daphne GDevLink.asgi:application --port $PORT --bind 0.0.0.0 -v2
-worker: python manage.py runworker channels --settings=GDevLink.settings -v2
+web: gunicorn GDevLink.asgi:application -b 0.0.0.0:$PORT -w 1 -k uvicorn.workers.UvicornWorker
+worker: python manage.py runworker channels --settings=GDevLink.settings

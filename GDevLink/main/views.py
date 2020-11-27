@@ -43,8 +43,11 @@ def index(request):
                if rolesUser is not None:
                     for r in rolesUser:
                          vacantesRepetidas = vacantesRepetidas + list(PosicionVacante.objects.filter(roles__contains=[r]))
+                    vacantesCodigo = list(dict.fromkeys(vacantesRepetidas))
+               else:
+                    vacantesCodigo = PosicionVacante.objects.all()
     
-               vacantesCodigo = list(dict.fromkeys(vacantesRepetidas))
+               
                vacantes = {}
                proyectoKey = {}
                

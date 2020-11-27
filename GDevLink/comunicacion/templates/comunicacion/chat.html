@@ -22,49 +22,52 @@
                     {% if part.imagen %}
                              <img src="{{ part.imagen.url }}" class="avatar imagePerfil" id="fondoTransparente" alt="My Image" />
                     {% else %}
-                           <img src="/usuarios/defaultUser.png" class="avatar imagePerfil" id="fondoTransparente" alt="Imagen" />
+                           <img src="https://i.ibb.co/MNdStBT/foto-perfil.png" class="avatar imagePerfil" id="fondoTransparente" alt="Imagen" />
                      {% endif %}
                 <a href="/usuarios/{{part.username}}/perfil">{{part.username}}</a>
                 {% endif %}
                 
                 {% endfor %}
                 <div class="con overflow-auto container">
-                
-                    {% if conversacion.mensajes %}
-                        {% for mensaje in conversacion.mensajes.all %}
+                    <section class="chat-container">
+                        <div class="chat-log">
+                            {% if conversacion.mensajes %}
+                                {% for mensaje in conversacion.mensajes.all %}
 
-                            {% if mensaje.autor == request.user %}
+                                    {% if mensaje.autor == request.user %}
 
-                            <div class="mine messages">
-                                <div class="message">
-                                {{mensaje.texto}}
-                                </div>
-                            </div>
-                            {% else %}
+                                    <div class="mine messages">
+                                        <div class="message">
+                                        {{mensaje.texto}}
+                                        </div>
+                                    </div>
+                                    {% else %}
 
-                            <div class="yours messages">
-                                <div class="message">
-                                    {{mensaje.texto}}
-                                </div>
-                            
-                            </div>
+                                    <div class="yours messages">
+                                        <div class="message">
+                                            {{mensaje.texto}}
+                                        </div>
+                                    
+                                    </div>
 
+                                    {% endif %}
+
+                                {% endfor %}
                             {% endif %}
 
-                        {% endfor %}
-                    {% endif %}
+                            <div class="yours messages" id="currentYours">
 
-                    <div class="yours messages" id="currentYours">
+                            </div>  
 
-                    </div>  
+                            <div class="mine messages" id="currentMine">
 
-                    <div class="mine messages" id="currentMine">
-
-                    </div>  
+                            </div> 
+                       </div>
                     <div id="chat__form">
                         <input id="chat-message-input" type="text" placeholder="Escribe un mensaje" size="80">
                         <button id="chat-message-submit" type="button" >Send</button>
-                    </div>                                           
+                    </div>     
+                  </section>                                       
                 </div>
                 
 
@@ -109,14 +112,14 @@
                 const data = JSON.parse(e.data);
                 console.log(data);
                 if(data.autor == user_username){
-                    $('#currentMine').append('<div class="message">'+ data.message + '</div>')
+                    $('.chat-log').append('<div class="mine messages"><div class="message">'+ data.message + '</div></div>')
                 }
                 else{
-                    $('#currentYours').append('<div class="message">'+ data.message + '</div>')
-                //document.querySelector('#chat-log').value += (data.message + '\n')
+                    $('.chat-log').append('<div class="yours messages"><div class="message">'+ data.message + '</div></div>')
+           
                 }
                 makescrollbottom();
-                
+               
             };
 
             chatSocket.onclose = function(e) {
@@ -140,6 +143,20 @@
                 
                 messageInputDom.value = '';
             };
+
+            function appendMessage(text) {
+            //   Simple solution for small apps
+            const msgHTML = `
+               
+
+                <div class="msg-bubble">
+                    <div class="msg-text">${text}</div>
+                </div>
+            `;
+
+            msgerChat.insertAdjacentHTML("beforeend", msgHTML);
+            msgerChat.scrollTop += 500;
+            }
         }
        
         

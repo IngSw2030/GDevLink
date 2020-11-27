@@ -149,3 +149,8 @@ label:hover {
     border: 1px solid #aaa;
     padding: 4px;
 }
+
+.chat-container {
+  display: flex;
+  flex-direction: column;
+}
