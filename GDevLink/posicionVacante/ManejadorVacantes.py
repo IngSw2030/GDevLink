@@ -77,8 +77,14 @@ class ManejadorVacantes(IManejadorVacantes):
             if usuario is None:
                 return -1
             vacante = PosicionVacante.objects.get(id=idVacante)
-            vacante.aplicantes.add(usuario)
-            vacante.save()
+            aplicantes = vacante.aplicantes.all()
+            if  usuario  in aplicantes:
+                return -1
+            else:
+                vacante.aplicantes.add(usuario)
+                vacante.save()
+            
+            
             return 0
         except PosicionVacante.DoesNotExist as e:
             return -1

@@ -10,6 +10,7 @@ from django.urls import reverse
 from django.http import HttpResponse, HttpResponseRedirect
 from posicionVacante.ManejadorVacantes import ManejadorVacantes
 from proyectos.ManejadorProyectos import ManejadorProyectos
+from usuarios.ManejadorUsuarios import ManejadorUsuarios
 
 
 @login_required(login_url='/usuarios/inicio-sesion')
@@ -78,11 +79,23 @@ def vacante(request, ids):
 def aplicantes(request, ids):
     if request.method == "PUT":
         if ManejadorVacantes.aplicarVacante(request.user.username, ids) == 0:
-            return HttpResponse(status=200)
+            vacante = ManejadorVacantes.obtenerVacante(ids)
+            aplicantes = ManejadorVacantes.obtenerAplicantes(ids)
+            autenticado = ManejadorUsuarios.obtenerUsuario(request.user.username)
+            proyecto = vacante.proyecto
+            #return HttpResponse(status=200)
         else:
             return render(request, "main/error.html", {
                 "mensaje": "Ocurrió un error."
             })
+        return render(request, "posicionVacante/explorarVacantes.html", {
+            "vacante": vacante,
+            "aplicantes": aplicantes,
+            "proyecto":proyecto,
+            "posiblesRoles": Rol,
+            "posiblesFrameworks": Framework,
+            "autenticado":autenticado
+        })
     elif request.method == "GET":
         vacante = ManejadorVacantes.obtenerVacante(ids)
         if vacante is None:
@@ -91,17 +104,32 @@ def aplicantes(request, ids):
             })
         proyecto = vacante.proyecto
         aplicantes = ManejadorVacantes.obtenerAplicantes(ids)
+        autenticado = ManejadorUsuarios.obtenerUsuario(request.user.username)
         if aplicantes is None:
             return render(request, "main/error.html", {
                 "mensaje": "Ocurrió un error."
             })
-        return render(request, "posicionVacante/listaAplicantes.html", {
+        return render(request, "posicionVacante/explorarVacantes.html", {
             "vacante": vacante,
             "aplicantes": aplicantes,
             "proyecto":proyecto,
             "posiblesRoles": Rol,
-            "posiblesFrameworks": Framework
+            "posiblesFrameworks": Framework,
+            "autenticado":autenticado
         })
+def listaAplicantes(request,ids):
+    vacante = ManejadorVacantes.obtenerVacante(ids)
+    aplicantes = ManejadorVacantes.obtenerAplicantes(ids)
+    proyecto = vacante.proyecto
+    return render(request, "posicionVacante/listaAplicantes.html", {
+        "vacante": vacante,
+        "aplicantes": aplicantes,
+        "proyecto":proyecto,
+        "posiblesRoles": Rol,
+        "posiblesFrameworks": Framework
+    })
+
+
 
 def explorarVacantes(request):
     if request.method == "POST":
@@ -109,20 +137,38 @@ def explorarVacantes(request):
         roles = request.POST.getlist("roles")
         frameworks = request.POST.getlist('frameworks')
         vacantes = ManejadorVacantes.buscarVacantes(nombre_busqueda, roles, frameworks)
+        autenticado = ManejadorUsuarios.obtenerUsuario(request.user.username)
+        
         return render(request, "posicionVacante/explorarVacantes.html", {
             "posicionesVacantes": vacantes,
             "posiblesRoles": Rol,
-            "posiblesFrameworks": Framework
+            "posiblesFrameworks": Framework,
+            "autenticado":autenticado
         })
     elif request.method == "GET":
         vacantes = []
         vacantes = PosicionVacante.objects.all()
+        autenticado = ManejadorUsuarios.obtenerUsuario(request.user)
+        vacantesAutenticado =[]
 
+        for vacante in vacantes:
+            apl = []
+            apl = ManejadorVacantes.obtenerAplicantes(vacante.id)
+            for apli in apl:
+                if apli.username == autenticado.username:
+                    vacantesAutenticado.append(vacante)
+                   
         return render(request, "posicionVacante/explorarVacantes.html", {
             "posicionesVacantes": vacantes,
             "posiblesRoles": Rol,
-            "posiblesFrameworks": Framework
+            "posiblesFrameworks": Framework,
+            "autenticado":autenticado,
+            "vacantesAutenticado":vacantesAutenticado
         })
+    
+
+        
+
 
 def editarVacante(request,ids):
     vacante = ManejadorVacantes.obtenerVacante(ids)

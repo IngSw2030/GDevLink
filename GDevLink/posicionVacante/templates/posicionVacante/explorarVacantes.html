@@ -113,7 +113,13 @@
                     
                 </td>
                 <td>
-                <td><button class="btn btn-primary" id="aplicar" data-id-vacante="{{vacante.id}}" >Aplicar</button></td>
+                <td><button class="btn btn-primary" id="aplicar" data-id-vacante="{{vacante.id}}" >
+                    {% if vacante in vacantesAutenticado %}
+                    Aplicado
+                    {% else %}
+                     Aplicar
+                    {% endif %}
+                </button></td>
 
 
                 </td>
@@ -144,11 +150,14 @@
 
     });
     function aplicantes(ids) {
+        
         var id_vacante = document.querySelectorAll('#aplicar');
         for (var i = 0; i < id_vacante.length; i++) {
             if(id_vacante[i].getAttribute("data-id-vacante") == ids){
-                
-                if (id_vacante[i].innerHTML !='Aplicado'){
+
+                if(id_vacante[i].innerHTML =='Aplicado'){
+                    alert('usted ya aplico a esta vacante')
+                }else{
                     id_vacante[i].innerHTML = 'Aplicado';
                     let csrftoken = getCookie('csrftoken');
                     fetch(`/vacantes/vacante/${ids}/aplicantes`, {
@@ -156,18 +165,9 @@
                         headers: { "X-CSRFToken": csrftoken }
                     });
                 }
-                else{
-                    alert('Usted ya aplico a esta vacante.')
-                }
                     
             }
         }
-
-        let csrftoken = getCookie('csrftoken');
-        fetch(`/vacantes/vacante/${ids}/aplicantes`, {
-            method: 'PUT',
-            headers: { "X-CSRFToken": csrftoken }
-        });
     }
     function getCookie(name) {
         var cookieValue = null;
