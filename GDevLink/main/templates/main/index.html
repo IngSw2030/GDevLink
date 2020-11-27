@@ -67,7 +67,7 @@
             <img src="{{ pop.imagen.url }}" class="" id="limage" alt="My Image" />
             {% endif %}
         </div>
-        <h2>{{pop.nombre}}</h2>
+        <h2><a href="/proyectos/{{pop.nombre}}/proyecto"> {{pop.nombre}} </a></h2>
         <div>
             <p>{{pop.descripcion}}</p>    
         </div> 
@@ -113,11 +113,63 @@
             <p class="">        
                 {{value}}
              </p>
-            <button >Aplicar</button>
+             {% if user.is_authenticated %}
+              <button id="aplicar" data-id-vacante="{{key}}">Aplicar</button>
+             {% endif %}
         <br>
         {% endfor %}
     </div>
 </div>
+
+<script type="text/javascript">
+    document.addEventListener('DOMContentLoaded', function () {
+        var id_vacante = document.querySelectorAll('#aplicar');
+        for (var i = 0; i < id_vacante.length; i++) {
+            const id = id_vacante[i].getAttribute("data-id-vacante");
+            id_vacante[i].addEventListener('click', () => {
+                aplicantes(id);
+
+            });
+        }
+
+
+    });
+    function aplicantes(ids) {
+        
+        var id_vacante = document.querySelectorAll('#aplicar');
+        for (var i = 0; i < id_vacante.length; i++) {
+            if(id_vacante[i].getAttribute("data-id-vacante") == ids){
+
+                if(id_vacante[i].innerHTML =='Aplicado'){
+                    alert('usted ya aplico a esta vacante')
+                }else{
+                    id_vacante[i].innerHTML = 'Aplicado';
+                    let csrftoken = getCookie('csrftoken');
+                    fetch(`/vacantes/vacante/${ids}/aplicantes`, {
+                        method: 'PUT',
+                        headers: { "X-CSRFToken": csrftoken }
+                    });
+                }
+                    
+            }
+        }
+    }
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                // Does this cookie string begin with the name we want?
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+</script>
 
 {% endblock %}
 

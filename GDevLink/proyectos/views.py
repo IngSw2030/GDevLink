@@ -227,8 +227,6 @@ def gestionMiembros (request, nombre):
             #Si el request no es POST, entonces se renderiza la página
         
             proyecto = ManejadorProyectos.obtenerProyecto(nombre)
-            
-
             result_list = list(Usuario.objects.all().values('username'))
             miembrosNombres = list()
             usuariosNoMiembros = list()
@@ -268,28 +266,29 @@ def miembros(request, nombre):
     if request.method == "POST": 
         roles = request.POST.getlist("roles")
         usuarioB = request.POST.getlist('usuarioB')
-        proyecto = ManejadorProyectos.obtenerProyecto(nombre)    
-        if(len(roles)==0):
-            return render(request, "main/error.html", {
-                "mensaje": "Debe seleccionar al menos (1) rol."
+        if usuarioB:
+            proyecto = ManejadorProyectos.obtenerProyecto(nombre)    
+            if(len(roles)==0):
+                return render(request, "main/error.html", {
+                    "mensaje": "Debe seleccionar al menos (1) rol."
+                })
+            if(len(usuarioB)==0):
+                return render(request, "main/error.html", {
+                    "mensaje": "Debe seleccionar un usuario."
+                })
+            #Se llama al manejador para que agrege el miembro al proyecto
+            result = ManejadorProyectos.agregarMiembro(nombre,usuarioB[0],roles)
+            #Si result es none, el proyecto no existe
+            if result is None:
+                return render(request, "main/error.html", {
+                "mensaje": "El proyecto no existe."
             })
-        if(len(usuarioB)==0):
-            return render(request, "main/error.html", {
-                "mensaje": "Debe seleccionar un usuario."
-            })
-        #Se llama al manejador para que agrege el miembro al proyecto
-        result = ManejadorProyectos.agregarMiembro(nombre,usuarioB[0],roles)
-        #Si result es none, el proyecto no existe
-        if result is None:
-            return render(request, "main/error.html", {
-            "mensaje": "El proyecto no existe."
-        })
-        #Si result es -1, hubo un error inesperado
-        if result == -1:
-            return render(request, "main/error.html", {
-                "mensaje": "Se produjo un error en agregar nuevo miembro"
-            })
-        #Se retorna la página de gestión con los datos actualizados
+            #Si result es -1, hubo un error inesperado
+            if result == -1:
+                return render(request, "main/error.html", {
+                    "mensaje": "Se produjo un error en agregar nuevo miembro"
+                })
+            #Se retorna la página de gestión con los datos actualizados
         return HttpResponseRedirect(reverse("gestionMiembros", kwargs={"nombre": nombre})) 
     
     elif request.method == "DELETE": 
@@ -349,7 +348,7 @@ def seguir(request,nombre):
     return HttpResponse(status=200)
 
 def explorarProyectos(request):
-    if request.method == "GET":
+    if request.method == "GET" and (request.GET.getlist('barraBusqueda') or request.GET.getlist("generos") or request.GET.getlist('fase') or request.GET.getlist('frameworks')):
         nombre_busqueda = request.GET.getlist('barraBusqueda')
         generos = request.GET.getlist("generos")
         fase = request.GET.getlist('fase')
@@ -358,24 +357,17 @@ def explorarProyectos(request):
         proyectos = []
         Nombre_proyecto = ' '.join(map(str, nombre_busqueda))
         proyectos = ManejadorProyectos.buscarProyecto(Nombre_proyecto,generos,fase,frameworks)
-
+        
         return render(request, "proyectos/explorarProyectos.html", {
             "generos": Genero,
             "fases": Fases,
             "frameworks": Framework,
             "populares": proyectos
         })
-
     else:
         
-        todos = ManejadorProyectos.obtenerProyectosPopulares()
-        populares = [None] * 4
-        i = 0
-        for pop in todos:
-            populares[i] = pop
-            if i == 3:
-                break
-            i = i+1
+        populares = ManejadorProyectos.obtenerProyectosPopulares()
+        print(populares)
 
         return render(request, "proyectos/explorarProyectos.html", {
             "generos": Genero,

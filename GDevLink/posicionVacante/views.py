@@ -148,15 +148,17 @@ def explorarVacantes(request):
     elif request.method == "GET":
         vacantes = []
         vacantes = PosicionVacante.objects.all()
-        autenticado = ManejadorUsuarios.obtenerUsuario(request.user)
         vacantesAutenticado =[]
-
-        for vacante in vacantes:
-            apl = []
-            apl = ManejadorVacantes.obtenerAplicantes(vacante.id)
-            for apli in apl:
-                if apli.username == autenticado.username:
-                    vacantesAutenticado.append(vacante)
+        autenticado = request.user
+        if request.user.is_authenticated:
+            autenticado = ManejadorUsuarios.obtenerUsuario(request.user)
+            for vacante in vacantes:
+                apl = []
+                apl = ManejadorVacantes.obtenerAplicantes(vacante.id)
+                for apli in apl:
+                    if apli.username == autenticado.username:
+                        vacantesAutenticado.append(vacante)
+        
                    
         return render(request, "posicionVacante/explorarVacantes.html", {
             "posicionesVacantes": vacantes,

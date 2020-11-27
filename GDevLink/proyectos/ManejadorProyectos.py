@@ -152,8 +152,10 @@ class ManejadorProyectos(IManejadorProyectos):
         return proyectos
 
     def obtenerProyectosPopulares():
-        #Se obtienen los 20 proyectos mas populares, ordenados por seguidores
-        populares = Proyecto.objects.all().order_by('seguidores')[:20]
+        
+        popularesRep = Proyecto.objects.all().order_by('seguidores')
+        populares = list(dict.fromkeys(popularesRep))
+        print(len(populares))
         return populares
 
     def obtenerActualizacionesSeguidos(nombreUsuario):

@@ -76,6 +76,7 @@ def index(request):
           populares = ManejadorProyectos.obtenerProyectosPopulares()
           vacantesCodigo = list(PosicionVacante.objects.all())
           vacantes = {}
+          proyectoKey = {}
                
           for vac in vacantesCodigo:
                roles_p = ""
@@ -86,5 +87,6 @@ def index(request):
                         
                     #String es agregado a la lista de participaciones, en la posición del usuario
                vacantes[vac.proyecto.nombre] = roles_p
+               proyectoKey[vac.proyecto.nombre] = vac.proyecto
                 
-          return render(request,"main/index.html",{"populares": populares, "vacantes": vacantes})
+          return render(request,"main/index.html",{"populares": populares, "vacantes": vacantes, "proyectoKey": proyectoKey})

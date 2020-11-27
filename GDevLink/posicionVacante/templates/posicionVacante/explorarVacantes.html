@@ -113,12 +113,15 @@
                     
                 </td>
                 <td>
-                <td><button class="btn btn-primary" id="aplicar" data-id-vacante="{{vacante.id}}" >
+                <td>
+                {% if user.is_authenticated %}
+                    <button class="btn btn-primary" id="aplicar" data-id-vacante="{{vacante.id}}" >
                     {% if vacante in vacantesAutenticado %}
                     Aplicado
                     {% else %}
                      Aplicar
                     {% endif %}
+                {% endif %}
                 </button></td>
 
 
