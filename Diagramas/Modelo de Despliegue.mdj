@@ -780,7 +780,7 @@
 										"$ref": "AAAAAAF14rBnVGHIqEA="
 									},
 									"edgePosition": 1,
-									"text": "+JDBC"
+									"text": "+psycopg2"
 								},
 								{
 									"_type": "EdgeLabelView",
@@ -4230,7 +4230,7 @@
 							"_parent": {
 								"$ref": "AAAAAAF13k8xDMrvUj8="
 							},
-							"name": "JDBC",
+							"name": "psycopg2",
 							"end1": {
 								"_type": "UMLLinkEnd",
 								"_id": "AAAAAAF14rBnU2HF4pI=",
